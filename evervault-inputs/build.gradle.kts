@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("plugin.serialization") version "1.8.22"
 }
 
 android {
@@ -32,20 +31,11 @@ android {
 }
 
 dependencies {
+
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-
-    // ktor
-    implementation("io.ktor:ktor-client-core:2.3.1")
-    implementation("io.ktor:ktor-client-okhttp:2.3.1")
-
-    // crypto
-    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
-
     testImplementation("junit:junit:4.13.2")
-    testImplementation(kotlin("test-junit"))
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
