@@ -1,10 +1,10 @@
 package com.evervault.sdk
 
 import com.evervault.sdk.core.CryptoLoader
+import com.evervault.sdk.core.DataCipher
 import com.evervault.sdk.core.Http
-import com.evervault.sdk.core.JavaDataCipher
 import com.evervault.sdk.core.datahandlers.DataHandlers
-import com.evervault.sdk.core.keys.JavaSharedSecretDeriver
+import com.evervault.sdk.core.keys.SharedSecretDeriver
 
 class Evervault private constructor() {
 
@@ -34,6 +34,11 @@ class Evervault private constructor() {
     }
 }
 
+internal expect object EvervaultFactory {
+    fun createSharedSecretDeriver(): SharedSecretDeriver
+    fun createDataCipherFactory(): DataCipher.Factory
+}
+
 internal class Client(private val config: Config, private val http: Http, private val debugMode: Boolean?) {
 
     private val cryptoLoader: CryptoLoader
@@ -42,8 +47,8 @@ internal class Client(private val config: Config, private val http: Http, privat
         this.cryptoLoader = CryptoLoader(
             config = config,
             http = http,
-            sharedSecretDeriver = JavaSharedSecretDeriver(),
-            dataCipherFactory = JavaDataCipher.Factory,
+            sharedSecretDeriver = EvervaultFactory.createSharedSecretDeriver(),
+            dataCipherFactory = EvervaultFactory.createDataCipherFactory(),
             isInDebugMode = debugMode
         )
     }

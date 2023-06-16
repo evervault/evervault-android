@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="evervault-core-jvm">
+    <output-path>$PROJECT_DIR$/evervault-core/build/libs</output-path>
+    <root id="archive" name="evervault-core-jvm.jar">
+      <element id="module-output" name="evervault-android.evervault-core.jvmMain" />
+    </root>
+  </artifact>
+</component>

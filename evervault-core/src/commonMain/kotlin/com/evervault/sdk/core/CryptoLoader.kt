@@ -9,12 +9,11 @@ import kotlinx.coroutines.coroutineScope
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-
 internal class CryptoLoader(
     private val config: Config,
     private val http: Http,
     private val sharedSecretDeriver: SharedSecretDeriver,
-    private val dataCipherFactory: DataCipherFactory,
+    private val dataCipherFactory: DataCipher.Factory,
     private val isInDebugMode: Boolean?
 ) {
     private var activeTask: kotlinx.coroutines.Deferred<Crypto>? = null
