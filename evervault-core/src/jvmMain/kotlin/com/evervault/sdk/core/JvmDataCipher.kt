@@ -28,16 +28,9 @@ internal class JvmDataCipher(
 
     override fun encrypt(data: ByteArray): EncryptedData {
         val keyIv = generateBytes(config.ivLength)
-//        val keyIv = byteArrayOf(-120, -7, 126, -60, 64, 23, -53, -116, -40, -126, -14, 118)
 
         val cipher = GCMBlockCipher(AESEngine())
         val compressedTeamPublicKey = ecdhTeamKey
-
-        // ByteArray with [27, -109, 42, 98, 127, 81, -5, 16, -19, 47, -78, 33, -24, -59, -67, 22, -117, 93, 97, 81, -55, 92, 73, 28, 100, -105, -10, -89, 73, -18, 67, 4]
-
-        val byteKey = byteArrayOf(27, -109, 42, 98, 127, 81, -5, 16, -19, 47, -78, 33, -24, -59, -67, 22, -117, 93, 97, 81, -55, 92, 73, 28, 100, -105, -10, -89, 73, -18, 67, 4)
-
-//        val parameters = AEADParameters(KeyParameter(byteKey), config.authTagLength, keyIv, compressedTeamPublicKey)
 
         val parameters = AEADParameters(KeyParameter(derivedSecret), config.authTagLength, keyIv, compressedTeamPublicKey)
         cipher.init(true, parameters)
