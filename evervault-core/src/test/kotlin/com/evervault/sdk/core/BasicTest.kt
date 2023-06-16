@@ -12,8 +12,8 @@ class BasicTest {
     @BeforeTest
     fun setup() {
         Evervault.shared.configure(
-            teamId = System.getenv("VITE_EV_TEAM_UUID"),
-            appId = System.getenv("VITE_EV_APP_UUID"),
+            teamId = System.getenv("VITE_EV_TEAM_UUID")!!,
+            appId = System.getenv("VITE_EV_APP_UUID")!!,
             customConfig = CustomConfig(isDebugMode = true)
         )
     }

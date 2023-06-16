@@ -8,37 +8,39 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.evervault.sampleapplication.ui.theme.EvervaultandroidTheme
+import com.evervault.sdk.CustomConfig
 import com.evervault.sdk.Evervault
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        Evervault.shared.configure(
+            teamId = System.getenv("VITE_EV_TEAM_UUID") ?: "",
+            appId = System.getenv("VITE_EV_APP_UUID") ?: "",
+            customConfig = CustomConfig(isDebugMode = true)
+        )
         super.onCreate(savedInstanceState)
         setContent {
+
+            var encrypted: String? by remember { mutableStateOf(null) }
+
+            LaunchedEffect(Unit) {
+                encrypted = Evervault.shared.encrypt("Android") as String
+            }
+
             EvervaultandroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting(Evervault.encrypt("Android"))
+                    Text(text = encrypted ?: "Loading...")
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EvervaultandroidTheme {
-        Greeting("Android")
     }
 }
