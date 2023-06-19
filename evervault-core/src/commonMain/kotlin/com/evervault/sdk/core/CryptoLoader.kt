@@ -75,8 +75,7 @@ internal class CryptoLoader(
                 ecdhTeamKey = teamKeyPublic,
                 derivedSecret = sharedKey,
                 config = config.encryption,
-            ),
-            config = config.encryption,
+            )
         )
     }
 }

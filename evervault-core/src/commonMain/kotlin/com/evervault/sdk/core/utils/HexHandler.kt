@@ -40,7 +40,6 @@ internal object HexHandler {
         0x46.toChar()
     )
 
-    @JvmOverloads
     fun encode(byteArray: ByteArray, upperCase: Boolean = false, byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN): String {
 
         // our output size will be exactly 2x byte-array length
@@ -58,11 +57,14 @@ internal object HexHandler {
             // extract the lower 4 bit and look up char (0-A)
             buffer[(i shl 1) + 1] = lookup[byteArray[index].toInt() and 0xF]
         }
-        return String(buffer)
+        return buffer.concatToString()
     }
 
-    fun decode(s: String): ByteArray = s.chunked(2)
-        .map { it.toInt(16).toByte() }
-        .toByteArray()
+    fun decode(s: String): ByteArray {
+        val result = s.chunked(2)
+            .map { it.toInt(16).toByte() }
+            .toByteArray()
+        return result
+    }
 
 }

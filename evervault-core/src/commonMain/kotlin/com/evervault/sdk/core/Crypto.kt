@@ -2,14 +2,14 @@ package com.evervault.sdk.core
 
 import com.evervault.sdk.EncryptionConfig
 import com.evervault.sdk.core.format.EncryptionFormatter
+import io.ktor.utils.io.core.toByteArray
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @OptIn(ExperimentalEncodingApi::class)
 internal class Crypto(
     private val encryptionFormatter: EncryptionFormatter,
-    private val dataCipher: DataCipher,
-    private val config: EncryptionConfig,
+    private val dataCipher: DataCipher
 ) : EncryptionService {
 
     override fun encryptString(string: String, dataType: DataType): String {

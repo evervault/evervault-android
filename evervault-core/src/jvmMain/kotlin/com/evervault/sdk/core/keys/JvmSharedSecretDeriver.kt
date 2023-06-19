@@ -19,7 +19,7 @@ import javax.crypto.KeyAgreement
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-class JvmSharedSecretDeriver: SharedSecretDeriver {
+internal class JvmSharedSecretDeriver: SharedSecretDeriver {
 
     private val provider = BouncyCastleProvider()
 
@@ -80,8 +80,8 @@ class JvmSharedSecretDeriver: SharedSecretDeriver {
         sha256.doFinal(hash, 0)
 
         return GeneratedSharedKey(
+            generatedEcdhKey = generatedPublicKey,
             sharedKey = hash,
-            generatedEcdhKey = generatedPublicKey
         )
     }
 }

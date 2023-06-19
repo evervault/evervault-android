@@ -1,10 +1,11 @@
 package com.evervault.sdk.core.format
 
 import com.evervault.sdk.core.DataType
+import io.ktor.utils.io.core.toByteArray
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-class R1StdEncryptionFormatter(
+internal class R1StdEncryptionFormatter(
     private val evVersion: String,
     private val publicKey: String,
     private val isDebug: Boolean
@@ -14,8 +15,6 @@ class R1StdEncryptionFormatter(
     override fun formatEncryptedData(dataType: DataType, keyIv: String, encryptedData: String): String {
         val evVersionPrefix = Base64.encode(evVersion.toByteArray())
         return "ev:${if(isDebug) "debug:" else ""}${evVersionPrefix}${dataType.prefix}:${keyIv.paddingRemoved}:${publicKey.paddingRemoved}:${encryptedData.paddingRemoved}:$"
-
-//        return "ev:${if(isDebug) "debug:" else ""}${evVersionPrefix}${dataType.prefix}:${keyIv.paddingRemoved}:${"Aqzn03gdXY7NuR85aD5NPX/R8c1+2CE66hMdoPFlsnXa".paddingRemoved}:${encryptedData.paddingRemoved}:$"
     }
 }
 

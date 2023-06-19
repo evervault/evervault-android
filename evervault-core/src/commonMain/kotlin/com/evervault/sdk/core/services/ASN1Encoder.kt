@@ -1,20 +1,21 @@
 package com.evervault.sdk.core.services
 
 import com.evervault.sdk.core.exceptions.Asn1EncodingException
+import kotlin.math.floor
 
 internal object ASN1 {
     @Throws(Asn1EncodingException::class)
     fun encode(vararg arguments: String): String {
         val type = arguments[0]
         val hexStrings = arguments.copyOfRange(1, arguments.size)
-        val combinedHexStrings = java.lang.String.join("", *hexStrings)
+        val combinedHexStrings = hexStrings.joinToString("")
         val str = combinedHexStrings.replace("\\s+".toRegex(), "").lowercase()
         var len = str.length / 2
         var lenlen = 0
         var hex = type
 
         // We can't have an odd number of hex chars
-        if (len.toDouble() != Math.floor(len.toDouble())) {
+        if (len.toDouble() != floor(len.toDouble())) {
             throw Asn1EncodingException
         }
 
@@ -51,13 +52,13 @@ internal object ASN1 {
     // Bit String type also has a special rule
     @Throws(Asn1EncodingException::class)
     fun BITSTR(vararg arguments: String?): String {
-        val str = java.lang.String.join("", *arguments)
+        val str = arguments.joinToString("")
         // '00' is a mask of how many bits of the next byte to ignore
         return encode("03", "00$str")
     }
 
     fun numToHex(d: Int): String {
-        val hexString = Integer.toHexString(d)
+        val hexString = d.toString(16)
         return if (hexString.length % 2 != 0) {
             "0$hexString"
         } else hexString
