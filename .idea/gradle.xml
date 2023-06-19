@@ -12,8 +12,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/evervault-core" />
-            <option value="$PROJECT_DIR$/evervault-inputs" />
-            <option value="$PROJECT_DIR$/sampleapplication" />
+            <option value="$PROJECT_DIR$/examples" />
+            <option value="$PROJECT_DIR$/examples/shared" />
           </set>
         </option>
       </GradleProjectSettings>
