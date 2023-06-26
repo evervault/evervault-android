@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
     }
@@ -12,33 +13,28 @@ plugins {
     kotlin("jvm") version "1.8.21" apply false
 //    id("com.android.library") version "8.0.2" apply false
     id("org.jetbrains.kotlin.android") version "1.8.20" apply false
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
     }
 }
 
-//plugins {
-//    kotlin("jvm") version "1.8.21"
-//    id("com.android.application") version "8.0.2" apply false
-//    id("org.jetbrains.kotlin.android") version "1.8.20" apply false
-////    application
-//}
+val ossrhUsername: String? by project
+val ossrhPassword: String? by project
 
-//group = "com.evervault"
-//version = "1.0-SNAPSHOT"
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
 
-//dependencies {
-//    testImplementation(kotlin("test"))
-//}
-
-//tasks.test {
-//    useJUnitPlatform()
-//}
-
-//kotlin {
-//    jvmToolchain(11)
-//}
+            username.set(ossrhUsername)
+            password.set(ossrhPassword)
+        }
+    }
+}
