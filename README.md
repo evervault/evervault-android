@@ -85,7 +85,7 @@ Two build-in layouts are provided:
 
 - `inlinePaymentCardInputLayout()` (the default layout) - This layout displays the card number, expiry and CVC fields inline.
 
-<img src="https://github.com/evervault/evervault-android/blob//inline.png?raw=true" alt="inlinePaymentCardInputLayout" align="center"/>
+<img src="https://github.com/evervault/evervault-android/blob/main/inline.png?raw=true" alt="inlinePaymentCardInputLayout" align="center"/>
 
 To explicitly use this layout:
 
@@ -100,7 +100,7 @@ PaymentCardInput(
 
 - `rowsPaymentCardInputLayout()` - puts the credit card number on a single row. Below it, places the expiry and cvc fields next to each other.
 
-<img src="https://github.com/evervault/evervault-android/blob//rows.png?raw=true" alt="rowsPaymentCardInputLayout" align="center"/>
+<img src="https://github.com/evervault/evervault-android/blob/main/rows.png?raw=true" alt="rowsPaymentCardInputLayout" align="center"/>
 
 To use this layout:
     
