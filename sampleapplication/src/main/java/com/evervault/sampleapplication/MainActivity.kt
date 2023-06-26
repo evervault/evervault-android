@@ -51,15 +51,6 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
 
                     NavigationGraph(navController = navController)
-
-//                    Column(modifier = Modifier.background(Color.Gray)) {
-//                        PaymentCardInput(
-////                            textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-////                            content = rowsPaymentCardInputLayout(),
-//                        ) {
-//                            Log.i("MainActivity", "Data changed: $it")
-//                        }
-//                    }
                 }
             }
         }

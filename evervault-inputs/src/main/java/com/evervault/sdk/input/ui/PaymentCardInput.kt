@@ -55,7 +55,7 @@ fun PaymentCardInput(
     placeholderTextStyle: TextStyle = textStyle.copy(
         color = MaterialTheme.colorScheme.secondary
     ),
-    content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit = inlinePaymentCardInputLayout(),
+    layout: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit = inlinePaymentCardInputLayout(),
     onDataChange: (PaymentCardData) -> Unit = {}
 ) {
     val creditCardNumber = remember { mutableStateOf(TextFieldValue("")) }
@@ -190,7 +190,7 @@ fun PaymentCardInput(
         onDataChange(cardData)
     }
 
-    content(
+    layout(
         PaymentCardInputScopeImpl(
             textStyle = textStyle,
             placeholderTextStyle = placeholderTextStyle,
