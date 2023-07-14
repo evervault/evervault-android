@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.evervault.sdk.inputs"
+    namespace = "com.evervault.sdk.cages"
     compileSdk = 33
 
     defaultConfig {
@@ -60,11 +60,8 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.5.1")
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("net.java.dev.jna:jna:5.7.0@aar")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -75,7 +72,7 @@ publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "com.evervault.sdk"
-            artifactId = "evervault-inputs"
+            artifactId = "evervault-cages"
             version = "1.0"
 
             afterEvaluate {
@@ -84,12 +81,12 @@ publishing {
         }
     }
 }
-
-signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
-    useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
-
-    println(publishing.publications.asMap)
-    sign(publishing.publications["release"])
-}
+//
+//signing {
+//    val signingKey: String? by project
+//    val signingPassword: String? by project
+//    useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
+//
+//    println(publishing.publications.asMap)
+//    sign(publishing.publications["release"])
+//}
