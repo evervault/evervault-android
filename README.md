@@ -236,6 +236,8 @@ api_key_auth = false
 
 - Only use the `OkHttpClient` configured with the `AttestationData` for requests to your Cage. For all other requests, use a separate client. If you have multiple Cages, you will need to configure a separate `OkHttpClient` for each Cage.
 
+- When calling an endpoint of your Cage, use make sure you do not have any underscore `_` in the request url. Replace any underscore, such as the one in your App ID, with hyphens `-`.
+
 These considerations are essential to remember for a seamless integration and operation of the Evervault Cages SDK in your Android applications.
 
 ## Sample App
