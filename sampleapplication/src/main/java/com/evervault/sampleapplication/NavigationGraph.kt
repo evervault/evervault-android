@@ -93,6 +93,10 @@ fun NavigationGraph(
                 )
             }
         }
+
+        composable("CageView") {
+            CageView()
+        }
     }
 }
 

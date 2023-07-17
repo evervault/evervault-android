@@ -48,6 +48,7 @@ android {
 
 dependencies {
     implementation(project(":evervault-inputs"))
+    implementation(project(":evervault-cages"))
     implementation("com.evervault.sdk:evervault-core:1.0")
 
     implementation("androidx.core:core-ktx:1.8.0")
@@ -62,6 +63,9 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:2.6.0")
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // GSON converter
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

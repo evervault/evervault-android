@@ -23,6 +23,7 @@ Our Android SDK distributed via [maven](https://search.maven.org/artifact/com.ev
 ```kotlin
 implementation("com.evervault.sdk:evervault-core:1.0.0")
 implementation("com.evervault.sdk:evervault-inputs:1.0.0")
+implementation("com.evervault.sdk:evervault-cages:1.0.0")
 ```
 
 ### Maven
@@ -37,6 +38,12 @@ implementation("com.evervault.sdk:evervault-inputs:1.0.0")
   <groupId>com.evervault.sdk</groupId>
   <artifactId>evervault-inputs</artifactId>
   <version>1.0.0</version>
+</dependency>
+<dependency>
+  <groupId>com.evervault.sdk</groupId>
+  <artifactId>evervault-cages</artifactId>
+  <version>1.0.0</version>
+</dependency>
 ```
 
 ## Usage
@@ -153,6 +160,85 @@ PaymentCardInput(
     }
 )
 ```
+
+### Cages (Beta)
+
+The Evervault Cages SDK provides an accessible solution for developers to deploy Docker containers within a Secure Enclave. It enables you to interact with your Cages endpoints via standard HTTP requests directly from your Android applications. A key feature that enables this is the attestation verification performed before completing the TLS handshake. For a deeper understanding of this process, you can explore our [TLS Attestation documentation](https://docs.evervault.com/products/cages#tls-attestation).
+
+The attestation verification is executed using a custom Trust Manager on a `OkHttpClient.Builder`. This Trust Manager needs initialization with one or more `AttestationData` objects:
+
+```kotlin
+data class AttestationData(
+    val cageName: String,
+    val pcrs: List<PCRs>
+) {
+    constructor(cageName: String, vararg pcrs: PCRs)
+}
+
+data class PCRs(
+    val pcr0: String,
+    val pcr1: String,
+    val pcr2: String,
+    val pcr8: String
+)
+```
+
+It is crucial to ensure that the supplied PCRs align with the PCRs of the respective Cage.
+
+Then you configure the HTTP Client with the attestations:
+
+```kotlin
+
+val client = OkHttpClient.Builder()
+    .trustManager(AttestationData(
+        cageName = cageName,
+        // Replace with legitimate PCR strings when not in debug mode
+        PCRs(
+            pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        )
+    ))
+    .build()
+```
+
+Only use this client for requests to your Cage. For all other requests, use a separate client.
+
+#### Considerations
+
+- It's crucial to note that the PCR values associated with a Cage change with each new deployment. Consequently, older versions of your app with hardcoded PCRs may stop functioning. To alleviate this, you can accommodate previous deployments by providing multiple `PCRs` objects:
+
+```kotlin
+AttestationData(
+    cageName = cageName,
+    listOf(
+        PCRs(
+            pcr0 = "fd4b",
+            pcr1 = "bc3f",
+            pcr2 = "2c10",
+            pcr8 = "dfb3"
+        ),
+        PCRs(
+            pcr0 = "c779",
+            pcr1 = "bc3f",
+            pcr2 = "4cbf",
+            pcr8 = "dfb3"
+        )
+    )
+)
+```
+
+- Please be aware that the Android SDK is compatible only with Cages that have the API Key Authentication set to `false` in your cage.toml file:
+```
+api_key_auth = false
+```
+
+- Only use the `OkHttpClient` configured with the `AttestationData` for requests to your Cage. For all other requests, use a separate client. If you have multiple Cages, you will need to configure a separate `OkHttpClient` for each Cage.
+
+- When calling an endpoint of your Cage, use make sure you do not have any underscore `_` in the request url. Replace any underscore, such as the one in your App ID, with hyphens `-`.
+
+These considerations are essential to remember for a seamless integration and operation of the Evervault Cages SDK in your Android applications.
 
 ## Sample App
 

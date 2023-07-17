@@ -22,9 +22,6 @@ fun ContentView(navController: NavController) {
                     headlineText = { Text(text = "Basic Encryption") },
                     modifier = Modifier.clickable { navController.navigate("BasicEncryptionView") }
                 )
-//                {
-////                    Text(text = "Basic Encryption")
-//                }
             }
             item {
                 ListItem(
@@ -51,6 +48,15 @@ fun ContentView(navController: NavController) {
                 ListItem(
                     headlineText = { Text(text = "Custom Layout") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomStyle") }
+                )
+            }
+            item {
+                ListItem(
+                    headlineText = { Text(text = "Cages", style = MaterialTheme.typography.headlineSmall) },
+                )
+                ListItem(
+                    headlineText = { Text(text = "Cage HTTP Request") },
+                    modifier = Modifier.clickable { navController.navigate("CageView") }
                 )
             }
         }

@@ -18,8 +18,8 @@ pluginManagement {
 //include(":sampleapplication")
 
 rootProject.name = "evervault-android"
-//include("evervault-core")
 include(":sampleapplication")
 include(":evervault-inputs")
+include(":evervault-cages")
 
 //include(":examples:shared")
