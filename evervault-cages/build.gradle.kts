@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    group = "com.evervault.sdk"
     namespace = "com.evervault.sdk.cages"
     compileSdk = 33
 
@@ -80,13 +81,36 @@ publishing {
             }
         }
     }
+    publications.withType<MavenPublication> {
+        pom {
+            name.set("Evervault")
+            description.set("Evervault Android SDK")
+            url.set("https://github.com/evervault/evervault-android")
+            developers {
+                developer {
+                    name.set("engineering")
+                    organization.set("Evervault")
+                    email.set("engineering@evervault.com")
+                }
+            }
+            scm {
+                connection.set("scm:git:ssh://git@github.com:evervault/evervault-android.git")
+                url.set("https://github.com/evervault/evervault-android")
+            }
+            licenses {
+                license {
+                    name.set("The MIT License (MIT)")
+                    url.set("https://mit-license.org")
+                }
+            }
+        }
+    }
 }
-//
-//signing {
-//    val signingKey: String? by project
-//    val signingPassword: String? by project
-//    useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
-//
-//    println(publishing.publications.asMap)
-//    sign(publishing.publications["release"])
-//}
+
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
+
+    sign(publishing.publications["release"])
+}

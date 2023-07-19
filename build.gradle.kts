@@ -8,7 +8,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.4.2")
     }
 }
-
+group "com.evervault.sdk"
 plugins {
     kotlin("jvm") version "1.8.21" apply false
 //    id("com.android.library") version "8.0.2" apply false
@@ -32,7 +32,7 @@ nexusPublishing {
         sonatype {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-
+            stagingProfileId.set("7050c947df3733")
             username.set(ossrhUsername)
             password.set(ossrhPassword)
         }
