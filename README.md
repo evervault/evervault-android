@@ -4,5 +4,22 @@
 
 The [Evervault](https://evervault.com/) Android SDK is a library that provides secure data encryption and secure credit card input. It's simple to integrate, easy to use and it supports a wide range of data types.
 
-For up to date usage docs please refer to
-[Evervault docs](https://docs.evervault.com/sdks/android)
+## Installation
+ * [Gradle](https://docs.evervault.com/sdks/android#gradle-dsl)
+ * [Maven](https://docs.evervault.com/sdks/android#maven)
+
+## Features
+* [Encrypt](https://docs.evervault.com/security/evervault-encryption) various data types for storing sensitive data.
+* Collect credit card information for PCI-DSS compliance with [Inputs](https://docs.evervault.com/products/inputs).
+* Connect and Remotely Attest [Cages](https://docs.evervault.com/products/cages)
+
+## SDK Reference
+* Browse the upto date docuementation [here](https://docs.evervault.com/sdks/android#installation)
+## Examples
+This project includes a [sample application](https://github.com/evervault/evervault-android/tree/main/sampleapplication) that integrates [Evervault Inputs](https://docs.evervault.com/products/inputs) and [Evervault Cages](https://docs.evervault.com/products/cages)
+
+## Contributing
+Bug reports and pull requests are welcome on GitHub.
+
+## License
+The sample app is released under the MIT License. See the [LICENSE](https://github.com/evervault/evervault-android/tree/main/LICENSE) file for more information.
