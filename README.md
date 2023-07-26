@@ -14,7 +14,7 @@ The [Evervault](https://evervault.com/) Android SDK is a library that provides s
 * Connect and Remotely Attest [Cages](https://docs.evervault.com/products/cages)
 
 ## SDK Reference
-* Browse the upto date docuementation [here](https://docs.evervault.com/sdks/android#installation)
+* Browse the upto date documentation [here](https://docs.evervault.com/sdks/android)
 ## Examples
 This project includes a [sample application](https://github.com/evervault/evervault-android/tree/main/sampleapplication) that integrates [Evervault Inputs](https://docs.evervault.com/products/inputs) and [Evervault Cages](https://docs.evervault.com/products/cages)
 
