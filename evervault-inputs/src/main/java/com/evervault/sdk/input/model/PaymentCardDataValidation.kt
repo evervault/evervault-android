@@ -22,6 +22,11 @@ fun createPaymentCardData(number: String, cvc: String, expiry: String): PaymentC
         cvc = cvc.filter { it.isDigit() }.take(CreditCardValidator.maxCvcLength(cardType))
     )
 
+    if (validator.isValid) {
+        paymentCard.bin = number.take(8)
+        paymentCard.lastFour = number.takeLast(4)
+    }
+
     val expiryParts = expiry.split("/")
     paymentCard.expMonth = expiryParts.getOrNull(0)?.filter { it.isDigit() } ?: ""
     paymentCard.expYear = expiryParts.getOrNull(1)?.filter { it.isDigit() } ?: ""

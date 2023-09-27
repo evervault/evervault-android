@@ -35,6 +35,8 @@ fun CreditCardInputView(paymentCardInput: @Composable ((PaymentCardData) -> Unit
         InfoBlock(label = "Exp year:", value = cardData.card.expYear)
         InfoBlock(label = "Is valid:", value = if (cardData.isValid) "Yes" else "No")
         InfoBlock(label = "Is potentially valid:", value = if (cardData.isPotentiallyValid) "Yes" else "No")
+        InfoBlock(label = "Bin:", value = cardData.card.bin)
+        InfoBlock(label = "Last Four:", value = cardData.card.lastFour)
 
         if (cardData.error != null) {
             InfoBlock(label = "Error message:", value = cardData.error?.description ?: "")
