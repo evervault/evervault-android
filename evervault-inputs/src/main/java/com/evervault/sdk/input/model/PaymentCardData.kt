@@ -17,6 +17,8 @@ data class PaymentCardData(
 data class PaymentCard(
     var type: CreditCardType? = null,
     var number: String = "",
+    var bin: String = "",
+    var lastFour: String = "",
     var cvc: String = "",
     var expMonth: String = "",
     var expYear: String = "",
