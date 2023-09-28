@@ -23,8 +23,8 @@ fun createPaymentCardData(number: String, cvc: String, expiry: String): PaymentC
     )
 
     if (validator.isValid) {
-        paymentCard.bin = number.take(8)
         paymentCard.lastFour = number.takeLast(4)
+        paymentCard.bin = if (cardType == CreditCardType.AMEX) number.take(6) else number.take(8)
     }
 
     val expiryParts = expiry.split("/")
