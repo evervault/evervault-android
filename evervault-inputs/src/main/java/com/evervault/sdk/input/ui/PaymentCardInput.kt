@@ -109,7 +109,7 @@ fun PaymentCardInput(
         updateCardData {
             copy(
                 card = card.copy(
-                    number = if (rawCardData.card.number.isBlank()) "" else Evervault.shared.encrypt(rawCardData.card.number) as? String ?: ""
+                    number = if (rawCardData.card.number.isBlank()) "" else Evervault.shared.encrypt(rawCardData.card.number.replace(" ", "")) as? String ?: ""
                 )
             )
         }
