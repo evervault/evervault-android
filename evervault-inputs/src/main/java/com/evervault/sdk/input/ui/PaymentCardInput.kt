@@ -354,10 +354,13 @@ private class PaymentCardInputScopeImpl(
                 onNext = { onNext?.invoke() },
             ),
             decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.TextFieldDecorationBox(
+                TextFieldDefaults.DecorationBox(
                     value = state.value.text,
-                    visualTransformation = VisualTransformation.None,
                     innerTextField = innerTextField,
+                    enabled = true,
+                    singleLine = true,
+                    visualTransformation = VisualTransformation.None,
+                    interactionSource = remember { MutableInteractionSource() },
                     placeholder = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -365,14 +368,13 @@ private class PaymentCardInputScopeImpl(
                             style = options.textStyle.invoke(placeholderTextStyle),
                         )
                     },
-                    singleLine = true,
-                    enabled = true,
-                    interactionSource = remember { MutableInteractionSource() },
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                     ),
-                    contentPadding = PaddingValues(0.dp)
+                    contentPadding = PaddingValues(0.dp),
                 )
             }
         )
