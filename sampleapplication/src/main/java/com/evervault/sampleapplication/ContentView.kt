@@ -19,43 +19,43 @@ fun ContentView(navController: NavController) {
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             item {
                 ListItem(
-                    headlineText = { Text(text = "Basic Encryption") },
+                    headlineContent = { Text(text = "Basic Encryption") },
                     modifier = Modifier.clickable { navController.navigate("BasicEncryptionView") }
                 )
             }
             item {
                 ListItem(
-                    headlineText = { Text(text = "File Encryption") },
+                    headlineContent = { Text(text = "File Encryption") },
                     modifier = Modifier.clickable { navController.navigate("FileEncryptionView") }
                 )
             }
             item {
                 ListItem(
-                    headlineText = { Text(text = "Credit Card Inputs", style = MaterialTheme.typography.headlineSmall) },
+                    headlineContent = { Text(text = "Credit Card Inputs", style = MaterialTheme.typography.headlineSmall) },
                 )
                 ListItem(
-                    headlineText = { Text(text = "Inline (Default)") },
+                    headlineContent = { Text(text = "Inline (Default)") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputView") }
                 )
                 ListItem(
-                    headlineText = { Text(text = "Inline Customized") },
+                    headlineContent = { Text(text = "Inline Customized") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustom") }
                 )
                 ListItem(
-                    headlineText = { Text(text = "Rows") },
+                    headlineContent = { Text(text = "Rows") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewRows") }
                 )
                 ListItem(
-                    headlineText = { Text(text = "Custom Layout") },
+                    headlineContent = { Text(text = "Custom Layout") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomStyle") }
                 )
             }
             item {
                 ListItem(
-                    headlineText = { Text(text = "Cages", style = MaterialTheme.typography.headlineSmall) },
+                    headlineContent = { Text(text = "Cages", style = MaterialTheme.typography.headlineSmall) },
                 )
                 ListItem(
-                    headlineText = { Text(text = "Cage HTTP Request") },
+                    headlineContent = { Text(text = "Cage HTTP Request") },
                     modifier = Modifier.clickable { navController.navigate("CageView") }
                 )
             }
