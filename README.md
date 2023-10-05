@@ -21,5 +21,14 @@ This project includes a [sample application](https://github.com/evervault/everva
 ## Contributing
 Bug reports and pull requests are welcome on GitHub.
 
+## Development
+
+Install the Android SDK and add to your Path
+
+```
+brew install android-sdk
+export ANDROID_HOME=/usr/local/share/android-sdk
+```
+
 ## License
 The sample app is released under the MIT License. See the [LICENSE](https://github.com/evervault/evervault-android/tree/main/LICENSE) file for more information.
