@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -208,7 +209,6 @@ fun PaymentCardInput(
 }
 
 interface PaymentCardInputScope {
-
     data class TextFieldOptions(
         val textStyle: (TextStyle.() -> TextStyle) = { this },
     )
@@ -224,6 +224,8 @@ interface PaymentCardInputScope {
     fun CardNumberField(modifier: Modifier)
     @Composable
     fun CardNumberField(modifier: Modifier, options: TextFieldOptions)
+    @Composable
+    fun CardNumberField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
 
     @Composable
     fun ExpiryField()
@@ -231,6 +233,8 @@ interface PaymentCardInputScope {
     fun ExpiryField(modifier: Modifier)
     @Composable
     fun ExpiryField(modifier: Modifier, options: TextFieldOptions)
+    @Composable
+    fun ExpiryField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
 
     @Composable
     fun CVCField()
@@ -238,6 +242,8 @@ interface PaymentCardInputScope {
     fun CVCField(modifier: Modifier)
     @Composable
     fun CVCField(modifier: Modifier, options: TextFieldOptions)
+    @Composable
+    fun CVCField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
 }
 
 private class PaymentCardInputScopeImpl(
@@ -278,9 +284,14 @@ private class PaymentCardInputScopeImpl(
 
     @Composable
     override fun CardNumberField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions) {
+        CardNumberField(modifier = modifier, options = options, placeholder = "4242 4242 4242 4242")
+    }
+
+    @Composable
+    override fun CardNumberField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions, placeholder: String) {
         CustomTextField(
             state = creditCardNumber,
-            placeholder = "4242 4242 4242 4242",
+            placeholder = placeholder,
             modifier = modifier.focusRequester(creditCardRequester),
             options = options,
             onNext = { expiryRequester.requestFocus() },
@@ -299,9 +310,14 @@ private class PaymentCardInputScopeImpl(
 
     @Composable
     override fun ExpiryField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions) {
+        ExpiryField(modifier = modifier, options = options, placeholder = "MM/YY")
+    }
+
+    @Composable
+    override fun ExpiryField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions, placeholder: String) {
         CustomTextField(
             state = expiryDate,
-            placeholder = "MM/YY",
+            placeholder = placeholder,
             modifier = modifier.focusRequester(expiryRequester),
             options = options,
             onNext = { cvcRequester.requestFocus() },
@@ -322,9 +338,14 @@ private class PaymentCardInputScopeImpl(
 
     @Composable
     override fun CVCField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions) {
+        CVCField(modifier = modifier, options = options, placeholder = "CVC")
+    }
+
+    @Composable
+    override fun CVCField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions, placeholder: String) {
         CustomTextField(
             state = cvc,
-            placeholder = "CVC",
+            placeholder = placeholder,
             modifier = modifier.focusRequester(cvcRequester),
             options = options,
         )
