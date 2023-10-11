@@ -3,6 +3,7 @@ package com.evervault.sdk.input.model
 import com.evervault.sdk.input.utils.CreditCardFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
 import com.evervault.sdk.input.utils.validNumberLength
+import java.util.Calendar
 
 internal val PaymentCardData.expiry: String get() = "${card.expMonth}/${card.expYear}"
 
@@ -36,7 +37,7 @@ fun createPaymentCardData(number: String, cvc: String, expiry: String): PaymentC
 
     val actualType = validator.actualType
     val isValid = actualType != null && validator.isValid && CreditCardValidator.isValidCvc(cvc, actualType)
-            && monthNumber != null && monthNumber in 1..12 && yearNumber != null
+            && isValidExpiry(monthNumber, yearNumber)
     val isPotentiallyValid = validator.isPotentiallyValid && (monthNumber == null || monthNumber in 1..12)
     val isEmpty = number.isEmpty()
 
@@ -53,6 +54,15 @@ fun createPaymentCardData(number: String, cvc: String, expiry: String): PaymentC
         isEmpty = isEmpty,
         error = error
     )
+}
+
+fun isValidExpiry(month: Int?, year: Int?): Boolean {
+    if (month == null || year == null) {
+        return false
+    }
+    val thisYearLastTwo: Int = Calendar.getInstance().get(Calendar.YEAR) % 100
+    val isValidMonthEntry = { m: Int -> m in 1 .. 12 }
+    return isValidMonthEntry(month) && year >= thisYearLastTwo
 }
 
 fun PaymentCardData.updateNumber(number: String): PaymentCardData {
