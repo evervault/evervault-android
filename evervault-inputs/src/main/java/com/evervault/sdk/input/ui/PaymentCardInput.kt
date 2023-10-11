@@ -22,10 +22,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -330,7 +338,7 @@ private class PaymentCardInputScopeImpl(
         )
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     private fun CustomTextField(
         state: MutableState<TextFieldValue>,
@@ -339,10 +347,27 @@ private class PaymentCardInputScopeImpl(
         options: PaymentCardInputScope.TextFieldOptions,
         onNext: (() -> Unit)? = null,
     ) {
+        val autofillNode = AutofillNode(
+            autofillTypes = listOf(AutofillType.CreditCardNumber),
+            onFill = { state.value = TextFieldValue(it) }
+        )
+        val autofill = LocalAutofill.current
+
+        LocalAutofillTree.current += autofillNode
         BasicTextField(
             value = state.value,
             onValueChange = { state.value = it },
-            modifier = modifier,
+            modifier = modifier.onGloballyPositioned {
+                autofillNode.boundingBox = it.boundsInWindow()
+            }.onFocusChanged { focusState ->
+                autofill?.run {
+                    if (focusState.isFocused) {
+                        requestAutofillForNode(autofillNode)
+                    } else {
+                        cancelAutofillForNode(autofillNode)
+                    }
+                }
+            },
             textStyle = options.textStyle.invoke(textStyle),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
