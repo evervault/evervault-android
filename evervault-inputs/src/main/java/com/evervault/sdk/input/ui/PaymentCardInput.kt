@@ -144,13 +144,6 @@ fun PaymentCardInput(
             text = rawCardData.card.number,
             selection = TextRange(cursorPosition)
         )
-
-        val validator = CreditCardValidator(creditCardNumber.value.text)
-        validator.actualType?.let { type ->
-            if (validator.string.length == type.validNumberLength.last()) {
-                expiryDateRequester.requestFocus()
-            }
-        }
     }
 
     LaunchedEffect(cvc.value) {
@@ -180,10 +173,6 @@ fun PaymentCardInput(
             text = formattedExpiry,
             selection = TextRange(cursorPosition)
         )
-
-        if (formattedExpiry.length == 5) {
-            cvcRequester.requestFocus()
-        }
     }
 
     LaunchedEffect(cardData) {
