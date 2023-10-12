@@ -35,14 +35,15 @@ internal class CreditCardExpirationDateValidatorTest(
             arrayOf("", "A", false),
             arrayOf(nextMonth, "A", false),
             arrayOf("23", nextYearLastTwoDigits, false),
-            arrayOf(nextMonth, nextYearLastTwoDigits, true),
-            arrayOf(nextMonth, previousYearLastTwoDigits, false),
             arrayOf(previousMonth, previousYearLastTwoDigits, false),
             arrayOf(previousMonth, currentYearLastTwoDigits.toString(), false),
             arrayOf(previousMonth, nextYearLastTwoDigits, true),
             arrayOf(currentMonth, previousYearLastTwoDigits, false),
+            arrayOf(currentMonth, currentYearLastTwoDigits.toString(), true),
             arrayOf(currentMonth, nextYearLastTwoDigits, true),
-            arrayOf(currentMonth, nextYearLastTwoDigits, true)
+            arrayOf(nextMonth, previousYearLastTwoDigits, false),
+            arrayOf(nextMonth, currentYearLastTwoDigits.toString(), true),
+            arrayOf(nextMonth, nextYearLastTwoDigits, true)
         )
     }
 
