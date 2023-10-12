@@ -1,9 +1,9 @@
 package com.evervault.sdk.input.model
 
+import com.evervault.sdk.input.utils.CreditCardExpirationDateValidator
 import com.evervault.sdk.input.utils.CreditCardFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
 import com.evervault.sdk.input.utils.validNumberLength
-import java.util.Calendar
 
 internal val PaymentCardData.expiry: String get() = "${card.expMonth}/${card.expYear}"
 
@@ -32,18 +32,16 @@ fun createPaymentCardData(number: String, cvc: String, expiry: String): PaymentC
     paymentCard.expMonth = expiryParts.getOrNull(0)?.filter { it.isDigit() } ?: ""
     paymentCard.expYear = expiryParts.getOrNull(1)?.filter { it.isDigit() } ?: ""
 
-    val monthNumber = paymentCard.expMonth.toIntOrNull()
-    val yearNumber = paymentCard.expYear.toIntOrNull()
-
     val actualType = validator.actualType
-    val isValid = actualType != null && validator.isValid && CreditCardValidator.isValidCvc(cvc, actualType)
-            && isValidExpiry(monthNumber, yearNumber)
-    val isPotentiallyValid = validator.isPotentiallyValid && (monthNumber == null || monthNumber in 1..12)
-    val isEmpty = number.isEmpty()
+    val isExpiryDateValid =
+        CreditCardExpirationDateValidator.isValid(paymentCard.expMonth, paymentCard.expYear)
+    val isValid = actualType != null && validator.isValid
+            && CreditCardValidator.isValidCvc(cvc, actualType) && isExpiryDateValid
+    val isPotentiallyValid = validator.isPotentiallyValid
 
     val error = when {
-        !validator.isPotentiallyValid -> PaymentCardError.InvalidPan
-        monthNumber != null && monthNumber !in 1..12 -> PaymentCardError.InvalidMonth
+        !isPotentiallyValid -> PaymentCardError.InvalidPan
+        !isExpiryDateValid -> PaymentCardError.InvalidMonth
         else -> null
     }
 
@@ -51,18 +49,9 @@ fun createPaymentCardData(number: String, cvc: String, expiry: String): PaymentC
         card = paymentCard,
         isValid = isValid,
         isPotentiallyValid = isPotentiallyValid,
-        isEmpty = isEmpty,
+        isEmpty = number.isEmpty(),
         error = error
     )
-}
-
-fun isValidExpiry(month: Int?, year: Int?): Boolean {
-    if (month == null || year == null) {
-        return false
-    }
-    val thisYearLastTwo: Int = Calendar.getInstance().get(Calendar.YEAR) % 100
-    val isValidMonthEntry = { m: Int -> m in 1 .. 12 }
-    return isValidMonthEntry(month) && year >= thisYearLastTwo
 }
 
 fun PaymentCardData.updateNumber(number: String): PaymentCardData {
@@ -80,6 +69,6 @@ fun PaymentCardData.updateExpiry(expiry: String): PaymentCardData {
 val PaymentCardError.description: String
     get() = when (this) {
         is PaymentCardError.InvalidPan -> "The credit card number you entered was invalid"
-        is PaymentCardError.InvalidMonth -> "The month number you entered was invalid"
+        is PaymentCardError.InvalidMonth -> "The expiration date you entered was invalid" // The object will be renamed in the future as it is a breaking change
         is PaymentCardError.EncryptionFailed -> "Encryption failed: $message"
     }
