@@ -23,33 +23,88 @@ internal class CreditCardExpirationDateValidatorTest(private val testData: TestD
         @JvmStatic
         @Parameters(name = "Given expiryMonth = {0} and expiryLastTwoDigitsOfYear = {1} Then returns expectedResult = {2}")
         fun data() = listOf(
-            TestData("", "", false),
-            TestData("", nextYearLastTwoDigits, false),
-            TestData(nextMonth, "", false),
-            TestData("A", "", false),
-            TestData("A", nextYearLastTwoDigits, false),
-            TestData("", "A", false),
-            TestData(nextMonth, "A", false),
-            TestData("23", nextYearLastTwoDigits, false),
-            TestData(previousMonth, previousYearLastTwoDigits, false),
-            TestData(previousMonth, currentYearLastTwoDigits.toString(), false),
-            TestData(previousMonth, nextYearLastTwoDigits, true),
-            TestData(currentMonth, previousYearLastTwoDigits, false),
-            TestData(currentMonth, currentYearLastTwoDigits.toString(), true),
-            TestData(currentMonth, nextYearLastTwoDigits, true),
-            TestData(nextMonth, previousYearLastTwoDigits, false),
-            TestData(nextMonth, currentYearLastTwoDigits.toString(), true),
-            TestData(nextMonth, nextYearLastTwoDigits, true)
+            TestData(expiryMonth = "", expiryLastTwoDigitsOfYear = "", expectedResult = false),
+            TestData(
+                expiryMonth = "",
+                expiryLastTwoDigitsOfYear = nextYearLastTwoDigits,
+                expectedResult = false
+            ),
+            TestData(
+                expiryMonth = nextMonth,
+                expiryLastTwoDigitsOfYear = "",
+                expectedResult = false
+            ),
+            TestData(expiryMonth = "A", expiryLastTwoDigitsOfYear = "", expectedResult = false),
+            TestData(
+                expiryMonth = "A",
+                expiryLastTwoDigitsOfYear = nextYearLastTwoDigits,
+                expectedResult = false
+            ),
+            TestData(expiryMonth = "", expiryLastTwoDigitsOfYear = "A", expectedResult = false),
+            TestData(
+                expiryMonth = nextMonth,
+                expiryLastTwoDigitsOfYear = "A",
+                expectedResult = false
+            ),
+            TestData(
+                expiryMonth = "23",
+                expiryLastTwoDigitsOfYear = nextYearLastTwoDigits,
+                expectedResult = false
+            ),
+            TestData(
+                expiryMonth = previousMonth,
+                expiryLastTwoDigitsOfYear = previousYearLastTwoDigits,
+                expectedResult = false
+            ),
+            TestData(
+                expiryMonth = previousMonth,
+                expiryLastTwoDigitsOfYear = currentYearLastTwoDigits.toString(),
+                expectedResult = false
+            ),
+            TestData(
+                expiryMonth = previousMonth,
+                expiryLastTwoDigitsOfYear = nextYearLastTwoDigits,
+                expectedResult = true
+            ),
+            TestData(
+                expiryMonth = currentMonth,
+                expiryLastTwoDigitsOfYear = previousYearLastTwoDigits,
+                expectedResult = false
+            ),
+            TestData(
+                expiryMonth = currentMonth,
+                expiryLastTwoDigitsOfYear = currentYearLastTwoDigits.toString(),
+                expectedResult = true
+            ),
+            TestData(
+                expiryMonth = currentMonth,
+                expiryLastTwoDigitsOfYear = nextYearLastTwoDigits,
+                expectedResult = true
+            ),
+            TestData(
+                expiryMonth = nextMonth,
+                expiryLastTwoDigitsOfYear = previousYearLastTwoDigits,
+                expectedResult = false
+            ),
+            TestData(
+                expiryMonth = nextMonth,
+                expiryLastTwoDigitsOfYear = currentYearLastTwoDigits.toString(),
+                expectedResult = true
+            ),
+            TestData(
+                expiryMonth = nextMonth,
+                expiryLastTwoDigitsOfYear = nextYearLastTwoDigits,
+                expectedResult = true
+            )
         )
     }
 
     @Test
     fun validation() {
-        val actualResult =
-            CreditCardExpirationDateValidator.isValid(
-                expirationMonthNumber = testData.expiryMonth,
-                expirationYearLastTwoDigits = testData.expiryLastTwoDigitsOfYear
-            )
+        val actualResult = CreditCardExpirationDateValidator.isValid(
+            expirationMonthNumber = testData.expiryMonth,
+            expirationYearLastTwoDigits = testData.expiryLastTwoDigitsOfYear
+        )
         assertEquals(testData.expectedResult, actualResult)
     }
 
