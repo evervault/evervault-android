@@ -23,7 +23,6 @@ class AttestationTest {
     private val betaUrl = "https://$cageName.$appUuid.cages.evervault.com/hello"
     @Test
     fun testSuccessfulAttestation() {
-
         val client = OkHttpClient.Builder()
             .cagesTrustManager(
                 AttestationData(
