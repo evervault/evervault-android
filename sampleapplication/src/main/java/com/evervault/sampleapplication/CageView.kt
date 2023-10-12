@@ -25,10 +25,8 @@ import java.io.IOException
 @Composable
 fun CageView() {
 
-    val cageName = "synthetic-cage"
-    val appId = "app-f5f084041a7e"
-//    val cageName = "hello-cage"
-//    val appId = "app-000000000000"
+   val cageName = "hello-cage"
+   val appId = "app-000000000000"
 
     var responseText: String? by remember { mutableStateOf(null) }
 
@@ -45,8 +43,9 @@ fun CageView() {
                         pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                         pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                         pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    )
-                ))
+                    )),
+                    appId
+                )
                 .build()
 
             val request = Request.Builder()

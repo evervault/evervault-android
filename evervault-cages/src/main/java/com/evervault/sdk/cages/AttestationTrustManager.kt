@@ -37,6 +37,7 @@ class AttestationTrustManager(private val cageAttestationData: AttestationData) 
         return arrayOf()
     }
 }
+@Deprecated("This function is deprecated, use cageTrustManager instead")
 
 fun OkHttpClient.Builder.trustManager(cageAttestationData: AttestationData): OkHttpClient.Builder {
     val trustManager = AttestationTrustManager(cageAttestationData)

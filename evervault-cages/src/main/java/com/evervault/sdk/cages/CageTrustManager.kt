@@ -1,7 +1,6 @@
 package com.evervault.sdk.cages
 
 import AttestationDocCache
-import android.util.Base64
 import okhttp3.OkHttpClient
 import uniffi.bindings.PcRs
 import uniffi.bindings.attestCage
@@ -42,8 +41,8 @@ class AttestationTrustManagerGA(private val cageAttestationData: AttestationData
     }
 }
 
-fun OkHttpClient.Builder.cagesTrustManager(cageAttestationData: AttestationData): OkHttpClient.Builder {
-    val cache = AttestationDocCache()
+fun OkHttpClient.Builder.cagesTrustManager(cageAttestationData: AttestationData, appUuid: String): OkHttpClient.Builder {
+    val cache = AttestationDocCache(cageAttestationData.cageName, appUuid)
     val trustManager = AttestationTrustManagerGA(cageAttestationData, cache)
     val sslContext = SSLContext.getInstance("TLSv1.2")
     sslContext.init(null, arrayOf(trustManager), SecureRandom())

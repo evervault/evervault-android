@@ -1,3 +1,4 @@
+import android.content.ContentValues.TAG
 import android.os.AsyncTask
 import java.io.IOException
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -10,31 +11,46 @@ import okhttp3.Request
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import android.util.Base64
+import android.util.Log
+import java.lang.Exception
 
 @Serializable
 data class AttestationDoc(
     @SerialName("attestation_doc") val attestationDoc: String,
 )
-class AttestationDocCache {
+class AttestationDocCache(private val cageName: String, private val appUuid: String) {
     private var attestationDoc: ByteArray = ByteArray(0)
     private val lock = ReentrantReadWriteLock()
 
     init {
-        storeDoc()
+        storeDoc(2)
         GlobalScope.launch(Dispatchers.IO) {
-            poll(2700)
+            poll(7200)
         }
     }
 
-    private fun storeDoc() {
-        val url = "https://hannah-oct-11.app-c4ab4ea57a77.cage.evervault.com/.well-known/attestation"
-        val response = getDocFromCage(url)
-        val decodedDoc = Base64.decode(response.attestationDoc, Base64.DEFAULT)
-        set(decodedDoc)
+    private fun storeDoc(retries: Int) {
+        if(retries >= 0) {
+            try {
+                val url =
+                    "https://${cageName}.${appUuid}.cage.evervault.com/.well-known/attestation"
+                val response = getDocFromCage(url)
+                val decodedDoc = Base64.decode(response.attestationDoc, Base64.DEFAULT)
+                set(decodedDoc)
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to get attestationdoc ${e.message}")
+                storeDoc(retries - 1)
+            }
+        }
     }
 
     fun get(): ByteArray {
-        return lock.read { attestationDoc }
+        return lock.read {
+            if(attestationDoc.isEmpty()) {
+                storeDoc(2)
+            }
+            attestationDoc
+        }
     }
 
     private fun set(value: ByteArray) {
@@ -43,7 +59,7 @@ class AttestationDocCache {
 
     private suspend fun poll(n: Long) {
         while (true) {
-            storeDoc()
+            storeDoc(2)
             delay(n * 1000)
         }
     }
