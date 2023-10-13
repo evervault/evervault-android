@@ -14,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -36,7 +35,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.evervault.sdk.Evervault
-import com.evervault.sdk.inputs.R
 import com.evervault.sdk.input.model.CreditCardType
 import com.evervault.sdk.input.model.PaymentCardData
 import com.evervault.sdk.input.model.PaymentCardError
@@ -46,7 +44,7 @@ import com.evervault.sdk.input.model.updateExpiry
 import com.evervault.sdk.input.model.updateNumber
 import com.evervault.sdk.input.utils.CreditCardFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
-import com.evervault.sdk.input.utils.validNumberLength
+import com.evervault.sdk.inputs.R
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -70,9 +68,12 @@ fun PaymentCardInput(
     var rawCardData by remember { mutableStateOf(PaymentCardData()) }
     var cardData by remember { mutableStateOf(PaymentCardData()) }
 
+
     val cardImageResource = cardData.card.type?.let { type ->
-        if (cardData.isPotentiallyValid || CreditCardValidator(rawCardData.card.number).actualType?.let { CreditCardValidator.isValidCvc(rawCardData.card.cvc, it)} == false) {
-            when(type) {
+        if (cardData.isPotentiallyValid || CreditCardValidator(rawCardData.card.number).actualType?.let {
+                CreditCardValidator.isValidCvc(rawCardData.card.cvc, it)
+            } == false) {
+            when (type) {
                 CreditCardType.AMEX -> R.drawable.amex
                 CreditCardType.DINERS_CLUB -> R.drawable.dinersclub
                 CreditCardType.DISCOVER -> R.drawable.discover
@@ -110,7 +111,13 @@ fun PaymentCardInput(
         updateCardData {
             copy(
                 card = card.copy(
-                    number = if (rawCardData.card.number.isBlank()) "" else Evervault.shared.encrypt(rawCardData.card.number.replace(" ", "")) as? String ?: ""
+                    number = if (rawCardData.card.number.isBlank()) {
+                        ""
+                    } else {
+                        Evervault.shared.encrypt(
+                            rawCardData.card.number.replace(" ", "")
+                        ) as? String ?: ""
+                    }
                 )
             )
         }
@@ -120,7 +127,11 @@ fun PaymentCardInput(
         updateCardData {
             copy(
                 card = card.copy(
-                    cvc = if (rawCardData.card.cvc.isBlank()) "" else Evervault.shared.encrypt(rawCardData.card.cvc) as? String ?: ""
+                    cvc = if (rawCardData.card.cvc.isBlank()) {
+                        ""
+                    } else {
+                        Evervault.shared.encrypt(rawCardData.card.cvc) as? String ?: ""
+                    }
                 )
             )
         }
@@ -163,7 +174,7 @@ fun PaymentCardInput(
         val formattedExpiry = CreditCardFormatter.formatExpiryDate(value)
         rawCardData = rawCardData.updateExpiry(formattedExpiry)
 
-        val selection = creditCardNumber.value.selection
+        val selection = expiryDate.value.selection
         var cursorPosition = selection.start
 
         if (formattedExpiry.length > value.length) {
@@ -204,33 +215,43 @@ interface PaymentCardInputScope {
 
     @Composable
     fun CardImage()
+
     @Composable
     fun CardImage(modifier: Modifier)
 
     @Composable
     fun CardNumberField()
+
     @Composable
     fun CardNumberField(modifier: Modifier)
+
     @Composable
     fun CardNumberField(modifier: Modifier, options: TextFieldOptions)
+
     @Composable
     fun CardNumberField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
 
     @Composable
     fun ExpiryField()
+
     @Composable
     fun ExpiryField(modifier: Modifier)
+
     @Composable
     fun ExpiryField(modifier: Modifier, options: TextFieldOptions)
+
     @Composable
     fun ExpiryField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
 
     @Composable
     fun CVCField()
+
     @Composable
     fun CVCField(modifier: Modifier)
+
     @Composable
     fun CVCField(modifier: Modifier, options: TextFieldOptions)
+
     @Composable
     fun CVCField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
 }
@@ -272,12 +293,19 @@ private class PaymentCardInputScopeImpl(
     }
 
     @Composable
-    override fun CardNumberField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions) {
+    override fun CardNumberField(
+        modifier: Modifier,
+        options: PaymentCardInputScope.TextFieldOptions
+    ) {
         CardNumberField(modifier = modifier, options = options, placeholder = "4242 4242 4242 4242")
     }
 
     @Composable
-    override fun CardNumberField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions, placeholder: String) {
+    override fun CardNumberField(
+        modifier: Modifier,
+        options: PaymentCardInputScope.TextFieldOptions,
+        placeholder: String
+    ) {
         CustomTextField(
             state = creditCardNumber,
             placeholder = placeholder,
@@ -303,7 +331,11 @@ private class PaymentCardInputScopeImpl(
     }
 
     @Composable
-    override fun ExpiryField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions, placeholder: String) {
+    override fun ExpiryField(
+        modifier: Modifier,
+        options: PaymentCardInputScope.TextFieldOptions,
+        placeholder: String
+    ) {
         CustomTextField(
             state = expiryDate,
             placeholder = placeholder,
@@ -331,7 +363,11 @@ private class PaymentCardInputScopeImpl(
     }
 
     @Composable
-    override fun CVCField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions, placeholder: String) {
+    override fun CVCField(
+        modifier: Modifier,
+        options: PaymentCardInputScope.TextFieldOptions,
+        placeholder: String
+    ) {
         CustomTextField(
             state = cvc,
             placeholder = placeholder,
