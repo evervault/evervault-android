@@ -78,7 +78,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.evervault.sdk"
             artifactId = "evervault-inputs"
-            version = "1.1"
+            version = "1.2"
 
             afterEvaluate {
                 from(components["release"])
