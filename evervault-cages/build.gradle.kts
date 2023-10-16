@@ -80,7 +80,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.evervault.sdk"
             artifactId = "evervault-cages"
-            version = "1.2"
+            version = "1.3"
 
             afterEvaluate {
                 from(components["release"])
