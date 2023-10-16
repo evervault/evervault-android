@@ -13,7 +13,7 @@ internal class CreditCardExpirationDateFormatter {
             } else {
                 monthFormatted
             }
-            2 -> if (input.length > 2) {
+            2 -> if (input.length > MAX_DIGITS_PER_NUMBER) {
                 MONTH_YEAR_PATTERN.format(monthFormatted, year)
             } else {
                 monthFormatted + year
@@ -23,14 +23,16 @@ internal class CreditCardExpirationDateFormatter {
     }
 
     private fun extractMonthAndYear(input: String): Pair<String, String> =
-        if (input.contains("/")) {
-            val monthAndYearSubstrings = input.split("/")
+        if (input.contains(DATE_SEPARATOR)) {
+            val monthAndYearSubstrings = input.split(DATE_SEPARATOR)
             var monthSubstring = monthAndYearSubstrings.getOrElse(0) { "" }
-            var yearSubstring = monthAndYearSubstrings.getOrElse(1) { "" }.take(2)
+            var yearSubstring = monthAndYearSubstrings
+                .getOrElse(1) { "" }
+                .take(MAX_DIGITS_PER_NUMBER)
             if (monthSubstring.length > 2) {
-                val monthDigitCarryOver = monthSubstring.substring(2).take(1)
+                val monthDigitCarryOver = monthSubstring.substring(MAX_DIGITS_PER_NUMBER).take(1)
                 yearSubstring = if (yearSubstring.length > 1) {
-                    (monthDigitCarryOver + yearSubstring[1]).take(2)
+                    (monthDigitCarryOver + yearSubstring[1]).take(MAX_DIGITS_PER_NUMBER)
                 } else {
                     monthDigitCarryOver
                 }
@@ -38,8 +40,12 @@ internal class CreditCardExpirationDateFormatter {
             }
             monthSubstring to yearSubstring
         } else {
-            val monthSubstring = input.take(2)
-            val yearSubstring = if (input.length > 2) input.substring(2) else ""
+            val monthSubstring = input.take(MAX_DIGITS_PER_NUMBER)
+            val yearSubstring = if (input.length > MAX_DIGITS_PER_NUMBER) {
+                input.substring(MAX_DIGITS_PER_NUMBER)
+            } else {
+                ""
+            }
             monthSubstring to yearSubstring
         }
 
@@ -65,8 +71,11 @@ internal class CreditCardExpirationDateFormatter {
 
     private companion object {
 
-        const val MONTH_YEAR_PATTERN = "%s/%s"
-        const val YEAR_PATTERN = "/%s"
+        const val MAX_DIGITS_PER_NUMBER = 2
+        const val DATE_SEPARATOR = "/"
+        const val MONTH_YEAR_PATTERN = "%s$DATE_SEPARATOR%s"
+        const val YEAR_PATTERN = "$DATE_SEPARATOR%s"
+
         val allowedMonthFirstDigits = 0..1
         val allowedMonthNumbers = 1..12
     }
