@@ -42,7 +42,8 @@ import com.evervault.sdk.input.model.expiry
 import com.evervault.sdk.input.model.updateCvc
 import com.evervault.sdk.input.model.updateExpiry
 import com.evervault.sdk.input.model.updateNumber
-import com.evervault.sdk.input.utils.CreditCardFormatter
+import com.evervault.sdk.input.utils.CreditCardExpirationDateCursorCalculator
+import com.evervault.sdk.input.utils.CreditCardExpirationDateFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
 import com.evervault.sdk.inputs.R
 
@@ -61,13 +62,12 @@ fun PaymentCardInput(
     val expiryDate = remember { mutableStateOf(TextFieldValue("")) }
     val cvc = remember { mutableStateOf(TextFieldValue("")) }
 
-    var expiryTextLen by remember { mutableStateOf(0) }
+    var expiryDateLastCursorPosition by remember { mutableStateOf(0) }
 
     val (creditCardNumberRequester, expiryDateRequester, cvcRequester) = remember { FocusRequester.createRefs() }
 
     var rawCardData by remember { mutableStateOf(PaymentCardData()) }
     var cardData by remember { mutableStateOf(PaymentCardData()) }
-
 
     val cardImageResource = cardData.card.type?.let { type ->
         if (cardData.isPotentiallyValid || CreditCardValidator(rawCardData.card.number).actualType?.let {
@@ -89,6 +89,8 @@ fun PaymentCardInput(
             }
         } else R.drawable.errorcard
     } ?: R.drawable.unknowncard
+    val expiryDateCursorCalculator by lazy { CreditCardExpirationDateCursorCalculator() }
+    val expiryDateFormatter by lazy { CreditCardExpirationDateFormatter() }
 
     suspend fun updateCardData(update: suspend PaymentCardData.() -> PaymentCardData = { this }) {
         try {
@@ -164,26 +166,21 @@ fun PaymentCardInput(
     }
 
     LaunchedEffect(expiryDate.value) {
-        var value = expiryDate.value.text
-        if (expiryTextLen > value.length && value.length == 2) {
-            // delete key used on '/'
-            value = value.dropLast(1)
-        }
-
-        expiryTextLen = value.length
-        val formattedExpiry = CreditCardFormatter.formatExpiryDate(value)
+        val enteredText = expiryDate.value.text
+        val formattedExpiry = expiryDateFormatter.format(enteredText)
         rawCardData = rawCardData.updateExpiry(formattedExpiry)
 
-        val selection = expiryDate.value.selection
-        var cursorPosition = selection.start
-
-        if (formattedExpiry.length > value.length) {
-            cursorPosition++
-        }
+        val newCursorPosition = expiryDateCursorCalculator.newCursorPosition(
+            enteredText = enteredText,
+            formattedText = formattedExpiry,
+            currentCursorPosition = expiryDate.value.selection.start,
+            lastCursorPosition = expiryDateLastCursorPosition
+        )
+        expiryDateLastCursorPosition = newCursorPosition
 
         expiryDate.value = TextFieldValue(
             text = formattedExpiry,
-            selection = TextRange(cursorPosition)
+            selection = TextRange(newCursorPosition)
         )
     }
 
