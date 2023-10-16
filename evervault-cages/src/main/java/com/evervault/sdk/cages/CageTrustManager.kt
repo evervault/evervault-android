@@ -1,15 +1,16 @@
 package com.evervault.sdk.cages
 
+import AttestationDocCache
 import okhttp3.OkHttpClient
 import uniffi.bindings.PcRs
-import uniffi.bindings.attestConnection
+import uniffi.bindings.attestCage
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.X509TrustManager
 
-class AttestationTrustManager(private val cageAttestationData: AttestationData) : X509TrustManager {
+class AttestationTrustManagerGA(private val cageAttestationData: AttestationData, private val cache: AttestationDocCache) : X509TrustManager {
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
         throw UnsupportedOperationException("Client certificates not supported!")
     }
@@ -20,14 +21,16 @@ class AttestationTrustManager(private val cageAttestationData: AttestationData) 
 
         val remoteCertificateData = serverCertificate.encoded
 
-        val result = attestConnection(remoteCertificateData, cageAttestationData.pcrs.map {
+        val attestationDoc : ByteArray = cache.get()
+
+        val result = attestCage(remoteCertificateData, cageAttestationData.pcrs.map {
             PcRs(
                 it.pcr0,
                 it.pcr1,
                 it.pcr2,
                 it.pcr8,
             )
-        })
+        }, attestationDoc)
         if (!result) {
             throw CertificateException("Attestation failed")
         }
@@ -37,10 +40,10 @@ class AttestationTrustManager(private val cageAttestationData: AttestationData) 
         return arrayOf()
     }
 }
-@Deprecated("This function is deprecated, use cageTrustManager instead")
 
-fun OkHttpClient.Builder.trustManager(cageAttestationData: AttestationData): OkHttpClient.Builder {
-    val trustManager = AttestationTrustManager(cageAttestationData)
+fun OkHttpClient.Builder.cagesTrustManager(cageAttestationData: AttestationData, appUuid: String): OkHttpClient.Builder {
+    val cache = AttestationDocCache(cageAttestationData.cageName, appUuid)
+    val trustManager = AttestationTrustManagerGA(cageAttestationData, cache)
     val sslContext = SSLContext.getInstance("TLSv1.2")
     sslContext.init(null, arrayOf(trustManager), SecureRandom())
 
