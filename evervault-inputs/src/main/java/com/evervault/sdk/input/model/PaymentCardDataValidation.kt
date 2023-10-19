@@ -66,6 +66,7 @@ fun PaymentCardData.updateExpiry(expiry: String): PaymentCardData {
     return createPaymentCardData(this.card.number, this.card.cvc, expiry)
 }
 
+@Deprecated(message = "Use the other PaymentCardError.description in com.evervault.sdk.input.model.card")
 val PaymentCardError.description: String
     get() = when (this) {
         is PaymentCardError.InvalidPan -> "The credit card number you entered was invalid"
