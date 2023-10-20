@@ -13,39 +13,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.input.ui.PaymentCardInputComponent
+import com.evervault.sdk.input.ui.PaymentCardComponent
 import com.evervault.sdk.input.ui.PaymentCardInputScope
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
 @Preview
 @Composable
-internal fun PaymentCardInputComponentDefaultLayoutPreview() {
-    PaymentCardInputComponent()
+internal fun PaymentCardComponentDefaultLayoutPreview() {
+    PaymentCardComponent()
 }
 
 @Preview
 @Composable
-internal fun PaymentCardInputComponentRowsLayoutPreview() {
-    PaymentCardInputComponent(content = rowsPaymentCardInputLayout())
+internal fun PaymentCardComponentRowsLayoutPreview() {
+    PaymentCardComponent(content = rowsPaymentCardInputLayout())
 }
 
 @Preview
 @Composable
-internal fun PaymentCardInputComponentCustomLayoutPreview() {
-    val modifier = Modifier
-        .background(color = Color.Blue, RoundedCornerShape(16.dp))
-        .padding(24.dp)
-
-    PaymentCardInputComponent(
+internal fun PaymentCardComponentCustomLayoutPreview() {
+    PaymentCardComponent(
         textStyle = TextStyle.Default.copy(color = Color.Yellow),
         placeholderTextStyle = TextStyle.Default.copy(color = Color.LightGray),
         modifier = Modifier
             .background(color = Color.Blue, RoundedCornerShape(16.dp))
             .padding(24.dp)
-    ) {
+    ) { modifier ->
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
+            modifier = Modifier.padding(8.dp)
         ) {
             Column {
                 CardNumberField(
@@ -58,26 +54,18 @@ internal fun PaymentCardInputComponentCustomLayoutPreview() {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    modifier = Modifier.weight(0.5f)
-                ) {
-                    ExpiryField(
-                        options = PaymentCardInputScope.TextFieldOptions {
-                            TextStyle.Default.copy(color = Color.Yellow)
-                        },
-                        placeholder = "Custom expiry placeholder",
-                        modifier = modifier
-                    )
-                }
-                Column(
-                    modifier = Modifier.weight(0.5f)
-                ) {
-                    CVCField(
-                        options = PaymentCardInputScope.TextFieldOptions(),
-                        placeholder = "Custom CVC placeholder",
-                        modifier = modifier
-                    )
-                }
+                ExpiryField(
+                    options = PaymentCardInputScope.TextFieldOptions {
+                        TextStyle.Default.copy(color = Color.Yellow)
+                    },
+                    placeholder = "Custom expiry placeholder",
+                    modifier = modifier.weight(0.5f)
+                )
+                CVCField(
+                    options = PaymentCardInputScope.TextFieldOptions(),
+                    placeholder = "Custom CVC placeholder",
+                    modifier = modifier.weight(0.5f)
+                )
             }
         }
     }

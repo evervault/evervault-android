@@ -9,16 +9,16 @@ import com.evervault.sdk.input.model.card.PaymentCardData
 import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
 
 /**
- * The PaymentCardInputComponent represents the whole card input form with default styles and inline layout.
+ * The PaymentCardComponent represents the whole card input form with default styles and inline layout.
  *
  * [Default inlined content image](https://github.com/evervault/evervault-android/blob/main/inline.png?raw=true)
  *
  * The user is allowed to customize the whole layout by providing its own content as a trailing lambda.
  *
  * Samples of the default (inline), rows and custom layouts:
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardInputComponentDefaultLayoutPreview
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardInputComponentRowsLayoutPreview
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardInputComponentCustomLayoutPreview
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardComponentDefaultLayoutPreview
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardComponentRowsLayoutPreview
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardComponentCustomLayoutPreview
  *
  * A common use case is to use the default parameters with default parameters.
  * The user can customize them to provide more a look and feel more close to the rest of their app.
@@ -31,7 +31,7 @@ import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
  * @param content a lambda to provide the user content layout
  */
 @Composable
-fun PaymentCardInputComponent(
+fun PaymentCardComponent(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle.Default,
     placeholderTextStyle: TextStyle = textStyle.copy(
