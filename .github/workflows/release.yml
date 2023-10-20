@@ -62,9 +62,9 @@ jobs:
                   print;
               }
             ' CHANGELOG.md)
-            gh release create v$COMMIT_TAG -t "v$COMMIT_TAG" -n "$CHANGELOG"
+            gh release create v$COMMIT_TAG -t "$COMMIT_TAG" -n "$CHANGELOG"
             ./generate_gradle_properties.bash ${{ github.workspace }}
-            ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+            ./gradlew publishToSonatype
           else
             echo "No tag attached to HEAD. No new release needed."
           fi
