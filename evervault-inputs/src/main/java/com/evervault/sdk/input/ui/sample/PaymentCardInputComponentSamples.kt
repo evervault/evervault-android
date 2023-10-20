@@ -1,4 +1,4 @@
-package com.evervault.sdk.input.ui
+package com.evervault.sdk.input.ui.sample
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,22 +13,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.evervault.sdk.input.ui.PaymentCardInputComponent
+import com.evervault.sdk.input.ui.PaymentCardInputScope
+import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
 @Preview
 @Composable
-internal fun PaymentCardInputComponentDefaultLayout() {
+internal fun PaymentCardInputComponentDefaultLayoutPreview() {
     PaymentCardInputComponent()
 }
 
 @Preview
 @Composable
-internal fun PaymentCardInputComponentRowsLayout() {
+internal fun PaymentCardInputComponentRowsLayoutPreview() {
     PaymentCardInputComponent(content = rowsPaymentCardInputLayout())
 }
 
 @Preview
 @Composable
-fun PaymentCardInputComponentCustomLayout() {
+internal fun PaymentCardInputComponentCustomLayoutPreview() {
     val modifier = Modifier
         .background(color = Color.Blue, RoundedCornerShape(16.dp))
         .padding(24.dp)

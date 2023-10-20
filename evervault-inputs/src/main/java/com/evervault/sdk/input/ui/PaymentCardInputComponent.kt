@@ -16,9 +16,9 @@ import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
  * The user is allowed to customize the whole layout by providing its own content as a trailing lambda.
  *
  * Samples of the default (inline), rows and custom layouts:
- * @sample com.evervault.sdk.input.ui.PaymentCardInputComponentDefaultLayout
- * @sample com.evervault.sdk.input.ui.PaymentCardInputComponentRowsLayout
- * @sample com.evervault.sdk.input.ui.PaymentCardInputComponentCustomLayout
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardInputComponentDefaultLayoutPreview
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardInputComponentRowsLayoutPreview
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardInputComponentCustomLayoutPreview
  *
  * A common use case is to use the default parameters with default parameters.
  * The user can customize them to provide more a look and feel more close to the rest of their app.
