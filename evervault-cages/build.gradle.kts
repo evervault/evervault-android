@@ -1,3 +1,7 @@
+import java.io.File
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -10,7 +14,10 @@ android {
     group = "com.evervault.sdk"
     namespace = "com.evervault.sdk.cages"
     compileSdk = 33
-
+    val prop = Properties().apply {
+        load(FileInputStream(File(rootProject.rootDir, "version.properties")))
+    }
+    version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 26
         targetSdk = 33
@@ -80,7 +87,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.evervault.sdk"
             artifactId = "evervault-cages"
-            version = "1.5"
+            version = version
 
             afterEvaluate {
                 from(components["release"])
