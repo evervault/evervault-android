@@ -1,0 +1,26 @@
+name: test
+
+on: [ push, pull_request ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+      - name: build project
+        run: ./gradlew clean build
+      - name: unit tests
+        run: ./gradlew test --info
+      - name: Upload unit test report on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: failed_unit_tests
+          path: ${{ github.workspace }}/lib/build/reports/tests/test
