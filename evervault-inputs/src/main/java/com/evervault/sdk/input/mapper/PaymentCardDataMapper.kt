@@ -5,11 +5,12 @@ import com.evervault.sdk.input.model.PaymentCardData as PaymentCardDataOld
 
 /**
  * Temporary mapper to map [PaymentCardDataOld] to the new [PaymentCardData]
- * It will be removed when we remove the old constructor for [PaymentCardInput]
+ * It will be removed when we remove the old constructor for [PaymentCardInput], change its
+ * internal implementation to return already mapped data, and all the data logic has been extracted from it.
  *
- * Note: This is not proper and we should use DI for injecting the inner mappers but since it is
- * currently used in a Composable. This will be refactored after we change the [PaymentCardInput]
- * to return already mapped data and all the data logic has been removed from it.
+ * Note: This is not proper and we should use DI for injecting the inner mappers, but since it is
+ * currently used in a Composable and implementing the DI would pollute the current code (already bloated)
+ * it has been decided not to do it now.
  */
 internal class PaymentCardDataMapper {
 
