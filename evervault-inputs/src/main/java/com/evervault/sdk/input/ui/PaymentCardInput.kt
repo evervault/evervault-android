@@ -47,6 +47,7 @@ import com.evervault.sdk.input.utils.CreditCardExpirationDateFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
 import com.evervault.sdk.inputs.R
 
+@Deprecated(message = "Use the PaymentCardComponent in com.evervault.sdk.input.ui instead")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PaymentCardInput(
