@@ -12,18 +12,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.evervault.sampleapplication.ui.views.component.InfoBlock
-import com.evervault.sdk.input.model.PaymentCardData
-import com.evervault.sdk.input.model.description
+import com.evervault.sdk.input.model.card.PaymentCardData
+import com.evervault.sdk.input.model.card.description
 
-@Deprecated("Uses the old PaymentCardData. Use the PaymentCardComponentView instead")
 @Composable
-fun CreditCardInputView(paymentCardInput: @Composable ((PaymentCardData) -> Unit) -> Unit) {
+fun PaymentCardComponentView(paymentCardComponent: @Composable ((PaymentCardData) -> Unit) -> Unit) {
     var cardData by remember { mutableStateOf(PaymentCardData()) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = "Payment card input", style = MaterialTheme.typography.headlineSmall)
 
-        paymentCardInput.invoke {
+        paymentCardComponent.invoke {
             cardData = it
         }
 
