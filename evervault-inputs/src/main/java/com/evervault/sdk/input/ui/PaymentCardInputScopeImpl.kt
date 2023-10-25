@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
@@ -28,6 +27,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTextsDefaults
+import com.evervault.sdk.input.ui.component.CustomTextField
 
 internal class PaymentCardInputScopeImpl(
     private val textStyle: TextStyle,
@@ -261,51 +261,6 @@ internal class PaymentCardInputScopeImpl(
                         disabledContainerColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                     ),
-                    contentPadding = PaddingValues(0.dp),
-                )
-            }
-        )
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    private fun CustomTextField(
-        state: MutableState<TextFieldValue>,
-        modifier: Modifier = Modifier,
-        label: (@Composable () -> Unit)? = null,
-        placeholder: (@Composable () -> Unit)? = null,
-        textStyle: TextStyle = LocalTextStyle.current,
-        textFieldColors: TextFieldColors = TextFieldDefaults.colors(),
-        onNext: (() -> Unit)? = null,
-    ) {
-        val interactionSource = remember { MutableInteractionSource() }
-
-        BasicTextField(
-            value = state.value,
-            onValueChange = { state.value = it },
-            modifier = modifier,
-            textStyle = textStyle,
-            interactionSource = interactionSource,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrect = false,
-                keyboardType = KeyboardType.Number,
-                imeAction = if (onNext == null) ImeAction.Done else ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { onNext?.invoke() },
-            ),
-            decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.DecorationBox(
-                    value = state.value.text,
-                    innerTextField = innerTextField,
-                    enabled = true,
-                    singleLine = true,
-                    visualTransformation = VisualTransformation.None,
-                    interactionSource = interactionSource,
-                    label = label,
-                    placeholder = placeholder,
-                    colors = textFieldColors,
                     contentPadding = PaddingValues(0.dp),
                 )
             }
