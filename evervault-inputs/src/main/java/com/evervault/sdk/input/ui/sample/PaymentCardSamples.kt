@@ -26,20 +26,20 @@ import androidx.compose.ui.unit.sp
 import com.evervault.sdk.input.model.label.LabelTextsDefaults
 import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
 import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
-import com.evervault.sdk.input.ui.InlinePaymentCard
 import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInputScope
 import com.evervault.sdk.input.ui.RowsPaymentCard
+import com.evervault.sdk.input.ui.card.InlinePaymentCard
 
 @Preview
 @Composable
-internal fun InlinePaymentCardPreview() {
+internal fun InlinePaymentCardSample() {
     InlinePaymentCard()
 }
 
 @Preview
 @Composable
-internal fun InlineCustomizedPaymentCardPreview() {
+internal fun InlineCustomizedPaymentCardSample() {
     InlinePaymentCard(
         modifier = Modifier
             .padding(12.dp)
@@ -53,7 +53,7 @@ internal fun InlineCustomizedPaymentCardPreview() {
 
 @Preview
 @Composable
-internal fun InlinePaymentCardWithThemePreview() {
+internal fun InlinePaymentCardWithAppliedTheme() {
     CustomTheme {
         InlinePaymentCard()
     }
