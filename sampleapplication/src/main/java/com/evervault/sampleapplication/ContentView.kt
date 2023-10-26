@@ -3,7 +3,6 @@ package com.evervault.sampleapplication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +10,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,11 +31,20 @@ fun ContentView(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text(text = "Credit Card Inputs", style = MaterialTheme.typography.headlineSmall) },
+                    headlineContent = {
+                        Text(
+                            text = "Credit Card Inputs (old components)",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
                 )
                 ListItem(
                     headlineContent = { Text(text = "Inline (Default)") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputView") }
+                )
+                ListItem(
+                    headlineContent = { Text(text = "Inline with custom placeholders (Default)") },
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewWithPlaceholders") }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Inline Customized") },
@@ -48,13 +55,28 @@ fun ContentView(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewRows") }
                 )
                 ListItem(
+                    headlineContent = { Text(text = "Rows with custom placeholders") },
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewRowsWithPlaceholders") }
+                )
+                ListItem(
                     headlineContent = { Text(text = "Custom Layout") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomStyle") }
                 )
-                Divider(Modifier.padding(horizontal = 16.dp))
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = "Credit Card Inputs (new components)",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
+                )
                 ListItem(
                     headlineContent = { Text(text = "Inline") },
                     modifier = Modifier.clickable { navController.navigate("InlinePaymentCardView") }
+                )
+                ListItem(
+                    headlineContent = { Text(text = "Inline Customized") },
+                    modifier = Modifier.clickable { navController.navigate("InlinePaymentCardCustomView") }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Rows") },
@@ -67,7 +89,12 @@ fun ContentView(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text(text = "Cages", style = MaterialTheme.typography.headlineSmall) },
+                    headlineContent = {
+                        Text(
+                            text = "Cages",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
                 )
                 ListItem(
                     headlineContent = { Text(text = "Cage HTTP Request") },

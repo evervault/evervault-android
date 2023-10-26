@@ -19,17 +19,17 @@ import com.evervault.sampleapplication.ui.views.CreditCardInputView
 import com.evervault.sampleapplication.ui.views.FileEncryptionView
 import com.evervault.sampleapplication.ui.views.PaymentCardComponentView
 import com.evervault.sampleapplication.ui.views.layout.customPaymentCardInputLayout
+import com.evervault.sdk.input.defaults.PlaceholderDefaults
 import com.evervault.sdk.input.ui.InlinePaymentCard
 import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInput
 import com.evervault.sdk.input.ui.RowsPaymentCard
+import com.evervault.sdk.input.ui.inlinePaymentCardInputLayout
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
+// TODO: Extract navigation routes into an object and share implement it in [ContentView]
 @Composable
-fun NavigationGraph(
-    modifier: Modifier = Modifier,
-    navController: NavHostController
-) {
+fun NavigationGraph(navController: NavHostController) {
     NavHost(
         navController,
         startDestination = "home",
@@ -53,19 +53,27 @@ fun NavigationGraph(
             }
         }
 
+        composable("CreditCardInputViewWithPlaceholders") {
+            CreditCardInputView {
+                PaymentCardInput(
+                    layout = inlinePaymentCardInputLayout(
+                        placeholderTexts = customPlaceholderTexts()
+                    ),
+                    onDataChange = it
+                )
+            }
+        }
+
         composable("CreditCardInputViewCustom") {
             CreditCardInputView {
-                MaterialTheme(
-                    colorScheme = MaterialTheme.colorScheme.copy(
-                        primary = Color.Black,
-                        secondary = Color.White,
-                        primaryContainer = Color.LightGray,
-                    ),
-                ) {
+                CustomTheme {
                     PaymentCardInput(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp)),
                         textStyle = TextStyle.Default.copy(fontSize = 16.sp),
+                        layout = inlinePaymentCardInputLayout(
+                            placeholderTexts = customPlaceholderTexts()
+                        ),
                         onDataChange = it
                     )
                 }
@@ -76,7 +84,16 @@ fun NavigationGraph(
             CreditCardInputView {
                 PaymentCardInput(
                     layout = rowsPaymentCardInputLayout(),
-                    onDataChange = it
+                    onDataChange = it,
+                )
+            }
+        }
+
+        composable("CreditCardInputViewRowsWithPlaceholders") {
+            CreditCardInputView {
+                PaymentCardInput(
+                    layout = rowsPaymentCardInputLayout(placeholderTexts = customPlaceholderTexts()),
+                    onDataChange = it,
                 )
             }
         }
@@ -93,6 +110,14 @@ fun NavigationGraph(
         composable("InlinePaymentCardView") {
             PaymentCardComponentView { onDataChange ->
                 InlinePaymentCard(onDataChange = onDataChange)
+            }
+        }
+
+        composable("InlinePaymentCardCustomView") {
+            PaymentCardComponentView { onDataChange ->
+                CustomTheme {
+                    InlinePaymentCard(onDataChange = onDataChange)
+                }
             }
         }
 
@@ -115,3 +140,22 @@ fun NavigationGraph(
         }
     }
 }
+
+@Composable
+private fun CustomTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = MaterialTheme.colorScheme.copy(
+            primary = Color.Black,
+            secondary = Color.White,
+            primaryContainer = Color.LightGray,
+        ),
+        content = content
+    )
+}
+
+@Composable
+private fun customPlaceholderTexts() = PlaceholderDefaults.texts(
+    creditCardText = "Credit card",
+    expirationDateText = "Expiry",
+    cvcText = "Cvc"
+)
