@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.Evervault
+import com.evervault.sdk.common.Evervault
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

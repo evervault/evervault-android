@@ -49,8 +49,7 @@ android {
 dependencies {
     implementation(project(":evervault-inputs"))
     implementation(project(":evervault-cages"))
-    implementation("com.evervault.sdk:evervault-core:1.0")
-
+    implementation(project(":evervault-common"))
     implementation("androidx.core:core-ktx:1.8.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")

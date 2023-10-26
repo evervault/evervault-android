@@ -1,5 +1,5 @@
 import com.evervault.sdk.CustomConfig
-import com.evervault.sdk.Evervault
+import com.evervault.sdk.common.Evervault
 
 class EncryptionViewModel {
 

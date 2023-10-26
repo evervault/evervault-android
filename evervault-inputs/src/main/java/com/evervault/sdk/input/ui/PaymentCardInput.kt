@@ -34,7 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.Evervault
+import com.evervault.sdk.common.Evervault
 import com.evervault.sdk.input.model.CreditCardType
 import com.evervault.sdk.input.model.PaymentCardData
 import com.evervault.sdk.input.model.PaymentCardError
