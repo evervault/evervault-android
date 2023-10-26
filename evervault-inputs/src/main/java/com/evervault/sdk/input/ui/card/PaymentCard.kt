@@ -18,7 +18,7 @@ import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
  * Samples of the default (inline), rows and custom layouts:
  * @sample com.evervault.sdk.input.ui.sample.PaymentCardDefaultLayoutPreview
  * @sample com.evervault.sdk.input.ui.sample.PaymentCardComponentRowsLayoutPreview
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardCustomLayoutPreview
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardCustomLayoutWithOldComponentsPreview
  *
  * A common use case is to use the default parameters with default parameters.
  * The user can customize them to provide more a look and feel more close to the rest of their app.
