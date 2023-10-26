@@ -22,7 +22,7 @@ import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
 import com.evervault.sdk.input.ui.PaymentCardInputScope
 
 /**
- * This file is a partial copy of the PaymentCardCustomLayoutWithNewComponentsPreview and private methods
+ * This file is a partial copy of the PaymentCardWithCustomizedLayoutSample and private methods
  * from com.evervault.sdk.input.ui.sample.PaymentCardSamples
  *
  * In the future we should create a shared module so some of the components used for previews can be

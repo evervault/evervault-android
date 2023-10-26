@@ -16,6 +16,14 @@ import com.evervault.sdk.input.model.placeholder.PlaceholderDefaults
 import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
 
 @Composable
+fun inlinePaymentCardInputLayout(): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
+    { inline(modifier = it) }
+
+@Composable
+fun inlinePaymentCardInputLayout(placeholderTexts: PlaceholderTexts): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
+    { inline(modifier = it, placeholderTexts = placeholderTexts) }
+
+@Composable
 fun PaymentCardInputScope.inline(
     modifier: Modifier = Modifier,
     placeholderTexts: PlaceholderTexts = PlaceholderDefaults.texts(),
@@ -50,11 +58,3 @@ fun PaymentCardInputScope.inline(
         )
     }
 }
-
-@Composable
-fun inlinePaymentCardInputLayout(): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
-    { inline(modifier = it) }
-
-@Composable
-fun inlinePaymentCardInputLayout(placeholderTexts: PlaceholderTexts): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
-    { inline(modifier = it, placeholderTexts = placeholderTexts) }

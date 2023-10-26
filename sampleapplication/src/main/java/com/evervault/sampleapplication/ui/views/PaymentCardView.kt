@@ -17,8 +17,12 @@ import com.evervault.sampleapplication.ui.views.component.InfoBlock
 import com.evervault.sdk.input.model.card.PaymentCardData
 import com.evervault.sdk.input.model.card.description
 
+/**
+ * Copy of the [CreditCardInputView] that uses the new [PaymentCardData] for the new components
+ */
 @Composable
-fun PaymentCardComponentView(paymentCardComponent: @Composable ((PaymentCardData) -> Unit) -> Unit) {
+internal fun PaymentCardView(paymentCardComponent: @Composable ((PaymentCardData) -> Unit) -> Unit) {
+
     var cardData by remember { mutableStateOf(PaymentCardData()) }
 
     Column(

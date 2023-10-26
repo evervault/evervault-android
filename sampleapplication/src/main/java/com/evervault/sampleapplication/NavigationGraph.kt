@@ -2,11 +2,9 @@ package com.evervault.sampleapplication
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,9 +16,10 @@ import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComp
 import com.evervault.sampleapplication.ui.views.BasicEncryptionView
 import com.evervault.sampleapplication.ui.views.CreditCardInputView
 import com.evervault.sampleapplication.ui.views.FileEncryptionView
-import com.evervault.sampleapplication.ui.views.PaymentCardComponentView
+import com.evervault.sampleapplication.ui.views.PaymentCardView
+import com.evervault.sampleapplication.ui.views.component.CustomTheme
+import com.evervault.sampleapplication.ui.views.component.customPlaceholderTexts
 import com.evervault.sampleapplication.ui.views.layout.customPaymentCardInputLayout
-import com.evervault.sdk.input.model.placeholder.PlaceholderDefaults
 import com.evervault.sdk.input.ui.PaymentCardInput
 import com.evervault.sdk.input.ui.card.InlinePaymentCard
 import com.evervault.sdk.input.ui.card.PaymentCard
@@ -109,13 +108,13 @@ fun NavigationGraph(navController: NavHostController) {
         }
 
         composable("InlinePaymentCardView") {
-            PaymentCardComponentView { onDataChange ->
+            PaymentCardView { onDataChange ->
                 InlinePaymentCard(onDataChange = onDataChange)
             }
         }
 
         composable("InlinePaymentCardCustomView") {
-            PaymentCardComponentView { onDataChange ->
+            PaymentCardView { onDataChange ->
                 CustomTheme {
                     InlinePaymentCard(onDataChange = onDataChange)
                 }
@@ -123,13 +122,13 @@ fun NavigationGraph(navController: NavHostController) {
         }
 
         composable("RowsPaymentCardView") {
-            PaymentCardComponentView { onDataChange ->
+            PaymentCardView { onDataChange ->
                 RowsPaymentCard(onDataChange = onDataChange)
             }
         }
 
         composable("CreditCardInputViewCustomComposables") {
-            PaymentCardComponentView { onDataChange ->
+            PaymentCardView { onDataChange ->
                 PaymentCard(onDataChange = onDataChange) { modifier ->
                     PaymentCardCustomLayoutWithNewComponents(modifier)
                 }
@@ -137,7 +136,7 @@ fun NavigationGraph(navController: NavHostController) {
         }
 
         composable("CreditCardInputViewCustomComposablesWithoutLabels") {
-            PaymentCardComponentView { onDataChange ->
+            PaymentCardView { onDataChange ->
                 PaymentCard(onDataChange = onDataChange) { modifier ->
                     PaymentCardCustomLayoutWithNewComponentsWithoutLabels(modifier)
                 }
@@ -149,22 +148,3 @@ fun NavigationGraph(navController: NavHostController) {
         }
     }
 }
-
-@Composable
-private fun CustomTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = MaterialTheme.colorScheme.copy(
-            primary = Color.Black,
-            secondary = Color.White,
-            primaryContainer = Color.LightGray,
-        ),
-        content = content
-    )
-}
-
-@Composable
-private fun customPlaceholderTexts() = PlaceholderDefaults.texts(
-    creditCardText = "Credit card",
-    expirationDateText = "Expiry",
-    cvcText = "Cvc"
-)
