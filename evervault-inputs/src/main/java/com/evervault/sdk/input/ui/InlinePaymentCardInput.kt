@@ -30,16 +30,19 @@ fun PaymentCardInputScope.inline(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         CardImage(modifier = Modifier.width(30.dp))
+
         CardNumberField(
             modifier = Modifier.weight(0.66f, true),
             options = PaymentCardInputScope.TextFieldOptions(),
             placeholder = placeholderTexts.creditCardText
         )
+
         ExpiryField(
             modifier = Modifier.weight(0.20f, true),
             options = PaymentCardInputScope.TextFieldOptions(),
             placeholder = placeholderTexts.expirationDateText
         )
+
         CVCField(
             modifier = Modifier.weight(0.14f, true),
             options = PaymentCardInputScope.TextFieldOptions(),

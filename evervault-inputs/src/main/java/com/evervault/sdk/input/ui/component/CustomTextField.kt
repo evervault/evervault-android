@@ -33,7 +33,7 @@ internal fun CustomTextField(
     placeholder: (@Composable () -> Unit)? = null,
     textStyle: TextStyle = LocalTextStyle.current,
     textFieldColors: TextFieldColors = TextFieldDefaults.colors(),
-    onNext: (() -> Unit)? = null,
+    onNext: (() -> Unit)? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
