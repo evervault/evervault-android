@@ -23,7 +23,7 @@ import com.evervault.sdk.input.model.card.PaymentCardData
  * [Default inlined content image](https://github.com/evervault/evervault-android/blob/main/inline.png?raw=true)
  *
  * Sample:
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardComponentDefaultLayoutPreview
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardDefaultLayoutPreview
  *
  * A common use case is to use it with default or custom parameters to customize specific appearance.
  * The layout is inlined in one row.

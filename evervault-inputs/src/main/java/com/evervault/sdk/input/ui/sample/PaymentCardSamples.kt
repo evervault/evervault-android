@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.ui.InlinePaymentCard
 import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInputScope
+import com.evervault.sdk.input.ui.RowsPaymentCard
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
 @Preview
@@ -26,7 +27,13 @@ internal fun InlinePaymentCardPreview() {
 
 @Preview
 @Composable
-internal fun PaymentCardComponentDefaultLayoutPreview() {
+internal fun RowsPaymentCardPreview() {
+    RowsPaymentCard()
+}
+
+@Preview
+@Composable
+internal fun PaymentCardDefaultLayoutPreview() {
     PaymentCard()
 }
 
