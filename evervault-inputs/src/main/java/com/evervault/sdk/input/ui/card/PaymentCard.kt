@@ -31,7 +31,7 @@ import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
  * @param content a lambda to provide the user content layout
  */
 @Composable
-fun PaymentCardComponent(
+fun PaymentCard(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle.Default,
     placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),

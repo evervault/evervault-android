@@ -14,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.ui.InlinePaymentCard
-import com.evervault.sdk.input.ui.PaymentCardComponent
+import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInputScope
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
@@ -27,19 +27,19 @@ internal fun InlinePaymentCardPreview() {
 @Preview
 @Composable
 internal fun PaymentCardComponentDefaultLayoutPreview() {
-    PaymentCardComponent()
+    PaymentCard()
 }
 
 @Preview
 @Composable
 internal fun PaymentCardComponentRowsLayoutPreview() {
-    PaymentCardComponent(content = rowsPaymentCardInputLayout())
+    PaymentCard(content = rowsPaymentCardInputLayout())
 }
 
 @Preview
 @Composable
 internal fun PaymentCardComponentCustomLayoutPreview() {
-    PaymentCardComponent(
+    PaymentCard(
         textStyle = TextStyle.Default.copy(color = Color.Yellow),
         placeholderTextStyle = TextStyle.Default.copy(color = Color.LightGray),
         modifier = Modifier

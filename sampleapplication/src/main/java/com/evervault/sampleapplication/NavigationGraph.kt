@@ -20,7 +20,7 @@ import com.evervault.sampleapplication.ui.views.FileEncryptionView
 import com.evervault.sampleapplication.ui.views.PaymentCardComponentView
 import com.evervault.sampleapplication.ui.views.layout.customPaymentCardInputLayout
 import com.evervault.sdk.input.ui.InlinePaymentCard
-import com.evervault.sdk.input.ui.PaymentCardComponent
+import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInput
 import com.evervault.sdk.input.ui.RowsPaymentCard
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
@@ -104,7 +104,7 @@ fun NavigationGraph(
 
         composable("CreditCardInputViewCustomComposables") {
             PaymentCardComponentView { onDataChange ->
-                PaymentCardComponent(onDataChange = onDataChange) { modifier ->
+                PaymentCard(onDataChange = onDataChange) { modifier ->
                     PaymentCardComponentCustomComposablesWihLabels(modifier)
                 }
             }

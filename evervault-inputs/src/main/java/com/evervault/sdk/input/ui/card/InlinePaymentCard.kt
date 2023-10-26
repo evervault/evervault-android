@@ -43,7 +43,7 @@ fun InlinePaymentCard(
     placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
     onDataChange: (PaymentCardData) -> Unit = {},
 ) {
-    PaymentCardComponent(
+    PaymentCard(
         modifier = modifier,
         textStyle = textStyle,
         placeholderTextStyle = placeholderTextStyle,
