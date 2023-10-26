@@ -6,5 +6,5 @@ import androidx.compose.runtime.Immutable
 class PlaceholderTexts internal constructor(
     val creditCardText: String,
     val expirationDateText: String,
-    val cvcText: String,
+    val cvcText: String
 )

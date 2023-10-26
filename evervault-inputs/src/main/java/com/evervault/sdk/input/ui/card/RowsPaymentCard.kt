@@ -22,22 +22,29 @@ import com.evervault.sdk.input.model.placeholder.PlaceholderDefaults
 import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
 
 /**
- * Represents the whole card input form with default styles and inline layout.
+ * Represents the card input form with with predefined rows layout.
  *
- * [Default inlined content image](https://github.com/evervault/evervault-android/blob/main/inline.png?raw=true)
+ * [Default rows card image](https://raw.githubusercontent.com/evervault/evervault-android/main/rows.png)
  *
- * Sample:
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardDefaultLayoutPreview
+ * For simplicity of use, the layout is provided as is, and cannot be changed (besides standard modifiers,
+ * text styles and placeholder texts).
+ * To manually customize the layout appearance use the [PaymentCard] component
  *
- * A common use case is to use it with default or custom parameters to customize specific appearance.
- * The layout is inlined in one row.
- * For more information, see [Inputs docs](https://docs.evervault.com/sdks/android#inputs)
+ * Samples:
+ * @sample com.evervault.sdk.input.ui.sample.RowsPaymentCardSample
+ * @sample com.evervault.sdk.input.ui.sample.RowsCustomizedPaymentCardSample
+ * @sample com.evervault.sdk.input.ui.sample.RowsPaymentCardWithAppliedThemeSample
+ *
+ * A common use case is to use it when no specific changes have to need to be applied to the layout,
+ * but only basic customization like text and placeholder styles, placeholder texts and layout modifiers.
+ * The layout is provided in two rows: credit card is in the first, and expiration date and CVC in the second row
+ * For more information, see [Styling docs](https://docs.evervault.com/sdks/android#styling)
  *
  * @param modifier the [Modifier] to be applied to the layout
  * @param textStyle the [TextStyle] to be applied to the input texts
- * @param placeholderTextStyle the [TextStyle] to be applied to the input texts placeholders
+ * @param placeholderTexts the [PlaceholderTexts] to be applied to the text input placeholders
+ * @param placeholderTextStyle the [TextStyle] to be applied to the text input placeholders
  * @param onDataChange the listener to be invoked when the underlying card data changes
- * @param content a lambda to provide the user content layout
  */
 @Composable
 fun RowsPaymentCard(
@@ -45,7 +52,7 @@ fun RowsPaymentCard(
     textStyle: TextStyle = TextStyle.Default,
     placeholderTexts: PlaceholderTexts = PlaceholderDefaults.texts(),
     placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
-    onDataChange: (PaymentCardData) -> Unit = {},
+    onDataChange: (PaymentCardData) -> Unit = {}
 ) {
     PaymentCard(
         modifier = modifier,

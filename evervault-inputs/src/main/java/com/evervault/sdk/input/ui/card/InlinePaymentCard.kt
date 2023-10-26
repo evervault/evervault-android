@@ -30,15 +30,13 @@ import com.evervault.sdk.input.ui.PaymentCardInputScope
  *
  * Samples:
  * @sample com.evervault.sdk.input.ui.sample.InlinePaymentCardSample
- *
  * @sample com.evervault.sdk.input.ui.sample.InlineCustomizedPaymentCardSample
- *
- * @sample com.evervault.sdk.input.ui.sample.InlinePaymentCardWithAppliedTheme
+ * @sample com.evervault.sdk.input.ui.sample.InlinePaymentCardWithAppliedThemeSample
  *
  * A common use case is to use it when no specific changes have to need to be applied to the layout,
  * but only basic customization like text and placeholder styles, placeholder texts and layout modifiers.
  * The layout is inlined in one row.
- * For more information, see [Inputs docs](https://docs.evervault.com/sdks/android#inputs)
+ * For more information, see [Styling docs](https://docs.evervault.com/sdks/android#styling)
  *
  * @param modifier the [Modifier] to be applied to the layout
  * @param textStyle the [TextStyle] to be applied to the input texts
@@ -52,7 +50,7 @@ fun InlinePaymentCard(
     textStyle: TextStyle = TextStyle.Default,
     placeholderTexts: PlaceholderTexts = PlaceholderDefaults.texts(),
     placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
-    onDataChange: (PaymentCardData) -> Unit = {},
+    onDataChange: (PaymentCardData) -> Unit = {}
 ) {
     PaymentCard(
         modifier = modifier,

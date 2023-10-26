@@ -53,7 +53,7 @@ internal fun InlineCustomizedPaymentCardSample() {
 
 @Preview
 @Composable
-internal fun InlinePaymentCardWithAppliedTheme() {
+internal fun InlinePaymentCardWithAppliedThemeSample() {
     CustomTheme {
         InlinePaymentCard()
     }
@@ -61,13 +61,13 @@ internal fun InlinePaymentCardWithAppliedTheme() {
 
 @Preview
 @Composable
-internal fun RowsPaymentCardPreview() {
+internal fun RowsPaymentCardSample() {
     RowsPaymentCard()
 }
 
 @Preview
 @Composable
-internal fun CustomizedRowsPaymentCardPreview() {
+internal fun RowsCustomizedPaymentCardSample() {
     RowsPaymentCard(
         modifier = Modifier
             .padding(12.dp)
@@ -81,7 +81,7 @@ internal fun CustomizedRowsPaymentCardPreview() {
 
 @Preview
 @Composable
-internal fun RowsPaymentCardWithThemePreview() {
+internal fun RowsPaymentCardWithAppliedThemeSample() {
     CustomTheme {
         RowsPaymentCard()
     }
