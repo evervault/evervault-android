@@ -12,10 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.evervault.sdk.input.defaults.PlaceholderDefaults
+import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTexts
 
 @Composable
 fun PaymentCardInputScope.inline(
     modifier: Modifier = Modifier,
+    placeholderTexts: PlaceholderTexts = PlaceholderDefaults.texts(),
     padding: PaddingValues = PaddingValues(16.dp)
 ) {
     Row(
@@ -27,11 +30,28 @@ fun PaymentCardInputScope.inline(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         CardImage(modifier = Modifier.width(30.dp))
-        CardNumberField(modifier = Modifier.weight(0.66f, true), options = PaymentCardInputScope.TextFieldOptions(), placeholder = "Card Number")
-        ExpiryField(modifier = Modifier.weight(0.20f, true), options = PaymentCardInputScope.TextFieldOptions(), placeholder = "EXP")
-        CVCField(modifier = Modifier.weight(0.14f, true), options = PaymentCardInputScope.TextFieldOptions(), placeholder = "CV2")
+        CardNumberField(
+            modifier = Modifier.weight(0.66f, true),
+            options = PaymentCardInputScope.TextFieldOptions(),
+            placeholder = placeholderTexts.creditCardText
+        )
+        ExpiryField(
+            modifier = Modifier.weight(0.20f, true),
+            options = PaymentCardInputScope.TextFieldOptions(),
+            placeholder = placeholderTexts.expirationDateText
+        )
+        CVCField(
+            modifier = Modifier.weight(0.14f, true),
+            options = PaymentCardInputScope.TextFieldOptions(),
+            placeholder = placeholderTexts.cvcText
+        )
     }
 }
 
 @Composable
-fun inlinePaymentCardInputLayout(): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) = { inline(modifier = it) }
+fun inlinePaymentCardInputLayout(): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
+    { inline(modifier = it) }
+
+@Composable
+fun inlinePaymentCardInputLayout(placeholderTexts: PlaceholderTexts): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
+    { inline(modifier = it, placeholderTexts = placeholderTexts) }
