@@ -86,6 +86,11 @@ fun ContentView(navController: NavController) {
                     headlineContent = { Text(text = "Custom Layout with Composables") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposables") }
                 )
+
+                ListItem(
+                    headlineContent = { Text(text = "Custom Layout with Composables (no labels)") },
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposablesWithoutLabels") }
+                )
             }
             item {
                 ListItem(

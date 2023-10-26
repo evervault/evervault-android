@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.evervault.sampleapplication.sample.PaymentCardComponentCustomComposablesWihLabels
+import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponents
+import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponentsWithoutLabels
 import com.evervault.sampleapplication.ui.views.BasicEncryptionView
 import com.evervault.sampleapplication.ui.views.CreditCardInputView
 import com.evervault.sampleapplication.ui.views.FileEncryptionView
@@ -130,7 +131,15 @@ fun NavigationGraph(navController: NavHostController) {
         composable("CreditCardInputViewCustomComposables") {
             PaymentCardComponentView { onDataChange ->
                 PaymentCard(onDataChange = onDataChange) { modifier ->
-                    PaymentCardComponentCustomComposablesWihLabels(modifier)
+                    PaymentCardCustomLayoutWithNewComponents(modifier)
+                }
+            }
+        }
+
+        composable("CreditCardInputViewCustomComposablesWithoutLabels") {
+            PaymentCardComponentView { onDataChange ->
+                PaymentCard(onDataChange = onDataChange) { modifier ->
+                    PaymentCardCustomLayoutWithNewComponentsWithoutLabels(modifier)
                 }
             }
         }
