@@ -23,9 +23,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.evervault.sdk.input.defaults.label.model.LabelTextsDefaults
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTexts
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTextsDefaults
+import com.evervault.sdk.input.model.label.LabelTextsDefaults
+import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
+import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
 import com.evervault.sdk.input.ui.InlinePaymentCard
 import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInputScope

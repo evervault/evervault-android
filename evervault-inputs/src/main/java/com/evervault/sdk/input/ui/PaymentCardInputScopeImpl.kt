@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTextsDefaults
+import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
 import com.evervault.sdk.input.ui.component.CustomTextField
 
 internal class PaymentCardInputScopeImpl(

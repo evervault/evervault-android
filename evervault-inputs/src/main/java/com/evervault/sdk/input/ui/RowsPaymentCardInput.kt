@@ -16,8 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.input.defaults.placeholder.PlaceholderDefaults
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTexts
+import com.evervault.sdk.input.model.placeholder.PlaceholderDefaults
+import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
 
 @Composable
 fun PaymentCardInputScope.rows(

@@ -13,9 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.input.defaults.placeholder.PlaceholderDefaults
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTexts
 import com.evervault.sdk.input.model.card.PaymentCardData
+import com.evervault.sdk.input.model.placeholder.PlaceholderDefaults
+import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
 
 /**
  * Represents the whole card input form with default styles and inline layout.

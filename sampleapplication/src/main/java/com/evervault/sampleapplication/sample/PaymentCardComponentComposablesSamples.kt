@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.evervault.sdk.input.defaults.label.model.LabelTextsDefaults
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTextsDefaults
+import com.evervault.sdk.input.model.label.LabelTextsDefaults
+import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
 import com.evervault.sdk.input.ui.PaymentCardInputScope
 
 /**

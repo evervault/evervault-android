@@ -1,9 +1,7 @@
-package com.evervault.sdk.input.defaults.placeholder
+package com.evervault.sdk.input.model.placeholder
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTexts
-import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTextsDefaults
 
 /**
  * Builder that provides default parameters and configuration for the placeholders.

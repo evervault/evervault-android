@@ -1,4 +1,4 @@
-package com.evervault.sdk.input.defaults.placeholder.model
+package com.evervault.sdk.input.model.placeholder
 
 import androidx.compose.runtime.Immutable
 

@@ -1,4 +1,4 @@
-package com.evervault.sdk.input.defaults.label.model
+package com.evervault.sdk.input.model.label
 
 object LabelTextsDefaults {
     const val CreditCardText = "CC Number"

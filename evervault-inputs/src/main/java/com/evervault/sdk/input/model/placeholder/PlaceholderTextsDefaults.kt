@@ -1,4 +1,4 @@
-package com.evervault.sdk.input.defaults.placeholder.model
+package com.evervault.sdk.input.model.placeholder
 
 object PlaceholderTextsDefaults {
     const val CreditCardText = "4242 4242 4242 4242"
