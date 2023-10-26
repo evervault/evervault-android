@@ -22,6 +22,7 @@ import com.evervault.sampleapplication.ui.views.layout.customPaymentCardInputLay
 import com.evervault.sdk.input.ui.InlinePaymentCard
 import com.evervault.sdk.input.ui.PaymentCardComponent
 import com.evervault.sdk.input.ui.PaymentCardInput
+import com.evervault.sdk.input.ui.RowsPaymentCard
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
 @Composable
@@ -92,6 +93,12 @@ fun NavigationGraph(
         composable("InlinePaymentCardView") {
             PaymentCardComponentView { onDataChange ->
                 InlinePaymentCard(onDataChange = onDataChange)
+            }
+        }
+
+        composable("RowsPaymentCardView") {
+            PaymentCardComponentView { onDataChange ->
+                RowsPaymentCard(onDataChange = onDataChange)
             }
         }
 

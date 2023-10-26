@@ -57,6 +57,10 @@ fun ContentView(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate("InlinePaymentCardView") }
                 )
                 ListItem(
+                    headlineContent = { Text(text = "Rows") },
+                    modifier = Modifier.clickable { navController.navigate("RowsPaymentCardView") }
+                )
+                ListItem(
                     headlineContent = { Text(text = "Custom Layout with Composables") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposables") }
                 )
