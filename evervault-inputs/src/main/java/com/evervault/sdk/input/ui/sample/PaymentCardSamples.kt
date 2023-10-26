@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.sp
 import com.evervault.sdk.input.model.label.LabelTextsDefaults
 import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
 import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
-import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInputScope
-import com.evervault.sdk.input.ui.RowsPaymentCard
 import com.evervault.sdk.input.ui.card.InlinePaymentCard
+import com.evervault.sdk.input.ui.card.PaymentCard
+import com.evervault.sdk.input.ui.card.RowsPaymentCard
 
 @Preview
 @Composable

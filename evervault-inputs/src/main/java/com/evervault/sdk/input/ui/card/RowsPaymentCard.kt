@@ -1,4 +1,4 @@
-package com.evervault.sdk.input.ui
+package com.evervault.sdk.input.ui.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.model.card.PaymentCardData
 import com.evervault.sdk.input.model.placeholder.PlaceholderDefaults
 import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
+import com.evervault.sdk.input.ui.PaymentCardInputScope
 
 /**
  * Represents the card input form with with predefined rows layout.
@@ -30,7 +31,6 @@ import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
  * text styles and placeholder texts).
  * To manually customize the layout appearance use the [PaymentCard] component
  *
- * Samples:
  * @sample com.evervault.sdk.input.ui.sample.RowsPaymentCardSample
  * @sample com.evervault.sdk.input.ui.sample.RowsCustomizedPaymentCardSample
  * @sample com.evervault.sdk.input.ui.sample.RowsPaymentCardWithAppliedThemeSample

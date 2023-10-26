@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.model.card.PaymentCardData
 import com.evervault.sdk.input.model.placeholder.PlaceholderDefaults
 import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
-import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInputScope
 
 /**
@@ -28,7 +27,6 @@ import com.evervault.sdk.input.ui.PaymentCardInputScope
  * text styles and placeholder texts).
  * To manually customize the layout appearance use the [PaymentCard] component
  *
- * Samples:
  * @sample com.evervault.sdk.input.ui.sample.InlinePaymentCardSample
  * @sample com.evervault.sdk.input.ui.sample.InlineCustomizedPaymentCardSample
  * @sample com.evervault.sdk.input.ui.sample.InlinePaymentCardWithAppliedThemeSample

@@ -21,6 +21,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
+/**
+ * Input field that accepts composables for the placeholder and labels, so the user can modify and provide them as they need.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CustomTextField(
