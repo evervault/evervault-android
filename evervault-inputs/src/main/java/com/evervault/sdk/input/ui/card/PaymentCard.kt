@@ -9,20 +9,16 @@ import com.evervault.sdk.input.model.card.PaymentCardData
 import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
 
 /**
- * The PaymentCardComponent represents the whole card input form with default styles and inline layout.
+ * Represents the customizable card input form with no predefined layout.
  *
- * [Default inlined content image](https://github.com/evervault/evervault-android/blob/main/inline.png?raw=true)
+ * The user is allowed to customize the whole layout by providing its own content in a trailing lambda.
  *
- * The user is allowed to customize the whole layout by providing its own content as a trailing lambda.
+ * Sample:
+ * @sample com.evervault.sdk.input.ui.sample.PaymentCardWithCustomizedLayoutSample
  *
- * Samples of the default (inline), rows and custom layouts:
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardDefaultLayoutPreview
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardComponentRowsLayoutPreview
- * @sample com.evervault.sdk.input.ui.sample.PaymentCardCustomLayoutWithOldComponentsPreview
- *
- * A common use case is to use the default parameters with default parameters.
- * The user can customize them to provide more a look and feel more close to the rest of their app.
- * For more information, see [Inputs docs](https://docs.evervault.com/sdks/android#inputs)
+ * A common use case is to provide custom layout when the standard [InlinePaymentCard] and [RowsPaymentCard]
+ * do not provide the layout that matches the users design system.
+ * For more information, see [Styling docs](https://docs.evervault.com/sdks/android#styling)
  *
  * @param modifier the [Modifier] to be applied to the layout
  * @param textStyle the [TextStyle] to be applied to the input texts

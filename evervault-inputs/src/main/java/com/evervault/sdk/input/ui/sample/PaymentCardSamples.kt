@@ -87,9 +87,10 @@ internal fun RowsPaymentCardWithAppliedThemeSample() {
     }
 }
 
+// Uses only the "old" non-composable components
 @Preview
 @Composable
-internal fun PaymentCardCustomLayoutWithOldComponentsPreview() {
+internal fun PaymentCardCustomLayoutWithOldComponentsSample() {
     PaymentCard(
         textStyle = TextStyle.Default.copy(color = Color.Yellow),
         placeholderTextStyle = TextStyle.Default.copy(color = Color.LightGray),
@@ -133,9 +134,10 @@ internal fun PaymentCardCustomLayoutWithOldComponentsPreview() {
     }
 }
 
+// Uses only the new composable components
 @Preview
 @Composable
-internal fun PaymentCardCustomLayoutWithNewComponentsPreview() {
+internal fun PaymentCardWithCustomizedLayoutSample() {
     PaymentCard(
         textStyle = TextStyle.Default.copy(color = Color.Yellow),
         placeholderTextStyle = TextStyle.Default.copy(color = Color.LightGray),
