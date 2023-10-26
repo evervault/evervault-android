@@ -13,9 +13,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.evervault.sdk.input.ui.InlinePaymentCard
 import com.evervault.sdk.input.ui.PaymentCardComponent
 import com.evervault.sdk.input.ui.PaymentCardInputScope
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
+
+@Preview
+@Composable
+internal fun InlinePaymentCardPreview() {
+    InlinePaymentCard()
+}
 
 @Preview
 @Composable

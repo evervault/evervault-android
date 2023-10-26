@@ -34,9 +34,7 @@ import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
 fun PaymentCardComponent(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle.Default,
-    placeholderTextStyle: TextStyle = textStyle.copy(
-        color = MaterialTheme.colorScheme.secondary
-    ),
+    placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
     onDataChange: (PaymentCardData) -> Unit = {},
     content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit = inlinePaymentCardInputLayout(),
 ) {
