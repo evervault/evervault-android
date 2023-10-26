@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +34,7 @@ fun ContentView(navController: NavController) {
                 ListItem(
                     headlineContent = {
                         Text(
-                            text = "Credit Card Inputs (old components)",
+                            text = "Credit Card Inputs (PaymentCardInput)",
                             style = MaterialTheme.typography.headlineSmall
                         )
                     },
@@ -43,7 +44,7 @@ fun ContentView(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputView") }
                 )
                 ListItem(
-                    headlineContent = { Text(text = "Inline with custom placeholders (Default)") },
+                    headlineContent = { Text(text = "Inline with custom placeholders") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewWithPlaceholders") }
                 )
                 ListItem(
@@ -68,28 +69,48 @@ fun ContentView(navController: NavController) {
                             text = "Credit Card Inputs (new components)",
                             style = MaterialTheme.typography.headlineSmall
                         )
-                    },
+                    }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Inline") },
-                    modifier = Modifier.clickable { navController.navigate("InlinePaymentCardView") }
+                    modifier = Modifier.clickable { navController.navigate("InlinePaymentCardView") },
+                    supportingContent = {
+                        Text(
+                            text = "InlinePaymentCard",
+                            fontStyle = FontStyle.Italic
+                        )
+                    }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Inline Customized") },
-                    modifier = Modifier.clickable { navController.navigate("InlinePaymentCardCustomView") }
+                    modifier = Modifier.clickable { navController.navigate("InlinePaymentCardCustomView") },
+                    supportingContent = {
+                        Text(
+                            text = "InlinePaymentCard",
+                            fontStyle = FontStyle.Italic
+                        )
+                    }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Rows") },
-                    modifier = Modifier.clickable { navController.navigate("RowsPaymentCardView") }
+                    modifier = Modifier.clickable { navController.navigate("RowsPaymentCardView") },
+                    supportingContent = {
+                        Text(
+                            text = "RowsPaymentCard",
+                            fontStyle = FontStyle.Italic
+                        )
+                    }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Custom Layout with Composables") },
-                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposables") }
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposables") },
+                    supportingContent = { Text(text = "PaymentCard", fontStyle = FontStyle.Italic) }
                 )
 
                 ListItem(
                     headlineContent = { Text(text = "Custom Layout with Composables (no labels)") },
-                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposablesWithoutLabels") }
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposablesWithoutLabels") },
+                    supportingContent = { Text(text = "PaymentCard", fontStyle = FontStyle.Italic) }
                 )
             }
             item {
