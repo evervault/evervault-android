@@ -10,8 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.navigation.NavController
+import com.evervault.sampleapplication.ui.views.component.SupportingText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,43 +74,28 @@ fun ContentView(navController: NavController) {
                 ListItem(
                     headlineContent = { Text(text = "Inline") },
                     modifier = Modifier.clickable { navController.navigate("InlinePaymentCardView") },
-                    supportingContent = {
-                        Text(
-                            text = "InlinePaymentCard",
-                            fontStyle = FontStyle.Italic
-                        )
-                    }
+                    supportingContent = { SupportingText(text = "InlinePaymentCard") }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Inline Customized") },
                     modifier = Modifier.clickable { navController.navigate("InlinePaymentCardCustomView") },
-                    supportingContent = {
-                        Text(
-                            text = "InlinePaymentCard",
-                            fontStyle = FontStyle.Italic
-                        )
-                    }
+                    supportingContent = { SupportingText(text = "InlinePaymentCard") }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Rows") },
                     modifier = Modifier.clickable { navController.navigate("RowsPaymentCardView") },
-                    supportingContent = {
-                        Text(
-                            text = "RowsPaymentCard",
-                            fontStyle = FontStyle.Italic
-                        )
-                    }
+                    supportingContent = { SupportingText(text = "RowsPaymentCard") }
                 )
                 ListItem(
                     headlineContent = { Text(text = "Custom Layout with Composables") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposables") },
-                    supportingContent = { Text(text = "PaymentCard", fontStyle = FontStyle.Italic) }
+                    supportingContent = { SupportingText(text = "PaymentCard") }
                 )
 
                 ListItem(
                     headlineContent = { Text(text = "Custom Layout with Composables (no labels)") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposablesWithoutLabels") },
-                    supportingContent = { Text(text = "PaymentCard", fontStyle = FontStyle.Italic) }
+                    supportingContent = { SupportingText(text = "PaymentCard") }
                 )
             }
             item {
