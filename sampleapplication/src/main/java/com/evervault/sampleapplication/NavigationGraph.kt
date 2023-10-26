@@ -20,7 +20,7 @@ import com.evervault.sampleapplication.ui.views.CreditCardInputView
 import com.evervault.sampleapplication.ui.views.FileEncryptionView
 import com.evervault.sampleapplication.ui.views.PaymentCardComponentView
 import com.evervault.sampleapplication.ui.views.layout.customPaymentCardInputLayout
-import com.evervault.sdk.input.defaults.PlaceholderDefaults
+import com.evervault.sdk.input.defaults.placeholder.PlaceholderDefaults
 import com.evervault.sdk.input.ui.InlinePaymentCard
 import com.evervault.sdk.input.ui.PaymentCard
 import com.evervault.sdk.input.ui.PaymentCardInput

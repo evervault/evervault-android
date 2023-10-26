@@ -1,13 +1,19 @@
-package com.evervault.sdk.input.defaults
+package com.evervault.sdk.input.defaults.placeholder
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTexts
 import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTextsDefaults
 
+/**
+ * Builder that provides default parameters and configuration for the placeholders.
+ */
 @Immutable
 object PlaceholderDefaults {
 
+    /**
+     * Provides all texts for the placeholders
+     */
     @Composable
     fun texts(
         creditCardText: String = PlaceholderTextsDefaults.CreditCardText,

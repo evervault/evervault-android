@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.input.defaults.PlaceholderDefaults
+import com.evervault.sdk.input.defaults.placeholder.PlaceholderDefaults
 import com.evervault.sdk.input.defaults.placeholder.model.PlaceholderTexts
 
 @Composable
