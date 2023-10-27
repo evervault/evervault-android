@@ -63,8 +63,7 @@ android {
 }
 
 dependencies {
-    implementation("com.evervault.sdk:evervault-core:1.0")
-
+    implementation(project(":evervault-common"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
