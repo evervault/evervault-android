@@ -48,7 +48,7 @@ fun ContentView(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewWithPlaceholders") }
                 )
                 ListItem(
-                    headlineContent = { Text(text = "Inline Customized") },
+                    headlineContent = { Text(text = "Inline Themed") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustom") }
                 )
                 ListItem(
@@ -77,7 +77,7 @@ fun ContentView(navController: NavController) {
                     supportingContent = { SupportingText(text = "InlinePaymentCard") }
                 )
                 ListItem(
-                    headlineContent = { Text(text = "Inline Customized") },
+                    headlineContent = { Text(text = "Inline Themed") },
                     modifier = Modifier.clickable { navController.navigate("InlinePaymentCardCustomView") },
                     supportingContent = { SupportingText(text = "InlinePaymentCard") }
                 )
