@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.evervault.sampleapplication.navigation.NavigationGraph
 import com.evervault.sampleapplication.ui.theme.EvervaultandroidTheme
 import com.evervault.sdk.common.CustomConfig
 import com.evervault.sdk.common.Evervault
@@ -25,8 +26,8 @@ class MainActivity : ComponentActivity() {
             customConfig = CustomConfig(isDebugMode = true)
         )
         super.onCreate(savedInstanceState)
-        setContent {
 
+        setContent {
             var encrypted: String? by remember { mutableStateOf(null) }
 
             val navController = rememberNavController()
@@ -37,8 +38,10 @@ class MainActivity : ComponentActivity() {
 
             EvervaultandroidTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     NavigationGraph(navController = navController)
                 }
             }
