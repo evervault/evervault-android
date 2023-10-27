@@ -54,10 +54,7 @@ fun CageView() {
 
             try {
                 val response = client.newCall(request).execute()
-                val responseMap: Map<String, String> = Gson().fromJson(
-                    response.body!!.string(),
-                    Map::class.java
-                ) as Map<String, String>
+                val responseMap: Map<String, String> = Gson().fromJson(response.body!!.string(), Map::class.java) as Map<String, String>
                 responseText = responseMap["response"]
             } catch (e: IOException) {
                 e.printStackTrace()
