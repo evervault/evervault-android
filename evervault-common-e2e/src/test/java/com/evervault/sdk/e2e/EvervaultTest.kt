@@ -4,7 +4,6 @@ import com.evervault.sdk.common.ConfigUrls
 import com.evervault.sdk.common.CustomConfig
 import org.junit.Test
 import com.evervault.sdk.common.Evervault
-import com.evervault.sdk.e2e.utils.getenv
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.defaultRequest
@@ -21,7 +20,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -30,9 +28,10 @@ import java.util.Base64
 class EvervaultTest {
     private val encryptedStringRegex = Regex("((ev(:|%3A))(debug(:|%3A))?(([A-z0-9+/=%]+)(:|%3A))?((number|boolean|string)(:|%3A))?(([A-z0-9+/=%]+)(:|%3A)){3}(\\$|%24))|(((eyJ[A-z0-9+=.]+){2})([\\w]{8}(-[\\w]{4}){3}-[\\w]{12}))")
 
-    private val apiKey = getenv("EV_API_KEY")
-    private val appUuid = getenv("EV_APP_UUID")
-    private val teamUuid = getenv("EV_TEAM_UUID")
+    private lateinit var apiKey: String
+    private lateinit var appUuid: String
+    private lateinit var teamUuid: String
+    private val isDebugMode = setDebugMode()
 
     private var httpClient = HttpClient {
         defaultRequest {
@@ -48,7 +47,7 @@ class EvervaultTest {
             teamId = teamUuid,
             appId = appUuid,
             customConfig = CustomConfig(
-                isDebugMode = false
+                isDebugMode = isDebugMode
             )
         )
     }
@@ -64,44 +63,46 @@ class EvervaultTest {
 
     @Test
     fun testDecryptData() = runBlocking {
-        val data = RawData(
-            stringData = "Bob",
-            numberData = 1,
-            floatData = 1.5,
-            booleanData = true,
-            arrayData = arrayListOf("hello", "world"),
-        )
-        // Encrypt some data
-        val encrypted = encryptData(ConfigUrls().apiUrl, data)
-        println(encrypted)
-        val clientToken = createClientSideToken(ConfigUrls().apiUrl, encrypted)
-        println(clientToken)
-        val decrypted = Evervault.shared.decrypt(clientToken.token, encrypted) as Map<String, Any>
+        // Test requires an Evervault API key so don't run if its not set
+        if (!isDebugMode) {
+            val data = RawData(
+                stringData = "Bob",
+                numberData = 1,
+                floatData = 1.5,
+                booleanData = true,
+                arrayData = arrayListOf("hello", "world"),
+            )
+            // Encrypt some data
+            val encrypted = encryptData(ConfigUrls().apiUrl, data)
+            val clientToken = createClientSideToken(ConfigUrls().apiUrl, encrypted)
+            assertNotNull(clientToken)
+            val decrypted = Evervault.shared.decrypt(clientToken.token, encrypted) as Map<*, *>
+            println(decrypted)
+            assertEquals(
+                decrypted["stringData"],
+                "Bob"
+            )
 
-        assertEquals(
-            decrypted["stringData"],
-            "Bob"
-        )
+            assertEquals(
+                decrypted["numberData"],
+                1.0
+            )
 
-        assertEquals(
-            decrypted["numberData"],
-            1.0
-        )
+            assertEquals(
+                decrypted["floatData"],
+                1.5
+            )
 
-        assertEquals(
-            decrypted["floatData"],
-            1.5
-        )
+            assertEquals(
+                decrypted["booleanData"],
+                true
+            )
 
-        assertEquals(
-            decrypted["booleanData"],
-            true
-        )
-
-        assertEquals(
-            decrypted["arrayData"],
-            arrayListOf<String>("hello", "world")
-        )
+            assertEquals(
+                decrypted["arrayData"],
+                arrayListOf<String>("hello", "world")
+            )
+        }
     }
 
     @Serializable
@@ -178,5 +179,19 @@ class EvervaultTest {
         }
 
         return task.await()
+    }
+
+    private fun setDebugMode(): Boolean {
+        try {
+            apiKey = System.getenv("EV_API_KEY")
+            appUuid = System.getenv("EV_APP_UUID")
+            teamUuid = System.getenv("EV_TEAM_UUID")
+        } catch (e: RuntimeException) {
+            apiKey = "test-api-key"
+            appUuid = "test-app-uuid"
+            teamUuid = "test-team-uuid"
+            return true
+        }
+        return false
     }
 }

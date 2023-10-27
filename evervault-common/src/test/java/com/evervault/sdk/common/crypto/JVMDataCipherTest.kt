@@ -20,20 +20,20 @@ class JVMDataCipherTest {
 
     lateinit var sharedSecret: GeneratedSharedKey
     lateinit var teamKeyPublic: ByteArray
-    private lateinit var jvmDataCipher: DataCipher
+    private lateinit var dataCipher: DataCipher
 
     @OptIn(ExperimentalEncodingApi::class)
     @Before
     fun setup() {
         sharedSecret = sharedSecretDeriver.deriveSharedSecret(key)
         teamKeyPublic = Base64.decode(key.ecdhP256Key)
-        jvmDataCipher = dataCipherFactory.createCipher(teamKeyPublic, sharedSecret.sharedKey, config)
+        dataCipher = dataCipherFactory.createCipher(teamKeyPublic, sharedSecret.sharedKey, config)
     }
 
     @Test
     fun testEncrypt() {
         val testPayload = "Encrypt this String".toByteArray()
-        val result = jvmDataCipher.encrypt(testPayload, "test-role")
+        val result = dataCipher.encrypt(testPayload, "test-role")
 
         assertNotNull(result)
     }
@@ -41,8 +41,8 @@ class JVMDataCipherTest {
     @Test
     fun testRoleMetadataIncreasesCipherTextSize() {
         val testPayload = "Encrypt this String".toByteArray()
-        val roleEncryptionResult = jvmDataCipher.encrypt(testPayload, "test-role")
-        val nonRoleEncryptionResult = jvmDataCipher.encrypt(testPayload, null)
+        val roleEncryptionResult = dataCipher.encrypt(testPayload, "test-role")
+        val nonRoleEncryptionResult = dataCipher.encrypt(testPayload, null)
 
         assertTrue(roleEncryptionResult.data.size > nonRoleEncryptionResult.data.size)
     }
@@ -50,8 +50,8 @@ class JVMDataCipherTest {
     @Test
     fun testEncryptionUniqueness() {
         val testPayload = "Encrypt this String".toByteArray()
-        val resultOne = jvmDataCipher.encrypt(testPayload, "test-role")
-        val resultTwo = jvmDataCipher.encrypt(testPayload, "test-role")
+        val resultOne = dataCipher.encrypt(testPayload, "test-role")
+        val resultTwo = dataCipher.encrypt(testPayload, "test-role")
 
         val isEqual = Arrays.areEqual(resultOne.data, resultTwo.data)
 

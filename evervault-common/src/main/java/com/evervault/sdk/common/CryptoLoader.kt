@@ -2,8 +2,8 @@ package com.evervault.sdk.common
 
 import com.evervault.sdk.common.client.Http
 import com.evervault.sdk.common.format.R1StdEncryptionFormatter
+import com.evervault.sdk.common.keys.ISharedSecretGenerator
 import com.evervault.sdk.common.keys.Key
-import com.evervault.sdk.common.keys.SharedSecretDeriver
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlin.io.encoding.Base64
@@ -12,7 +12,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 internal class CryptoLoader(
     private val config: Config,
     private val http: Http,
-    private val sharedSecretDeriver: SharedSecretDeriver,
+    private val sharedSecretDeriver: ISharedSecretGenerator,
     private val dataCipherFactory: DataCipher.Factory,
     private val isInDebugMode: Boolean?
 ) {

@@ -1,5 +1,7 @@
 package com.evervault.sdk.common
 
+import com.evervault.sdk.common.models.EncryptedData
+
 
 internal interface DataCipher {
     fun encrypt(data: ByteArray, role: String?): EncryptedData
@@ -8,9 +10,3 @@ internal interface DataCipher {
         fun createCipher(ecdhTeamKey: ByteArray, derivedSecret: ByteArray, config: EncryptionConfig): DataCipher
     }
 }
-
-// TODO: move to data class
-data class EncryptedData(
-    val data: ByteArray,
-    val keyIv: ByteArray
-)

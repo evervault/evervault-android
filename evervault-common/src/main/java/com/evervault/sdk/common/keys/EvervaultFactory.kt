@@ -1,14 +1,13 @@
 package com.evervault.sdk.common.keys
 
-import com.evervault.sdk.common.DataCipher
-import com.evervault.sdk.common.crypto.JvmDataCipher
+import com.evervault.sdk.common.crypto.DataCipher
 
 internal object EvervaultFactory {
-    fun createSharedSecretDeriver(): SharedSecretDeriver {
-        return JvmSharedSecretDeriver()
+    fun createSharedSecretDeriver(): SharedSecretGenerator {
+        return SharedSecretGenerator()
     }
 
-    fun createDataCipherFactory(): DataCipher.Factory {
-        return JvmDataCipher.Factory
+    fun createDataCipherFactory(): com.evervault.sdk.common.DataCipher.Factory {
+        return DataCipher.Factory
     }
 }

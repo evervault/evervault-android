@@ -1,9 +1,9 @@
 package com.evervault.sdk.common.crypto
 
 import com.evervault.sdk.common.DataCipher
-import com.evervault.sdk.common.EncryptedData
 import com.evervault.sdk.common.EncryptionConfig
 import com.evervault.sdk.common.exceptions.InvalidCipherException
+import com.evervault.sdk.common.models.EncryptedData
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.SecureRandom
@@ -13,14 +13,14 @@ import org.bouncycastle.crypto.modes.GCMBlockCipher
 import org.bouncycastle.crypto.params.AEADParameters
 import org.bouncycastle.crypto.params.KeyParameter
 
-internal class JvmDataCipher(
+internal class DataCipher(
     private val ecdhTeamKey: ByteArray,
     private val derivedSecret: ByteArray,
     private val config: EncryptionConfig
 ): DataCipher {
     companion object Factory: DataCipher.Factory {
         override fun createCipher(ecdhTeamKey: ByteArray, derivedSecret: ByteArray, config: EncryptionConfig): DataCipher {
-            return JvmDataCipher(
+            return DataCipher(
                 ecdhTeamKey = ecdhTeamKey,
                 derivedSecret = derivedSecret,
                 config = config,

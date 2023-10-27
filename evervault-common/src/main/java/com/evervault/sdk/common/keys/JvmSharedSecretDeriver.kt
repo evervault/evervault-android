@@ -18,7 +18,7 @@ import javax.crypto.KeyAgreement
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-internal class JvmSharedSecretDeriver: SharedSecretDeriver {
+internal class SharedSecretGenerator: ISharedSecretGenerator {
 
     private val provider = BouncyCastleProvider()
 

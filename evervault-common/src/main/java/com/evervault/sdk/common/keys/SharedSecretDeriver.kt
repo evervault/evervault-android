@@ -1,5 +1,5 @@
 package com.evervault.sdk.common.keys
 
-internal interface SharedSecretDeriver {
+internal interface ISharedSecretGenerator {
     fun deriveSharedSecret(cageKey: Key): GeneratedSharedKey
 }
