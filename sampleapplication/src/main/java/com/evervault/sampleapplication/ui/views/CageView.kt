@@ -1,6 +1,5 @@
-package com.evervault.sampleapplication
+package com.evervault.sampleapplication.ui.views
 
-import AttestationDocCache
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.evervault.sdk.cages.AttestationData
 import com.evervault.sdk.cages.PCRs
 import com.evervault.sdk.cages.cagesTrustManager
-import com.evervault.sdk.cages.trustManager
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,8 +23,8 @@ import java.io.IOException
 @Composable
 fun CageView() {
 
-   val cageName = "hello-cage"
-   val appId = "app-000000000000"
+    val cageName = "hello-cage"
+    val appId = "app-000000000000"
 
     var responseText: String? by remember { mutableStateOf(null) }
 
@@ -35,15 +33,17 @@ fun CageView() {
             val url = "https://$cageName.$appId.cage.evervault.com/hello"
 
             val client = OkHttpClient.Builder()
-                .cagesTrustManager(AttestationData(
-                    cageName = cageName,
-                    // Replace with legitimate PCR strings when not in debug mode
-                    PCRs(
-                        pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    )),
+                .cagesTrustManager(
+                    AttestationData(
+                        cageName = cageName,
+                        // Replace with legitimate PCR strings when not in debug mode
+                        PCRs(
+                            pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                            pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                            pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                            pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                        )
+                    ),
                     appId
                 )
                 .build()

@@ -1,4 +1,4 @@
-package com.evervault.sampleapplication
+package com.evervault.sampleapplication.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,8 +14,10 @@ import androidx.navigation.compose.composable
 import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponents
 import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponentsWithoutLabels
 import com.evervault.sampleapplication.ui.views.BasicEncryptionView
+import com.evervault.sampleapplication.ui.views.CageView
 import com.evervault.sampleapplication.ui.views.CreditCardInputView
 import com.evervault.sampleapplication.ui.views.FileEncryptionView
+import com.evervault.sampleapplication.ui.views.MainScreen
 import com.evervault.sampleapplication.ui.views.PaymentCardView
 import com.evervault.sampleapplication.ui.views.component.CustomTheme
 import com.evervault.sampleapplication.ui.views.component.customPlaceholderTexts
@@ -27,33 +29,32 @@ import com.evervault.sdk.input.ui.card.RowsPaymentCard
 import com.evervault.sdk.input.ui.inlinePaymentCardInputLayout
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
-// TODO: Extract navigation routes into an object and implement it in [ContentView]
 @Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(
         navController,
-        startDestination = "home",
+        startDestination = Route.Home.route,
         modifier = Modifier.fillMaxSize(),
     ) {
-        composable("home") {
-            ContentView(navController = navController)
+        composable(Route.Home.route) {
+            MainScreen(navController = navController)
         }
 
-        composable("BasicEncryptionView") {
+        composable(Route.BasicEncryption.route) {
             BasicEncryptionView()
         }
 
-        composable("FileEncryptionView") {
+        composable(Route.FileEncryption.route) {
             FileEncryptionView()
         }
 
-        composable("CreditCardInputView") {
+        composable(Route.CreditCardInput.route) {
             CreditCardInputView {
                 PaymentCardInput(onDataChange = it)
             }
         }
 
-        composable("CreditCardInputViewWithPlaceholders") {
+        composable(Route.CreditCardInputWithPlaceholders.route) {
             CreditCardInputView {
                 PaymentCardInput(
                     layout = inlinePaymentCardInputLayout(
@@ -64,7 +65,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("CreditCardInputViewCustom") {
+        composable(Route.CreditCardInputCustom.route) {
             CreditCardInputView {
                 CustomTheme {
                     PaymentCardInput(
@@ -80,7 +81,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("CreditCardInputViewRows") {
+        composable(Route.CreditCardInputRows.route) {
             CreditCardInputView {
                 PaymentCardInput(
                     layout = rowsPaymentCardInputLayout(),
@@ -89,7 +90,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("CreditCardInputViewRowsWithPlaceholders") {
+        composable(Route.CreditCardInputRowsWithPlaceholders.route) {
             CreditCardInputView {
                 PaymentCardInput(
                     layout = rowsPaymentCardInputLayout(placeholderTexts = customPlaceholderTexts()),
@@ -98,7 +99,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("CreditCardInputViewCustomStyle") {
+        composable(Route.CreditCardInputCustomStyle.route) {
             CreditCardInputView {
                 PaymentCardInput(
                     layout = customPaymentCardInputLayout(),
@@ -107,13 +108,13 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("InlinePaymentCardView") {
+        composable(Route.InlinePaymentCard.route) {
             PaymentCardView { onDataChange ->
                 InlinePaymentCard(onDataChange = onDataChange)
             }
         }
 
-        composable("InlinePaymentCardCustomView") {
+        composable(Route.InlinePaymentCardCustomStyle.route) {
             PaymentCardView { onDataChange ->
                 CustomTheme {
                     InlinePaymentCard(onDataChange = onDataChange)
@@ -121,13 +122,13 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("RowsPaymentCardView") {
+        composable(Route.RowsPaymentCard.route) {
             PaymentCardView { onDataChange ->
                 RowsPaymentCard(onDataChange = onDataChange)
             }
         }
 
-        composable("CreditCardInputViewCustomComposables") {
+        composable(Route.CreditCardInputCustomComposables.route) {
             PaymentCardView { onDataChange ->
                 PaymentCard(onDataChange = onDataChange) { modifier ->
                     PaymentCardCustomLayoutWithNewComponents(modifier)
@@ -135,7 +136,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("CreditCardInputViewCustomComposablesWithoutLabels") {
+        composable(Route.CreditCardInputCustomComposablesWithoutLabels.route) {
             PaymentCardView { onDataChange ->
                 PaymentCard(onDataChange = onDataChange) { modifier ->
                     PaymentCardCustomLayoutWithNewComponentsWithoutLabels(modifier)
@@ -143,7 +144,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable("CageView") {
+        composable(Route.Cage.route) {
             CageView()
         }
     }
