@@ -49,7 +49,8 @@ internal class PaymentCardInputScopeImpl(
     @Composable
     override fun CardImage(modifier: Modifier) {
         Icon(
-            painter = painterResource(id = cardImageResource), contentDescription = "",
+            painter = painterResource(id = cardImageResource),
+            contentDescription = "",
             modifier = modifier,
             tint = Color.Unspecified
         )
