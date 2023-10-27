@@ -17,7 +17,7 @@ import com.evervault.sampleapplication.ui.views.component.InfoBlock
 import com.evervault.sdk.input.model.PaymentCardData
 import com.evervault.sdk.input.model.description
 
-@Deprecated("Uses the old PaymentCardData. Use the PaymentCardComponentView instead")
+@Deprecated("Uses the old PaymentCardData with old components. Use the PaymentCardView instead")
 @Composable
 fun CreditCardInputView(paymentCardInput: @Composable ((PaymentCardData) -> Unit) -> Unit) {
     var cardData by remember { mutableStateOf(PaymentCardData()) }

@@ -27,7 +27,7 @@ import com.evervault.sdk.input.ui.card.RowsPaymentCard
 import com.evervault.sdk.input.ui.inlinePaymentCardInputLayout
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
-// TODO: Extract navigation routes into an object and share implement it in [ContentView]
+// TODO: Extract navigation routes into an object and implement it in [ContentView]
 @Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(
