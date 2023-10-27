@@ -1,21 +1,10 @@
 package com.evervault.sdk.input.ui
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,17 +12,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import com.evervault.sdk.Evervault
 import com.evervault.sdk.input.model.CreditCardType
 import com.evervault.sdk.input.model.PaymentCardData
@@ -47,15 +28,13 @@ import com.evervault.sdk.input.utils.CreditCardExpirationDateFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
 import com.evervault.sdk.inputs.R
 
-@Deprecated(message = "Use the PaymentCardComponent in com.evervault.sdk.input.ui instead")
+@Deprecated(message = "Use the InlinePaymentCard, RowsPaymentCard or PaymentCard in com.evervault.sdk.input.ui.card instead")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PaymentCardInput(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle.Default,
-    placeholderTextStyle: TextStyle = textStyle.copy(
-        color = MaterialTheme.colorScheme.secondary
-    ),
+    placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
     layout: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit = inlinePaymentCardInputLayout(),
     onDataChange: (PaymentCardData) -> Unit = {}
 ) {
@@ -206,221 +185,3 @@ fun PaymentCardInput(
     )
 }
 
-interface PaymentCardInputScope {
-    data class TextFieldOptions(
-        val textStyle: (TextStyle.() -> TextStyle) = { this },
-    )
-
-    @Composable
-    fun CardImage()
-
-    @Composable
-    fun CardImage(modifier: Modifier)
-
-    @Composable
-    fun CardNumberField()
-
-    @Composable
-    fun CardNumberField(modifier: Modifier)
-
-    @Composable
-    fun CardNumberField(modifier: Modifier, options: TextFieldOptions)
-
-    @Composable
-    fun CardNumberField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
-
-    @Composable
-    fun ExpiryField()
-
-    @Composable
-    fun ExpiryField(modifier: Modifier)
-
-    @Composable
-    fun ExpiryField(modifier: Modifier, options: TextFieldOptions)
-
-    @Composable
-    fun ExpiryField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
-
-    @Composable
-    fun CVCField()
-
-    @Composable
-    fun CVCField(modifier: Modifier)
-
-    @Composable
-    fun CVCField(modifier: Modifier, options: TextFieldOptions)
-
-    @Composable
-    fun CVCField(modifier: Modifier, options: TextFieldOptions, placeholder: String)
-}
-
-private class PaymentCardInputScopeImpl(
-    private val textStyle: TextStyle,
-    private val placeholderTextStyle: TextStyle,
-    private val cardImageResource: Int,
-    private val creditCardNumber: MutableState<TextFieldValue>,
-    private val creditCardRequester: FocusRequester,
-    private val expiryDate: MutableState<TextFieldValue>,
-    private val expiryRequester: FocusRequester,
-    private val cvc: MutableState<TextFieldValue>,
-    private val cvcRequester: FocusRequester,
-) : PaymentCardInputScope {
-
-    @Composable
-    override fun CardImage() {
-        CardImage(modifier = Modifier)
-    }
-
-    @Composable
-    override fun CardImage(modifier: Modifier) {
-        Icon(
-            painter = painterResource(id = cardImageResource), contentDescription = "",
-            modifier = modifier,
-            tint = Color.Unspecified
-        )
-    }
-
-    @Composable
-    override fun CardNumberField() {
-        CardNumberField(modifier = Modifier)
-    }
-
-    @Composable
-    override fun CardNumberField(modifier: Modifier) {
-        CardNumberField(modifier = modifier, options = PaymentCardInputScope.TextFieldOptions())
-    }
-
-    @Composable
-    override fun CardNumberField(
-        modifier: Modifier,
-        options: PaymentCardInputScope.TextFieldOptions
-    ) {
-        CardNumberField(modifier = modifier, options = options, placeholder = "4242 4242 4242 4242")
-    }
-
-    @Composable
-    override fun CardNumberField(
-        modifier: Modifier,
-        options: PaymentCardInputScope.TextFieldOptions,
-        placeholder: String
-    ) {
-        CustomTextField(
-            state = creditCardNumber,
-            placeholder = placeholder,
-            modifier = modifier.focusRequester(creditCardRequester),
-            options = options,
-            onNext = { expiryRequester.requestFocus() },
-        )
-    }
-
-    @Composable
-    override fun ExpiryField() {
-        ExpiryField(modifier = Modifier)
-    }
-
-    @Composable
-    override fun ExpiryField(modifier: Modifier) {
-        ExpiryField(modifier = modifier, options = PaymentCardInputScope.TextFieldOptions())
-    }
-
-    @Composable
-    override fun ExpiryField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions) {
-        ExpiryField(modifier = modifier, options = options, placeholder = "MM/YY")
-    }
-
-    @Composable
-    override fun ExpiryField(
-        modifier: Modifier,
-        options: PaymentCardInputScope.TextFieldOptions,
-        placeholder: String
-    ) {
-        CustomTextField(
-            state = expiryDate,
-            placeholder = placeholder,
-            modifier = modifier.focusRequester(expiryRequester),
-            options = options,
-            onNext = { cvcRequester.requestFocus() },
-        )
-    }
-
-    @Composable
-    override fun CVCField() {
-        CVCField(
-            modifier = Modifier
-        )
-    }
-
-    @Composable
-    override fun CVCField(modifier: Modifier) {
-        CVCField(modifier = modifier, options = PaymentCardInputScope.TextFieldOptions())
-    }
-
-    @Composable
-    override fun CVCField(modifier: Modifier, options: PaymentCardInputScope.TextFieldOptions) {
-        CVCField(modifier = modifier, options = options, placeholder = "CVC")
-    }
-
-    @Composable
-    override fun CVCField(
-        modifier: Modifier,
-        options: PaymentCardInputScope.TextFieldOptions,
-        placeholder: String
-    ) {
-        CustomTextField(
-            state = cvc,
-            placeholder = placeholder,
-            modifier = modifier.focusRequester(cvcRequester),
-            options = options,
-        )
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    private fun CustomTextField(
-        state: MutableState<TextFieldValue>,
-        placeholder: String,
-        modifier: Modifier = Modifier,
-        options: PaymentCardInputScope.TextFieldOptions,
-        onNext: (() -> Unit)? = null,
-    ) {
-        BasicTextField(
-            value = state.value,
-            onValueChange = { state.value = it },
-            modifier = modifier,
-            textStyle = options.textStyle.invoke(textStyle),
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrect = false,
-                keyboardType = KeyboardType.Number,
-                imeAction = if (onNext == null) ImeAction.Done else ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { onNext?.invoke() },
-            ),
-            decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.DecorationBox(
-                    value = state.value.text,
-                    innerTextField = innerTextField,
-                    enabled = true,
-                    singleLine = true,
-                    visualTransformation = VisualTransformation.None,
-                    interactionSource = remember { MutableInteractionSource() },
-                    placeholder = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = placeholder,
-                            style = options.textStyle.invoke(placeholderTextStyle),
-                        )
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    ),
-                    contentPadding = PaddingValues(0.dp),
-                )
-            }
-        )
-    }
-}

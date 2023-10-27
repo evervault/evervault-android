@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.evervault.sampleapplication.ui.views.component.SupportingText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,14 +32,23 @@ fun ContentView(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text(text = "Credit Card Inputs", style = MaterialTheme.typography.headlineSmall) },
+                    headlineContent = {
+                        Text(
+                            text = "Credit Card Inputs (PaymentCardInput)",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
                 )
                 ListItem(
                     headlineContent = { Text(text = "Inline (Default)") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputView") }
                 )
                 ListItem(
-                    headlineContent = { Text(text = "Inline Customized") },
+                    headlineContent = { Text(text = "Inline with custom placeholders") },
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewWithPlaceholders") }
+                )
+                ListItem(
+                    headlineContent = { Text(text = "Inline Themed") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustom") }
                 )
                 ListItem(
@@ -46,13 +56,56 @@ fun ContentView(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewRows") }
                 )
                 ListItem(
+                    headlineContent = { Text(text = "Rows with custom placeholders") },
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewRowsWithPlaceholders") }
+                )
+                ListItem(
                     headlineContent = { Text(text = "Custom Layout") },
                     modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomStyle") }
+                )
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = "Credit Card Inputs (new components)",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                )
+                ListItem(
+                    headlineContent = { Text(text = "Inline") },
+                    modifier = Modifier.clickable { navController.navigate("InlinePaymentCardView") },
+                    supportingContent = { SupportingText(text = "InlinePaymentCard") }
+                )
+                ListItem(
+                    headlineContent = { Text(text = "Inline Themed") },
+                    modifier = Modifier.clickable { navController.navigate("InlinePaymentCardCustomView") },
+                    supportingContent = { SupportingText(text = "InlinePaymentCard") }
+                )
+                ListItem(
+                    headlineContent = { Text(text = "Rows") },
+                    modifier = Modifier.clickable { navController.navigate("RowsPaymentCardView") },
+                    supportingContent = { SupportingText(text = "RowsPaymentCard") }
+                )
+                ListItem(
+                    headlineContent = { Text(text = "Custom Layout with Composables") },
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposables") },
+                    supportingContent = { SupportingText(text = "PaymentCard") }
+                )
+
+                ListItem(
+                    headlineContent = { Text(text = "Custom Layout with Composables (no labels)") },
+                    modifier = Modifier.clickable { navController.navigate("CreditCardInputViewCustomComposablesWithoutLabels") },
+                    supportingContent = { SupportingText(text = "PaymentCard") }
                 )
             }
             item {
                 ListItem(
-                    headlineContent = { Text(text = "Cages", style = MaterialTheme.typography.headlineSmall) },
+                    headlineContent = {
+                        Text(
+                            text = "Cages",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
                 )
                 ListItem(
                     headlineContent = { Text(text = "Cage HTTP Request") },

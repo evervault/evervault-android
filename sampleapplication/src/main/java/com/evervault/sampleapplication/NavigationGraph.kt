@@ -1,39 +1,35 @@
 package com.evervault.sampleapplication
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponents
+import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponentsWithoutLabels
 import com.evervault.sampleapplication.ui.views.BasicEncryptionView
 import com.evervault.sampleapplication.ui.views.CreditCardInputView
 import com.evervault.sampleapplication.ui.views.FileEncryptionView
+import com.evervault.sampleapplication.ui.views.PaymentCardView
+import com.evervault.sampleapplication.ui.views.component.CustomTheme
+import com.evervault.sampleapplication.ui.views.component.customPlaceholderTexts
+import com.evervault.sampleapplication.ui.views.layout.customPaymentCardInputLayout
 import com.evervault.sdk.input.ui.PaymentCardInput
-import com.evervault.sdk.input.ui.PaymentCardInputScope
+import com.evervault.sdk.input.ui.card.InlinePaymentCard
+import com.evervault.sdk.input.ui.card.PaymentCard
+import com.evervault.sdk.input.ui.card.RowsPaymentCard
+import com.evervault.sdk.input.ui.inlinePaymentCardInputLayout
 import com.evervault.sdk.input.ui.rowsPaymentCardInputLayout
 
+// TODO: Extract navigation routes into an object and implement it in [ContentView]
 @Composable
-fun NavigationGraph(
-    modifier: Modifier = Modifier,
-    navController: NavHostController
-) {
+fun NavigationGraph(navController: NavHostController) {
     NavHost(
         navController,
         startDestination = "home",
@@ -57,19 +53,27 @@ fun NavigationGraph(
             }
         }
 
+        composable("CreditCardInputViewWithPlaceholders") {
+            CreditCardInputView {
+                PaymentCardInput(
+                    layout = inlinePaymentCardInputLayout(
+                        placeholderTexts = customPlaceholderTexts()
+                    ),
+                    onDataChange = it
+                )
+            }
+        }
+
         composable("CreditCardInputViewCustom") {
             CreditCardInputView {
-                MaterialTheme(
-                    colorScheme = MaterialTheme.colorScheme.copy(
-                        primary = Color.Black,
-                        secondary = Color.White,
-                        primaryContainer = Color.LightGray,
-                    ),
-                ) {
+                CustomTheme {
                     PaymentCardInput(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp)),
                         textStyle = TextStyle.Default.copy(fontSize = 16.sp),
+                        layout = inlinePaymentCardInputLayout(
+                            placeholderTexts = customPlaceholderTexts()
+                        ),
                         onDataChange = it
                     )
                 }
@@ -80,7 +84,16 @@ fun NavigationGraph(
             CreditCardInputView {
                 PaymentCardInput(
                     layout = rowsPaymentCardInputLayout(),
-                    onDataChange = it
+                    onDataChange = it,
+                )
+            }
+        }
+
+        composable("CreditCardInputViewRowsWithPlaceholders") {
+            CreditCardInputView {
+                PaymentCardInput(
+                    layout = rowsPaymentCardInputLayout(placeholderTexts = customPlaceholderTexts()),
+                    onDataChange = it,
                 )
             }
         }
@@ -94,37 +107,44 @@ fun NavigationGraph(
             }
         }
 
+        composable("InlinePaymentCardView") {
+            PaymentCardView { onDataChange ->
+                InlinePaymentCard(onDataChange = onDataChange)
+            }
+        }
+
+        composable("InlinePaymentCardCustomView") {
+            PaymentCardView { onDataChange ->
+                CustomTheme {
+                    InlinePaymentCard(onDataChange = onDataChange)
+                }
+            }
+        }
+
+        composable("RowsPaymentCardView") {
+            PaymentCardView { onDataChange ->
+                RowsPaymentCard(onDataChange = onDataChange)
+            }
+        }
+
+        composable("CreditCardInputViewCustomComposables") {
+            PaymentCardView { onDataChange ->
+                PaymentCard(onDataChange = onDataChange) { modifier ->
+                    PaymentCardCustomLayoutWithNewComponents(modifier)
+                }
+            }
+        }
+
+        composable("CreditCardInputViewCustomComposablesWithoutLabels") {
+            PaymentCardView { onDataChange ->
+                PaymentCard(onDataChange = onDataChange) { modifier ->
+                    PaymentCardCustomLayoutWithNewComponentsWithoutLabels(modifier)
+                }
+            }
+        }
+
         composable("CageView") {
             CageView()
         }
     }
-}
-
-fun customPaymentCardInputLayout(): @Composable() (PaymentCardInputScope.(modifier: Modifier) -> Unit) = { custom(modifier = it) }
-
-@Composable
-fun PaymentCardInputScope.custom(modifier: Modifier) {
-    Column(
-        modifier = modifier
-            .border(BorderStroke(1.dp, Color.LightGray), RoundedCornerShape(8.dp))
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        CardImage()
-
-        Text("CC Number", style = MaterialTheme.typography.titleMedium)
-        CardNumberField(modifier = Modifier.fillMaxWidth())
-
-        Divider()
-
-        Text("Expiry", style = MaterialTheme.typography.titleMedium)
-        ExpiryField(modifier = Modifier.fillMaxWidth())
-
-        Divider()
-
-        Text("CVC", style = MaterialTheme.typography.titleMedium)
-        CVCField(modifier = Modifier.fillMaxWidth())
-    }
-
 }
