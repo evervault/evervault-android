@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.6.0",
   "scripts": {
-    "version": "PACKAGE_VERSION=$(node -p \"require('./package.json').version\") && sed -i \"/VERSION_NAME=/ s/=.*/=$PACKAGE_VERSION/\" version.properties"
+    "version": "npm run changeset && PACKAGE_VERSION=$(node -p \"require('./package.json').version\") && sed -i \"/VERSION_NAME=/ s/=.*/=$PACKAGE_VERSION/\" version.properties"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2"
