@@ -36,7 +36,6 @@ jobs:
         with:
           title: 'New Release'
           commit: 'Release new version'
-          version: changeset version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
