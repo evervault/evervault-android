@@ -36,13 +36,14 @@ jobs:
         with:
           title: 'New Release'
           commit: 'Release new version'
-          version: npm run version
+          version: changeset version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create new release if release PR is merged
         if: steps.changesets.outputs.hasChangesets == 'false'
         run: |
+          npm run version
           npx changeset tag && git push origin --tags
           COMMIT_TAG=$(git tag --points-at HEAD)
           if [ -n "$COMMIT_TAG" ]; then
