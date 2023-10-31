@@ -30,9 +30,6 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
 
-      - name: Install changeset dependencies
-        run: npm install
-
       - name: Create release PR if new changesets are present
         id: changesets
         uses: changesets/action@v1
