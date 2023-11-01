@@ -20,6 +20,7 @@ import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -29,8 +30,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
+import com.evervault.sdk.input.ui.component.AutofillComponent
 import com.evervault.sdk.input.ui.component.CustomTextField
-import com.evervault.sdk.input.ui.modifier.autofill
+import com.evervault.sdk.input.ui.modifier.autofillOnFocusChange
 
 internal class PaymentCardInputScopeImpl(
     private val textStyle: TextStyle,
@@ -243,47 +245,52 @@ internal class PaymentCardInputScopeImpl(
         onNext: (() -> Unit)? = null,
         autofillType: AutofillType
     ) {
-        BasicTextField(
-            value = state.value,
-            onValueChange = { state.value = it },
-            modifier = modifier.autofill(
-                autofillTypes = listOf(autofillType),
-                onFill = { state.value = TextFieldValue(it) }
-            ),
-            textStyle = options.textStyle.invoke(textStyle),
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrect = false,
-                keyboardType = KeyboardType.Number,
-                imeAction = if (onNext == null) ImeAction.Done else ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { onNext?.invoke() },
-            ),
-            decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.DecorationBox(
-                    value = state.value.text,
-                    innerTextField = innerTextField,
-                    enabled = true,
-                    singleLine = true,
-                    visualTransformation = VisualTransformation.None,
-                    interactionSource = remember { MutableInteractionSource() },
-                    placeholder = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = placeholder,
-                            style = options.textStyle.invoke(placeholderTextStyle),
-                        )
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    ),
-                    contentPadding = PaddingValues(0.dp),
-                )
-            }
-        )
+        val autofill = LocalAutofill.current
+
+        AutofillComponent(
+            modifier = modifier,
+            autofillTypes = listOf(autofillType),
+            onFill = { state.value = TextFieldValue(it) }
+        ) { autofillNode ->
+            BasicTextField(
+                value = state.value,
+                onValueChange = { state.value = it },
+                modifier = modifier.autofillOnFocusChange(autofill, autofillNode),
+                textStyle = options.textStyle.invoke(textStyle),
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Number,
+                    imeAction = if (onNext == null) ImeAction.Done else ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { onNext?.invoke() },
+                ),
+                decorationBox = @Composable { innerTextField ->
+                    TextFieldDefaults.DecorationBox(
+                        value = state.value.text,
+                        innerTextField = innerTextField,
+                        enabled = true,
+                        singleLine = true,
+                        visualTransformation = VisualTransformation.None,
+                        interactionSource = remember { MutableInteractionSource() },
+                        placeholder = {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = placeholder,
+                                style = options.textStyle.invoke(placeholderTextStyle),
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                        ),
+                        contentPadding = PaddingValues(0.dp),
+                    )
+                }
+            )
+        }
     }
 }
