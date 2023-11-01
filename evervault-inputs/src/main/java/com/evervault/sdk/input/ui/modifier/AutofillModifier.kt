@@ -7,7 +7,7 @@ import androidx.compose.ui.autofill.AutofillNode
 import androidx.compose.ui.focus.onFocusChanged
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun Modifier.autofillOnFocusChange(autofill: Autofill?, autofillNode: AutofillNode) =
+internal fun Modifier.autofillOnFocusChange(autofill: Autofill?, autofillNode: AutofillNode) =
     this.onFocusChanged { focusState ->
         autofill?.run {
             if (focusState.isFocused) {
