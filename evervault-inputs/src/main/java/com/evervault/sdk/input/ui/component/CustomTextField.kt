@@ -14,8 +14,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
 import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.evervault.sdk.input.ui.modifier.autofillBoundingBox
 import com.evervault.sdk.input.ui.modifier.autofillOnFocusChange
 
 /**
@@ -42,41 +45,44 @@ internal fun CustomTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val autofill = LocalAutofill.current
-
-    AutofillComponent(
-        modifier = modifier,
+    val autofillNode = AutofillNode(
         autofillTypes = listOf(autofillType),
         onFill = { state.value = TextFieldValue(it) }
-    ) { autofillNode ->
-        BasicTextField(
-            value = state.value,
-            onValueChange = { state.value = it },
-            modifier = modifier.autofillOnFocusChange(autofill, autofillNode),
-            textStyle = textStyle,
-            interactionSource = interactionSource,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrect = false,
-                keyboardType = KeyboardType.Number,
-                imeAction = if (onNext == null) ImeAction.Done else ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { onNext?.invoke() },
-            ),
-            decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.DecorationBox(
-                    value = state.value.text,
-                    innerTextField = innerTextField,
-                    enabled = true,
-                    singleLine = true,
-                    visualTransformation = VisualTransformation.None,
-                    interactionSource = interactionSource,
-                    label = label,
-                    placeholder = placeholder,
-                    colors = textFieldColors,
-                    contentPadding = PaddingValues(0.dp),
-                )
-            }
-        )
-    }
+    )
+    LocalAutofillTree.current.plusAssign(autofillNode)
+
+
+    BasicTextField(
+        value = state.value,
+        onValueChange = { state.value = it },
+        modifier = modifier
+            .autofillBoundingBox(autofillNode)
+            .autofillOnFocusChange(autofill, autofillNode),
+        textStyle = textStyle,
+        interactionSource = interactionSource,
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.None,
+            autoCorrect = false,
+            keyboardType = KeyboardType.Number,
+            imeAction = if (onNext == null) ImeAction.Done else ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = { onNext?.invoke() },
+        ),
+        decorationBox = @Composable { innerTextField ->
+            TextFieldDefaults.DecorationBox(
+                value = state.value.text,
+                innerTextField = innerTextField,
+                enabled = true,
+                singleLine = true,
+                visualTransformation = VisualTransformation.None,
+                interactionSource = interactionSource,
+                label = label,
+                placeholder = placeholder,
+                colors = textFieldColors,
+                contentPadding = PaddingValues(0.dp),
+            )
+        }
+    )
+
 }
