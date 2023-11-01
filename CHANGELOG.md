@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.6.1
+
+### Patch Changes
+
+- 49b792a: Adding version to evervault-common to fix version dependency issue.
+
 ## 1.6.0
 
 ### Minor Changes
