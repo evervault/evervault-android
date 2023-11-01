@@ -7,10 +7,9 @@ plugins {
 android {
     namespace = "com.evervault.sdk.common"
     compileSdk = 33
-
+    version = "0.1.0"
     defaultConfig {
         minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
