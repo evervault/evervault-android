@@ -14,7 +14,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
 import com.evervault.sdk.input.ui.component.CustomTextField
+import com.evervault.sdk.input.ui.modifier.autofill
 
 internal class PaymentCardInputScopeImpl(
     private val textStyle: TextStyle,
@@ -78,6 +81,7 @@ internal class PaymentCardInputScopeImpl(
         )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
@@ -90,9 +94,11 @@ internal class PaymentCardInputScopeImpl(
             modifier = modifier.focusRequester(creditCardRequester),
             options = options,
             onNext = { expiryRequester.requestFocus() },
+            autofillType = AutofillType.CreditCardNumber
         )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
@@ -109,6 +115,7 @@ internal class PaymentCardInputScopeImpl(
             textStyle = textStyle,
             textFieldColors = textFieldColors,
             onNext = { expiryRequester.requestFocus() },
+            autofillType = AutofillType.CreditCardNumber
         )
     }
 
@@ -131,6 +138,7 @@ internal class PaymentCardInputScopeImpl(
         )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun ExpiryField(
         modifier: Modifier,
@@ -143,9 +151,11 @@ internal class PaymentCardInputScopeImpl(
             modifier = modifier.focusRequester(expiryRequester),
             options = options,
             onNext = { cvcRequester.requestFocus() },
+            autofillType = AutofillType.CreditCardExpirationDate
         )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun ExpiryField(
         modifier: Modifier,
@@ -162,6 +172,7 @@ internal class PaymentCardInputScopeImpl(
             textStyle = textStyle,
             textFieldColors = textFieldColors,
             onNext = { cvcRequester.requestFocus() },
+            autofillType = AutofillType.CreditCardExpirationDate
         )
     }
 
@@ -186,6 +197,7 @@ internal class PaymentCardInputScopeImpl(
         )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CVCField(
         modifier: Modifier,
@@ -197,9 +209,11 @@ internal class PaymentCardInputScopeImpl(
             placeholder = placeholder,
             modifier = modifier.focusRequester(cvcRequester),
             options = options,
+            autofillType = AutofillType.CreditCardSecurityCode
         )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CVCField(
         modifier: Modifier,
@@ -214,11 +228,12 @@ internal class PaymentCardInputScopeImpl(
             label = label,
             placeholder = placeholder,
             textStyle = textStyle,
-            textFieldColors = textFieldColors
+            textFieldColors = textFieldColors,
+            autofillType = AutofillType.CreditCardSecurityCode
         )
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     private fun CustomTextField(
         state: MutableState<TextFieldValue>,
@@ -226,11 +241,15 @@ internal class PaymentCardInputScopeImpl(
         modifier: Modifier = Modifier,
         options: PaymentCardInputScope.TextFieldOptions,
         onNext: (() -> Unit)? = null,
+        autofillType: AutofillType
     ) {
         BasicTextField(
             value = state.value,
             onValueChange = { state.value = it },
-            modifier = modifier,
+            modifier = modifier.autofill(
+                autofillTypes = listOf(autofillType),
+                onFill = { state.value = TextFieldValue(it) }
+            ),
             textStyle = options.textStyle.invoke(textStyle),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
