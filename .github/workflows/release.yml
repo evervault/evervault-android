@@ -62,7 +62,7 @@ jobs:
                   print;
               }
             ' CHANGELOG.md)
-            gh release create v$COMMIT_TAG -t "$COMMIT_TAG" -n "$CHANGELOG"
+            gh release create $COMMIT_TAG -t "$COMMIT_TAG" -n "$CHANGELOG"
             ./generate_gradle_properties.bash ${{ github.workspace }}
             ./gradlew publishToSonatype
           else
