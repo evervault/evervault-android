@@ -15,7 +15,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
-import com.evervault.sdk.common.Evervault
+import com.evervault.sdk.Evervault
 import com.evervault.sdk.input.model.CreditCardType
 import com.evervault.sdk.input.model.PaymentCardData
 import com.evervault.sdk.input.model.PaymentCardError
