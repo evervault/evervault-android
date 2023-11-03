@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.6.2
+
+### Patch Changes
+
+- dda310b: revert to using external evervault-core library
+
 ## 1.6.1
 
 ### Patch Changes
