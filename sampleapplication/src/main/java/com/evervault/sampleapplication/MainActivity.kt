@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.evervault.sampleapplication.navigation.NavigationGraph
 import com.evervault.sampleapplication.ui.theme.EvervaultandroidTheme
-import com.evervault.sdk.common.CustomConfig
-import com.evervault.sdk.common.Evervault
+import com.evervault.sdk.CustomConfig
+import com.evervault.sdk.Evervault
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
