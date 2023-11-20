@@ -19,6 +19,7 @@ import com.evervault.sdk.cages.PcrCallback
 import com.evervault.sdk.cages.cagesTrustManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.evervault.sampleapplication.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,8 +32,8 @@ import java.io.IOException
 @Composable
 fun CageView() {
 
-    val cageName = "hello-cage" // TODO replace with a property
-    val appUuid = "app-5e6b75800e28" // TODO replace with a property
+    val cageName = BuildConfig.CAGE_UUID
+    val appUuid = BuildConfig.APP_UUID
 
     var cachedCallResponseText: String? by remember { mutableStateOf(null) }
     var staticPCRCallResponseText: String? by remember { mutableStateOf(null) }
@@ -64,7 +65,7 @@ fun cacheManagerCageCall(cageName: String, appUuid: String): String {
     val url = "https://$cageName.$appUuid.cage.evervault.com/compute"
     val pcrClient = OkHttpClient.Builder().build()
     val pcrRequest = Request.Builder()
-        .url("https://blackhole.posterior.io/0xljnh") // TODO replace with a property
+        .url(BuildConfig.PCR_CALLBACK_URL)
         .build()
 
     val jsonPayload = JSONObject()

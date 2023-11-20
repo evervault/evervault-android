@@ -18,6 +18,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "CAGE_UUID", "\"hello-cage\"")
+        buildConfigField("String", "APP_UUID", "\"app-5e6b75800e28\"")
+        buildConfigField("String", "PCR_CALLBACK_URL", "\"https://blackhole.posterior.io/0xljnh\"")
     }
 
     buildTypes {
@@ -25,6 +29,9 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
