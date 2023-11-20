@@ -92,6 +92,12 @@ class CagePcrManagerTest {
         manager.invoke(cageName, throwingPcrCallback)
     }
 
+    @Test(expected = PCRCallbackError::class)
+    fun `accessing empty cache throws error`() {
+        val cageName = "fifthCage";
+        manager.getPCRs(cageName)
+    }
+
     private fun createMockHttpClient(responsePCRs: List<PCRs>): OkHttpClient {
         val mockClient = mock(OkHttpClient::class.java)
         val mockCall = mock(Call::class.java)

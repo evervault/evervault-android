@@ -4,7 +4,6 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
@@ -25,8 +24,8 @@ private data class PCRCallbackCache(
     val pcrs: List<PCRs>?
         get() = lock.read { _pcrs }
 
-    fun setPcrs(newPcrs: List<PCRs>) {
-        lock.write { _pcrs = newPcrs }
+    fun setPCRs(newPCRs: List<PCRs>) {
+        lock.write { _pcrs = newPCRs }
     }
 }
 
@@ -64,7 +63,7 @@ class CagePcrManager private constructor(callbackDuration: Long){
                         Log.w(TAG, "Invoking cached PCR callback for Cage $k")
                         try {
                             cache.callback.invoke().also {
-                                cache.setPcrs(it)
+                                cache.setPCRs(it)
                             }
                         } catch (e: Exception) {
                             Log.e(TAG, "Error invoking PCR callback for Cage $k ${e.message!!}")
@@ -83,7 +82,7 @@ class CagePcrManager private constructor(callbackDuration: Long){
                 callback = pcrCallback
             )
             try {
-                cacheManager[cageName]?.setPcrs(invokeCallback(pcrCallback))
+                cacheManager[cageName]?.setPCRs(invokeCallback(pcrCallback))
             } catch (e: Exception) {
                 e.message?.let {
                     throw PCRCallbackError(e.message!!)
@@ -101,6 +100,6 @@ class CagePcrManager private constructor(callbackDuration: Long){
     }
 
     fun getPCRs(cageName: String): List<PCRs> {
-        return cacheManager[cageName]?.pcrs!!
+        return cacheManager[cageName]?.pcrs ?: throw PCRCallbackError("Unable to retrieve PCRs from empty cache")
     }
 }

@@ -29,25 +29,22 @@ import java.io.IOException
 @Composable
 fun CageView() {
 
-    val cageName = "staging-synthetic-cage"
-    val appId = "app-1bba8ba15402"
+    val cageName = "hello-cage"
+    val appId = "app-5e6b75800e28"
 
     var responseText: String? by remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            val url = "https://$cageName.$appId.cage.evervault.dev/echo"
+            val url = "https://$cageName.$appId.cage.evervault.com/compute"
             val pcrClient = OkHttpClient.Builder().build()
             val pcrRequest = Request.Builder()
                 .url("https://blackhole.posterior.io/0xljnh")
                 .build()
 
-            // Create JSON using a JSONObject or a string
             val jsonPayload = JSONObject()
             jsonPayload.put("hello", "world")
-            // Or if you prefer a raw string: val jsonPayload = """{"hello":"world"}"""
 
-            // Create RequestBody with JSON media type
             val requestBody = RequestBody.create(
                 "application/json; charset=utf-8".toMediaTypeOrNull(),
                 jsonPayload.toString()
@@ -55,7 +52,6 @@ fun CageView() {
 
             val request = Request.Builder()
                 .url(url)
-                .header("api-key", "ev:key:1:2KYxc0TJZw6ozOFR7IxDX6PdCA6HdpvVge5NiRwsT00QCYvxlhjmMk786ywrSNUIO:MD23Ke:lfTpz5")
                 .header("content-type", "application/json")
                 .post(requestBody)
                 .build()
