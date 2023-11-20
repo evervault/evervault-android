@@ -12,8 +12,6 @@ import kotlin.Exception
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
-typealias PcrCallback = () -> List<PCRs>
-
 class PCRCallbackError(message: String): Exception(message)
 
 private data class PCRCallbackCache(

@@ -2,6 +2,8 @@ package com.evervault.sdk.cages
 
 private const val DEFAULT_CALLBACK_DURATION: Long = 300000 // 5 Minutes
 
+typealias PcrCallback = () -> List<PCRs>
+
 data class AttestationData(
     val cageName: String,
     var pcrs: List<PCRs>,
