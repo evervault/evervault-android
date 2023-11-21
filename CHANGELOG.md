@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.7.0
+
+### Minor Changes
+
+- 28ceca6: Implement a PCR cache manager for working with attestable cages. This feature allows for the updating of a list of PCRs from an external callback url
+
 ## 1.6.2
 
 ### Patch Changes
