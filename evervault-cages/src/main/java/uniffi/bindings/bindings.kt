@@ -584,7 +584,7 @@ public object FfiConverterSequenceTypePCRs : FfiConverterRustBuffer<List<PcRs>> 
     }
 
     override fun allocationSize(value: List<PcRs>): Int {
-        val sizeForLength = 4
+        val sizeForLength = value.size
         val sizeForItems = value.map { FfiConverterTypePCRs.allocationSize(it) }.sum()
         return sizeForLength + sizeForItems
     }

@@ -49,6 +49,30 @@ class AttestationTest {
     }
 
     @Test
+    fun testSuccessfulAttestationWithSinglePCR() {
+        val client = OkHttpClient.Builder()
+            .cagesTrustManager(
+                AttestationData(
+                    cageName = cageName,
+                    // Replace with legitimate PCR strings when not in debug mode
+                    PCRs(
+                        pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                    )
+                ),
+                appUuid
+            )
+            .build()
+
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        val response = client.newCall(request).execute()
+        // 401 means TLS handshake was successful
+        assertEquals(response.code, 401)
+    }
+
+    @Test
     fun testIncorrectPCRs() {
         val client = OkHttpClient.Builder()
             .cagesTrustManager(
