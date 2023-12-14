@@ -540,10 +540,10 @@ public object FfiConverterByteArray : FfiConverterRustBuffer<ByteArray> {
 }
 
 data class PcRs(
-    var `pcr0`: String,
-    var `pcr1`: String,
-    var `pcr2`: String,
-    var `pcr8`: String,
+    var `pcr0`: String?,
+    var `pcr1`: String?,
+    var `pcr2`: String?,
+    var `pcr8`: String?
 )
 
 public object FfiConverterTypePCRs : FfiConverterRustBuffer<PcRs> {
@@ -556,22 +556,22 @@ public object FfiConverterTypePCRs : FfiConverterRustBuffer<PcRs> {
         )
     }
 
-    override fun allocationSize(value: PcRs) =
-        (
-            FfiConverterString.allocationSize(value.`pcr0`) +
-                FfiConverterString.allocationSize(value.`pcr1`) +
-                FfiConverterString.allocationSize(value.`pcr2`) +
-                FfiConverterString.allocationSize(value.`pcr8`)
-        )
-
+    override fun allocationSize(value: PcRs): Int {
+        var allocationBufferSize = 0;
+        value.pcr0?.let { v -> allocationBufferSize += FfiConverterString.allocationSize(v) }
+        value.pcr1?.let { v -> allocationBufferSize += FfiConverterString.allocationSize(v) }
+        value.pcr2?.let { v -> allocationBufferSize += FfiConverterString.allocationSize(v) }
+        value.pcr8?.let { v -> allocationBufferSize += FfiConverterString.allocationSize(v) }
+        return allocationBufferSize;
+    }
     override fun write(
         value: PcRs,
         buf: ByteBuffer,
     ) {
-        FfiConverterString.write(value.`pcr0`, buf)
-        FfiConverterString.write(value.`pcr1`, buf)
-        FfiConverterString.write(value.`pcr2`, buf)
-        FfiConverterString.write(value.`pcr8`, buf)
+        value.pcr0?.let{v -> FfiConverterString.write(v, buf)}
+        value.pcr1?.let{v -> FfiConverterString.write(v, buf)}
+        value.pcr2?.let{v -> FfiConverterString.write(v, buf)}
+        value.pcr8?.let{v -> FfiConverterString.write(v, buf)}
     }
 }
 
