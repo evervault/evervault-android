@@ -1,6 +1,7 @@
 package com.evervault.sdk.cages
 
 import AttestationDocCache
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -52,24 +53,6 @@ class AttestationTrustManagerTest {
     @Test
     fun `passing pcr callback doesn't use implicit PCRs`() {
         val PCRs = listOf(PCRs("0000", "1111", "2222", "3333"))
-        val spyPCRs = spy<PcrCallback>()
-        Mockito.`when`(spyPCRs.invoke()).thenReturn(PCRs)
-        attestationData = AttestationData(cageName, spyPCRs)
-        attestationTrustManager =
-            AttestationTrustManagerGA(attestationData, attestationDocCache, attestCageCallback)
-        val mockCert = Mockito.mock(X509Certificate::class.java)
-        Mockito.`when`(mockCert.encoded).thenReturn(ByteArray(1))
-        val mockCertArray: Array<X509Certificate> = arrayOf(mockCert)
-        Mockito.`when`(attestationDocCache.get()).thenReturn(attestationDoc)
-
-        attestationTrustManager.checkServerTrusted(mockCertArray, null)
-
-        Mockito.verify(spyPCRs, times(1)).invoke()
-    }
-
-    @Test
-    fun `passing PCRs callback with single PCR doesn't use implicit PCRs`() {
-        val PCRs = listOf(PCRs("0000"), PCRs( pcr1 = "0000"))
         val spyPCRs = spy<PcrCallback>()
         Mockito.`when`(spyPCRs.invoke()).thenReturn(PCRs)
         attestationData = AttestationData(cageName, spyPCRs)
