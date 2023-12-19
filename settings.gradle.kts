@@ -11,5 +11,4 @@ rootProject.name = "evervault-android"
 include(":sampleapplication")
 include(":evervault-inputs")
 include(":evervault-common")
-include(":evervault-common-e2e")
 include(":evervault-enclaves")
