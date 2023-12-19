@@ -59,6 +59,33 @@ class CagePcrManagerTest {
     @Test
     fun `calling external PCR service sets PCRs`() = runTest {
         val cageName = "thirdCages"
+        val testPCRs = listOf(PCRs("4444"), PCRs(pcr8 = "3333"))
+        val httpClient = createMockHttpClient(testPCRs)
+        val testPcrCallback = {
+            val pcrRequest = Request.Builder()
+                .url("https://pcrcallback.com")
+                .header("content-type", "application/json")
+                .get()
+                .build()
+            val pcrResponse: ResponseBody? = httpClient.newCall(pcrRequest).execute().body
+            if (pcrResponse !== null) {
+                val type = object : TypeToken<List<PCRs>>() {}.type
+                val responseMap: List<PCRs> = Gson().fromJson(pcrResponse.string(), type)
+                responseMap
+            } else {
+                throw Error("Response body is null")
+            }
+        }
+        manager.invoke(cageName, testPcrCallback)
+
+        val pcrsResponse = manager.getPCRs(cageName)
+
+        assertEquals("4444", pcrsResponse[0].pcr0)
+    }
+
+    @Test
+    fun `calling external PCREservice that returns singularPCRs calls`() = runTest {
+        val cageName = "thirdCages"
         val testPCRs = listOf(PCRs("4444", "1111", "2222", "3333"))
         val httpClient = createMockHttpClient(testPCRs)
         val testPcrCallback = {

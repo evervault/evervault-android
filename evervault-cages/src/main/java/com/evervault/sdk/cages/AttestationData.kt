@@ -15,8 +15,8 @@ data class AttestationData(
 }
 
 data class PCRs(
-    val pcr0: String,
-    val pcr1: String,
-    val pcr2: String,
-    val pcr8: String
+    val pcr0: String? = null,
+    val pcr1: String? = null,
+    val pcr2: String? = null,
+    val pcr8: String? = null
 )

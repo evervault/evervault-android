@@ -1,6 +1,7 @@
 package com.evervault.sdk.cages
 
 import AttestationDocCache
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -19,17 +20,19 @@ class AttestationTrustManagerTest {
     private lateinit var attestationData: AttestationData
 
     val cageName = "test-cage"
-    val appUuid ="app-uuid"
+    val appUuid = "app-uuid"
     val PCRs = PCRs("0000", "1111", "2222", "3333")
     val attestationDoc = ByteArray(0)
     val attestCageCallback: AttestCageCallback = { _, _, _ ->
         true
     }
+
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
         attestationData = AttestationData(cageName, PCRs)
-        attestationTrustManager = AttestationTrustManagerGA(attestationData, attestationDocCache, attestCageCallback)
+        attestationTrustManager =
+            AttestationTrustManagerGA(attestationData, attestationDocCache, attestCageCallback)
     }
 
     @Test(expected = CertificateException::class)
@@ -53,7 +56,8 @@ class AttestationTrustManagerTest {
         val spyPCRs = spy<PcrCallback>()
         Mockito.`when`(spyPCRs.invoke()).thenReturn(PCRs)
         attestationData = AttestationData(cageName, spyPCRs)
-        attestationTrustManager = AttestationTrustManagerGA(attestationData, attestationDocCache, attestCageCallback)
+        attestationTrustManager =
+            AttestationTrustManagerGA(attestationData, attestationDocCache, attestCageCallback)
         val mockCert = Mockito.mock(X509Certificate::class.java)
         Mockito.`when`(mockCert.encoded).thenReturn(ByteArray(1))
         val mockCertArray: Array<X509Certificate> = arrayOf(mockCert)
