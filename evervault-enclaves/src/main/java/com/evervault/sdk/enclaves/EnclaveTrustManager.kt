@@ -1,4 +1,4 @@
-package com.evervault.sdk.cages
+package com.evervault.sdk.enclaves
 
 import AttestationDocCache
 import okhttp3.OkHttpClient
@@ -10,9 +10,9 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.X509TrustManager
 
-typealias AttestCageCallback = (remoteCertificateData: ByteArray, expectedPCRs: List<PcRs>, attestationDoc: ByteArray) -> Boolean
+typealias AttestEnclaveCallback = (remoteCertificateData: ByteArray, expectedPCRs: List<PcRs>, attestationDoc: ByteArray) -> Boolean
 
-class AttestationTrustManagerGA(private val cageAttestationData: AttestationData, private val cache: AttestationDocCache, private val attestCageCallback: AttestCageCallback) : X509TrustManager {
+class AttestationTrustManagerGA(private val enclaveAttestationData: AttestationData, private val cache: AttestationDocCache, private val attestEnclaveCallback: AttestEnclaveCallback) : X509TrustManager {
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
         throw UnsupportedOperationException("Client certificates not supported!")
     }
@@ -25,17 +25,17 @@ class AttestationTrustManagerGA(private val cageAttestationData: AttestationData
 
         val attestationDoc : ByteArray = cache.get()
 
-        if (cageAttestationData.pcrCallback !== null) {
-            val cagePcrManager = CagePcrManager.getInstance(cageAttestationData.callbackInterval)
-            cagePcrManager.invoke(cageAttestationData.cageName, cageAttestationData.pcrCallback)
-            attestPCRs(remoteCertificateData, cagePcrManager.getPCRs(cageAttestationData.cageName), attestationDoc)
+        if (enclaveAttestationData.pcrCallback !== null) {
+            val enclavePcrManager = EnclavePcrManager.getInstance(enclaveAttestationData.callbackInterval)
+            enclavePcrManager.invoke(enclaveAttestationData.enclaveName, enclaveAttestationData.pcrCallback)
+            attestPCRs(remoteCertificateData, enclavePcrManager.getPCRs(enclaveAttestationData.enclaveName), attestationDoc)
         } else {
-            attestPCRs(remoteCertificateData, cageAttestationData.pcrs, attestationDoc)
+            attestPCRs(remoteCertificateData, enclaveAttestationData.pcrs, attestationDoc)
         }
     }
 
     private fun attestPCRs(remoteCertificateData: ByteArray, expectedPCRs: List<PCRs>, attestationDoc: ByteArray) {
-        val result = attestCageCallback(remoteCertificateData, expectedPCRs.map {
+        val result = attestEnclaveCallback(remoteCertificateData, expectedPCRs.map {
             PcRs(
                 it.pcr0,
                 it.pcr1,
@@ -53,12 +53,12 @@ class AttestationTrustManagerGA(private val cageAttestationData: AttestationData
     }
 }
 
-fun OkHttpClient.Builder.cagesTrustManager(cageAttestationData: AttestationData, appUuid: String): OkHttpClient.Builder {
-    val cache = AttestationDocCache(cageAttestationData.cageName, appUuid)
-    val attestCageCallback: AttestCageCallback = { remoteCertificateData, expectedPCRs, attestationDoc ->
+fun OkHttpClient.Builder.enclavesTrustManager(enclaveAttestationData: AttestationData, appUuid: String): OkHttpClient.Builder {
+    val cache = AttestationDocCache(enclaveAttestationData.enclaveName, appUuid)
+    val attestEnclaveCallback: AttestEnclaveCallback = { remoteCertificateData, expectedPCRs, attestationDoc ->
         attestCage(remoteCertificateData, expectedPCRs, attestationDoc)
     }
-    val trustManager = AttestationTrustManagerGA(cageAttestationData, cache, attestCageCallback)
+    val trustManager = AttestationTrustManagerGA(enclaveAttestationData, cache, attestEnclaveCallback)
     val sslContext = SSLContext.getInstance("TLSv1.2")
     sslContext.init(null, arrayOf(trustManager), SecureRandom())
 

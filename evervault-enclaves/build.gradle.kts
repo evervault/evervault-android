@@ -12,7 +12,7 @@ plugins {
 
 android {
     group = "com.evervault.sdk"
-    namespace = "com.evervault.sdk.cages"
+    namespace = "com.evervault.sdk.enclaves"
     compileSdk = 33
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
@@ -86,7 +86,7 @@ publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "com.evervault.sdk"
-            artifactId = "evervault-cages"
+            artifactId = "evervault-enclaves"
             version = version
 
             afterEvaluate {

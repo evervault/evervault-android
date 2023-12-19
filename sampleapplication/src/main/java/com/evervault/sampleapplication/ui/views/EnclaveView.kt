@@ -12,11 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.evervault.sdk.cages.AttestationData
-import com.evervault.sdk.cages.PCRCallbackError
-import com.evervault.sdk.cages.PCRs
-import com.evervault.sdk.cages.PcrCallback
-import com.evervault.sdk.cages.cagesTrustManager
+import com.evervault.sdk.enclaves.AttestationData
+import com.evervault.sdk.enclaves.PCRCallbackError
+import com.evervault.sdk.enclaves.PCRs
+import com.evervault.sdk.enclaves.PcrCallback
+import com.evervault.sdk.enclaves.enclavesTrustManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.evervault.sampleapplication.BuildConfig
@@ -30,9 +30,9 @@ import org.json.JSONObject
 import java.io.IOException
 
 @Composable
-fun CageView() {
+fun EnclaveView() {
 
-    val cageName = BuildConfig.CAGE_UUID
+    val enclaveName = BuildConfig.ENCLAVE_UUID
     val appUuid = BuildConfig.APP_UUID
 
     var cachedCallResponseText: String? by remember { mutableStateOf(null) }
@@ -40,8 +40,8 @@ fun CageView() {
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            cachedCallResponseText = cacheManagerCageCall(cageName, appUuid)
-            staticPCRCallResponseText = staticPCRsCageRequest(cageName, appUuid)
+            cachedCallResponseText = cacheManagerEnclaveCall(enclaveName, appUuid)
+            staticPCRCallResponseText = staticPCRsEnclaveRequest(enclaveName, appUuid)
         }
     }
 
@@ -61,8 +61,8 @@ fun CageView() {
     }
 }
 
-fun cacheManagerCageCall(cageName: String, appUuid: String): String {
-    val url = "https://$cageName.$appUuid.cage.evervault.com/compute"
+fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
+    val url = "https://$enclaveName.$appUuid.enclave.evervault.com/compute"
     val pcrClient = OkHttpClient.Builder().build()
     val pcrRequest = Request.Builder()
         .url(BuildConfig.PCR_CALLBACK_URL)
@@ -92,9 +92,9 @@ fun cacheManagerCageCall(cageName: String, appUuid: String): String {
         }
 
         val client = OkHttpClient.Builder()
-            .cagesTrustManager(
+            .enclavesTrustManager(
                 AttestationData(
-                    cageName = cageName,
+                    enclaveName = enclaveName,
                     pcrCallback
                 ),
                 appUuid
@@ -115,8 +115,8 @@ fun cacheManagerCageCall(cageName: String, appUuid: String): String {
     }
 }
 
-fun staticPCRsCageRequest(cageName: String, appUuid: String): String {
-    val url = "https://$cageName.$appUuid.cage.evervault.com/compute"
+fun staticPCRsEnclaveRequest(enclaveName: String, appUuid: String): String {
+    val url = "https://$enclaveName.$appUuid.enclave.evervault.com/compute"
 
     val jsonPayload = JSONObject()
     jsonPayload.put("a", 1)
@@ -128,9 +128,9 @@ fun staticPCRsCageRequest(cageName: String, appUuid: String): String {
     )
 
     val client = OkHttpClient.Builder()
-        .cagesTrustManager(
+        .enclavesTrustManager(
             AttestationData(
-                cageName = cageName,
+                enclaveName = enclaveName,
                 // Replace with legitimate PCR strings when not in debug mode
                 PCRs(
                     pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",

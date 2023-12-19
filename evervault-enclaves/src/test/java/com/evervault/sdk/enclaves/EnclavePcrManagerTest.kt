@@ -1,7 +1,7 @@
-import com.evervault.sdk.cages.CagePcrManager
-import com.evervault.sdk.cages.PCRCallbackError
-import com.evervault.sdk.cages.PCRs
-import com.evervault.sdk.cages.PcrCallback
+import com.evervault.sdk.enclaves.EnclavePcrManager
+import com.evervault.sdk.enclaves.PCRCallbackError
+import com.evervault.sdk.enclaves.PCRs
+import com.evervault.sdk.enclaves.PcrCallback
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,23 +22,23 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.anyOrNull
 
 @ExperimentalCoroutinesApi
-class CagePcrManagerTest {
-    private val testCageName = "testCage"
+class EnclavePcrManagerTest {
+    private val testEnclaveName = "testEnclave"
     private lateinit var testPcrCallback: PcrCallback
-    private lateinit var manager: CagePcrManager
+    private lateinit var manager: EnclavePcrManager
 
     @Before
     fun setUp() {
         testPcrCallback = { listOf(PCRs("0000", "1111", "2222", "3333")) }
 
-        manager = CagePcrManager.getInstance(10000000)
+        manager = EnclavePcrManager.getInstance(10000000)
     }
 
     @Test
     fun `when startPcrManager is invoked, it returns a list of PCRs`() = runTest {
-        manager.invoke(testCageName, testPcrCallback)
+        manager.invoke(testEnclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(testCageName)
+        val pcrsResponse = manager.getPCRs(testEnclaveName)
 
         assertNotNull(pcrsResponse)
         assertEquals(1, pcrsResponse.size)
@@ -46,19 +46,19 @@ class CagePcrManagerTest {
     }
 
     @Test
-    fun `setting pcrs for a second cage returns different pcrs`() = runTest {
-        val cageName = "secondCage"
+    fun `setting pcrs for a second enclave returns different pcrs`() = runTest {
+        val enclaveName = "secondEnclave"
         val testPcrCallback = { listOf(PCRs("3333", "1111", "2222", "3333")) }
-        manager.invoke(cageName, testPcrCallback)
+        manager.invoke(enclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(cageName)
+        val pcrsResponse = manager.getPCRs(enclaveName)
 
         assertEquals("3333", pcrsResponse[0].pcr0)
     }
 
     @Test
     fun `calling external PCR service sets PCRs`() = runTest {
-        val cageName = "thirdCages"
+        val enclaveName = "thirdEnclave"
         val testPCRs = listOf(PCRs("4444"), PCRs(pcr8 = "3333"))
         val httpClient = createMockHttpClient(testPCRs)
         val testPcrCallback = {
@@ -76,16 +76,16 @@ class CagePcrManagerTest {
                 throw Error("Response body is null")
             }
         }
-        manager.invoke(cageName, testPcrCallback)
+        manager.invoke(enclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(cageName)
+        val pcrsResponse = manager.getPCRs(enclaveName)
 
         assertEquals("4444", pcrsResponse[0].pcr0)
     }
 
     @Test
-    fun `calling external PCREservice that returns singularPCRs calls`() = runTest {
-        val cageName = "thirdCages"
+    fun `calling external PCRs service that returns singularPCRs calls`() = runTest {
+        val enclaveName = "thirdEnclave"
         val testPCRs = listOf(PCRs("4444", "1111", "2222", "3333"))
         val httpClient = createMockHttpClient(testPCRs)
         val testPcrCallback = {
@@ -103,26 +103,26 @@ class CagePcrManagerTest {
                 throw Error("Response body is null")
             }
         }
-        manager.invoke(cageName, testPcrCallback)
+        manager.invoke(enclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(cageName)
+        val pcrsResponse = manager.getPCRs(enclaveName)
 
         assertEquals("4444", pcrsResponse[0].pcr0)
     }
 
     @Test(expected = PCRCallbackError::class)
     fun `PCR callback throws exception`() = runTest {
-        val cageName = "fourthCage"
+        val enclaveName = "fourthEnclave"
         val throwingPcrCallback = {
             throw Exception("Error from PCR callback")
         }
-        manager.invoke(cageName, throwingPcrCallback)
+        manager.invoke(enclaveName, throwingPcrCallback)
     }
 
     @Test(expected = PCRCallbackError::class)
     fun `accessing empty cache throws error`() {
-        val cageName = "fifthCage";
-        manager.getPCRs(cageName)
+        val enclaveName = "fifthEnclave";
+        manager.getPCRs(enclaveName)
     }
 
     private fun createMockHttpClient(responsePCRs: List<PCRs>): OkHttpClient {

@@ -1,7 +1,6 @@
-package com.evervault.sdk.cages
+package com.evervault.sdk.enclaves
 
 import AttestationDocCache
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -19,20 +18,19 @@ class AttestationTrustManagerTest {
     private lateinit var attestationTrustManager: AttestationTrustManagerGA
     private lateinit var attestationData: AttestationData
 
-    val cageName = "test-cage"
-    val appUuid = "app-uuid"
+    val enclaveName = "test-enclave"
     val PCRs = PCRs("0000", "1111", "2222", "3333")
     val attestationDoc = ByteArray(0)
-    val attestCageCallback: AttestCageCallback = { _, _, _ ->
+    val attestEnclaveCallback: AttestEnclaveCallback = { _, _, _ ->
         true
     }
 
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
-        attestationData = AttestationData(cageName, PCRs)
+        attestationData = AttestationData(enclaveName, PCRs)
         attestationTrustManager =
-            AttestationTrustManagerGA(attestationData, attestationDocCache, attestCageCallback)
+            AttestationTrustManagerGA(attestationData, attestationDocCache, attestEnclaveCallback)
     }
 
     @Test(expected = CertificateException::class)
@@ -55,9 +53,9 @@ class AttestationTrustManagerTest {
         val PCRs = listOf(PCRs("0000", "1111", "2222", "3333"))
         val spyPCRs = spy<PcrCallback>()
         Mockito.`when`(spyPCRs.invoke()).thenReturn(PCRs)
-        attestationData = AttestationData(cageName, spyPCRs)
-        attestationTrustManager =
-            AttestationTrustManagerGA(attestationData, attestationDocCache, attestCageCallback)
+        attestationData = AttestationData(enclaveName, spyPCRs)
+        attestationTrustManager = 
+            AttestationTrustManagerGA(attestationData, attestationDocCache, attestEnclaveCallback)
         val mockCert = Mockito.mock(X509Certificate::class.java)
         Mockito.`when`(mockCert.encoded).thenReturn(ByteArray(1))
         val mockCertArray: Array<X509Certificate> = arrayOf(mockCert)

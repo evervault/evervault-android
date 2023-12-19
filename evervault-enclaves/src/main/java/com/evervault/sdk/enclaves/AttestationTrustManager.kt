@@ -1,4 +1,4 @@
-package com.evervault.sdk.cages
+package com.evervault.sdk.enclaves
 
 import okhttp3.OkHttpClient
 import uniffi.bindings.PcRs

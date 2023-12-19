@@ -19,7 +19,7 @@ data class AttestationDoc(
     @SerialName("attestation_doc") val attestationDoc: String,
 )
 @OptIn(DelicateCoroutinesApi::class)
-class AttestationDocCache(private val cageName: String, private val appUuid: String) {
+class AttestationDocCache(private val enclaveName: String, private val appUuid: String) {
     private var attestationDoc: ByteArray = ByteArray(0)
     private val lock = ReentrantReadWriteLock()
 
@@ -34,7 +34,7 @@ class AttestationDocCache(private val cageName: String, private val appUuid: Str
         if(retries >= 0) {
             try {
                 val url =
-                    "https://${cageName}.${appUuid}.cage.evervault.com/.well-known/attestation"
+                    "https://${enclaveName}.${appUuid}.enclave.evervault.com/.well-known/attestation"
                 val response = getDocFromCage(url)
                 val decodedDoc = Base64.decode(response.attestationDoc, Base64.DEFAULT)
                 set(decodedDoc)

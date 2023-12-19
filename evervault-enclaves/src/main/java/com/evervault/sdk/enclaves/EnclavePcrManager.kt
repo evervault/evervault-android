@@ -1,4 +1,4 @@
-package com.evervault.sdk.cages
+package com.evervault.sdk.enclaves
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -27,7 +27,7 @@ private data class PCRCallbackCache(
     }
 }
 
-class CagePcrManager private constructor(callbackDuration: Long){
+class EnclavePcrManager private constructor(callbackDuration: Long){
     private var cacheManager: ConcurrentHashMap<String, PCRCallbackCache> = ConcurrentHashMap(50)
     private val scope = CoroutineScope(Dispatchers.IO)
     private var active: Boolean = false
@@ -40,10 +40,10 @@ class CagePcrManager private constructor(callbackDuration: Long){
 
     companion object {
         @Volatile
-        private var instance: CagePcrManager? = null
+        private var instance: EnclavePcrManager? = null
 
         fun getInstance(callbackDuration: Long) = instance ?: synchronized(this) {
-            instance ?: CagePcrManager(callbackDuration).also {
+            instance ?: EnclavePcrManager(callbackDuration).also {
                 instance = it
             }
         }

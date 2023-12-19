@@ -101,14 +101,14 @@ fun MainScreen(navController: NavController) {
                 ListItem(
                     headlineContent = {
                         Text(
-                            text = "Cages",
+                            text = "Enclaves",
                             style = MaterialTheme.typography.headlineSmall
                         )
                     },
                 )
                 ListItem(
-                    headlineContent = { Text(text = "Cage HTTP Request") },
-                    modifier = Modifier.clickable { navController.navigate(Route.Cage.route) }
+                    headlineContent = { Text(text = "Enclave HTTP Request") },
+                    modifier = Modifier.clickable { navController.navigate(Route.Enclave.route) }
                 )
             }
         }
