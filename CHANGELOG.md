@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.8.0
+
+### Minor Changes
+
+- 2a2aad8: PCRs for attestation data are optional. Instead of passing all PCRs to attest a Cage connection you can now pass N PCRs where N is 1..4 valid PCRs
+
 ## 1.7.0
 
 ### Minor Changes
