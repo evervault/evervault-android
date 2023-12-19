@@ -31,5 +31,5 @@ sealed class Route(val route: String) {
     object CreditCardInputCustomComposablesWithoutLabels :
         Route("CreditCardInputCustomComposablesWithoutLabels")
 
-    object Cage : Route("Cage")
+    object Enclave : Route("Enclave")
 }

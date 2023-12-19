@@ -19,7 +19,7 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "CAGE_UUID", "\"hello-cage\"")
+        buildConfigField("String", "ENCLAVE_UUID", "\"hello-enclave\"")
         buildConfigField("String", "APP_UUID", "\"app-5e6b75800e28\"")
         buildConfigField("String", "PCR_CALLBACK_URL", "\"https://blackhole.posterior.io/0xljnh\"")
     }
@@ -55,7 +55,7 @@ android {
 
 dependencies {
     implementation(project(":evervault-inputs"))
-    implementation(project(":evervault-cages"))
+    implementation(project(":evervault-enclaves"))
     implementation("com.evervault.sdk:evervault-core:1.1")
     implementation("androidx.core:core-ktx:1.8.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
