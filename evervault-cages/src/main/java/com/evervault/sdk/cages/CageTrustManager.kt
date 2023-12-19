@@ -53,6 +53,7 @@ class AttestationTrustManagerGA(private val cageAttestationData: AttestationData
     }
 }
 
+@Deprecated("This package is deprecated, please use com.evervault.sdk.enclaves")
 fun OkHttpClient.Builder.cagesTrustManager(cageAttestationData: AttestationData, appUuid: String): OkHttpClient.Builder {
     val cache = AttestationDocCache(cageAttestationData.cageName, appUuid)
     val attestCageCallback: AttestCageCallback = { remoteCertificateData, expectedPCRs, attestationDoc ->

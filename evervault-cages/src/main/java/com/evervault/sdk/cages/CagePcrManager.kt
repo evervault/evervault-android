@@ -12,6 +12,7 @@ import kotlin.Exception
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
+@Deprecated("This package is deprecated, please use com.evervault.sdk.enclaves")
 class PCRCallbackError(message: String): Exception(message)
 
 private data class PCRCallbackCache(
