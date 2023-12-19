@@ -1,0 +1,4 @@
+-keep class com.sun.jna.** { *; }
+-keep class * extends com.sun.jna.* { public *; }
+-keep class uniffi.bindings.** { *; }
+-dontwarn java.awt.**
