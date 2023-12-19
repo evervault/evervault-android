@@ -1,7 +1,7 @@
 package com.evervault.sdk.common.crypto
 
 import com.evervault.sdk.common.DataCipher
-import com.evervault.sdk.common.EncryptionConfig
+import common.EncryptionConfig
 import com.evervault.sdk.common.keys.EvervaultFactory
 import com.evervault.sdk.common.keys.GeneratedSharedKey
 import org.junit.Before
@@ -16,7 +16,7 @@ class JVMDataCipherTest {
     private val key = Key("BF1/Mo85D7t/XvC3I+YYpJvP+OsSyxIbSrhtDhg1SClQ2xdoyGpXYrplO/f8AZ+7cGkUnMF3tzSfLC5Io8BuNyw=")
     private val sharedSecretDeriver = EvervaultFactory.createSharedSecretDeriver()
     private val dataCipherFactory = EvervaultFactory.createDataCipherFactory()
-    private val config =  EncryptionConfig()
+    private val config = common.EncryptionConfig()
 
     lateinit var sharedSecret: GeneratedSharedKey
     lateinit var teamKeyPublic: ByteArray

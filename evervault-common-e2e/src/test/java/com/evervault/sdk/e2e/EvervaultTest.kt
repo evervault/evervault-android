@@ -1,6 +1,6 @@
 package com.evervault.sdk.e2e
 
-import com.evervault.sdk.common.ConfigUrls
+import common.ConfigUrls
 import com.evervault.sdk.common.CustomConfig
 import org.junit.Test
 import com.evervault.sdk.common.Evervault
@@ -73,8 +73,8 @@ class EvervaultTest {
                 arrayData = arrayListOf("hello", "world"),
             )
             // Encrypt some data
-            val encrypted = encryptData(ConfigUrls().apiUrl, data)
-            val clientToken = createClientSideToken(ConfigUrls().apiUrl, encrypted)
+            val encrypted = encryptData(common.ConfigUrls().apiUrl, data)
+            val clientToken = createClientSideToken(common.ConfigUrls().apiUrl, encrypted)
             assertNotNull(clientToken)
             val decrypted = Evervault.shared.decrypt(clientToken.token, encrypted) as Map<*, *>
             println(decrypted)
