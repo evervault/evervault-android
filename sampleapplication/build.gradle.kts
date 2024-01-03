@@ -20,7 +20,7 @@ android {
         }
 
         buildConfigField("String", "ENCLAVE_UUID", "\"hello-enclave\"")
-        buildConfigField("String", "APP_UUID", "\"app-5e6b75800e28\"")
+        buildConfigField("String", "APP_UUID", "\"app-33b88ca7da0d\"")
         buildConfigField("String", "PCR_CALLBACK_URL", "\"https://blackhole.posterior.io/0xljnh\"")
     }
 

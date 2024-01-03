@@ -11,7 +11,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.Exception
 import kotlin.concurrent.read
 import kotlin.concurrent.write
-
 class PCRCallbackError(message: String): Exception(message)
 
 private data class PCRCallbackCache(
@@ -26,7 +25,6 @@ private data class PCRCallbackCache(
         lock.write { _pcrs = newPCRs }
     }
 }
-
 class CagePcrManager private constructor(callbackDuration: Long){
     private var cacheManager: ConcurrentHashMap<String, PCRCallbackCache> = ConcurrentHashMap(50)
     private val scope = CoroutineScope(Dispatchers.IO)

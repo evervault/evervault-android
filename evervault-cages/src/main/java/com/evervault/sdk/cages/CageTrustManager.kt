@@ -10,8 +10,10 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.X509TrustManager
 
+@Deprecated("com.evervault.sdk.cages.AttestCageCallback has been deprecated use com.evervault.sdk.enclaves.AttestEnclaveCallback instead")
 typealias AttestCageCallback = (remoteCertificateData: ByteArray, expectedPCRs: List<PcRs>, attestationDoc: ByteArray) -> Boolean
 
+@Deprecated("com.evervault.sdk.cages.AttestationTrustManagerGA has been deprecated use com.evervault.sdk.enclaves.AttestationTrustManagerGA instead")
 class AttestationTrustManagerGA(private val cageAttestationData: AttestationData, private val cache: AttestationDocCache, private val attestCageCallback: AttestCageCallback) : X509TrustManager {
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
         throw UnsupportedOperationException("Client certificates not supported!")
@@ -52,7 +54,7 @@ class AttestationTrustManagerGA(private val cageAttestationData: AttestationData
         return arrayOf()
     }
 }
-
+@Deprecated("com.evervault.sdk.cages.cagesTrustManager has been deprecated use com.evervault.sdk.enclaves.enclavesTrustManager instead")
 fun OkHttpClient.Builder.cagesTrustManager(cageAttestationData: AttestationData, appUuid: String): OkHttpClient.Builder {
     val cache = AttestationDocCache(cageAttestationData.cageName, appUuid)
     val attestCageCallback: AttestCageCallback = { remoteCertificateData, expectedPCRs, attestationDoc ->

@@ -34,19 +34,22 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Structure.FieldOrder("capacity", "len", "data")
 open class RustBuffer : Structure() {
-    @JvmField var capacity: Int = 0
-    @JvmField var len: Int = 0
-    @JvmField var data: Pointer? = null
+    @JvmField
+    var capacity: Int = 0
+    @JvmField
+    var len: Int = 0
+    @JvmField
+    var data: Pointer? = null
 
-    class ByValue: RustBuffer(), Structure.ByValue
-    class ByReference: RustBuffer(), Structure.ByReference
+    class ByValue : RustBuffer(), Structure.ByValue
+    class ByReference : RustBuffer(), Structure.ByReference
 
     companion object {
         internal fun alloc(size: Int = 0) = rustCall() { status ->
             _UniFFILib.INSTANCE.ffi_bindings_rustbuffer_alloc(size, status).also {
-                if(it.data == null) {
-                   throw RuntimeException("RustBuffer.alloc() returned null data pointer (size=${size})")
-               }
+                if (it.data == null) {
+                    throw RuntimeException("RustBuffer.alloc() returned null data pointer (size=${size})")
+                }
             }
         }
 
@@ -102,11 +105,14 @@ class RustBufferByReference : ByReference(16) {
 
 @Structure.FieldOrder("len", "data")
 open class ForeignBytes : Structure() {
-    @JvmField var len: Int = 0
-    @JvmField var data: Pointer? = null
+    @JvmField
+    var len: Int = 0
+    @JvmField
+    var data: Pointer? = null
 
     class ByValue : ForeignBytes(), Structure.ByValue
 }
+
 // The FfiConverter interface handles converter types to and from the FFI
 //
 // All implementing objects should be public to support external types.  When a
@@ -162,11 +168,11 @@ public interface FfiConverter<KotlinType, FfiType> {
     fun liftFromRustBuffer(rbuf: RustBuffer.ByValue): KotlinType {
         val byteBuf = rbuf.asByteBuffer()!!
         try {
-           val item = read(byteBuf)
-           if (byteBuf.hasRemaining()) {
-               throw RuntimeException("junk remaining in buffer after lifting, something is very wrong!!")
-           }
-           return item
+            val item = read(byteBuf)
+            if (byteBuf.hasRemaining()) {
+                throw RuntimeException("junk remaining in buffer after lifting, something is very wrong!!")
+            }
+            return item
         } finally {
             RustBuffer.free(rbuf)
         }
@@ -174,19 +180,22 @@ public interface FfiConverter<KotlinType, FfiType> {
 }
 
 // FfiConverter that uses `RustBuffer` as the FfiType
-public interface FfiConverterRustBuffer<KotlinType>: FfiConverter<KotlinType, RustBuffer.ByValue> {
+public interface FfiConverterRustBuffer<KotlinType> : FfiConverter<KotlinType, RustBuffer.ByValue> {
     override fun lift(value: RustBuffer.ByValue) = liftFromRustBuffer(value)
     override fun lower(value: KotlinType) = lowerIntoRustBuffer(value)
 }
+
 // A handful of classes and functions to support the generated data structures.
 // This would be a good candidate for isolating in its own ffi-support lib.
 // Error runtime.
 @Structure.FieldOrder("code", "error_buf")
 internal open class RustCallStatus : Structure() {
-    @JvmField var code: Byte = 0
-    @JvmField var error_buf: RustBuffer.ByValue = RustBuffer.ByValue()
+    @JvmField
+    var code: Byte = 0
+    @JvmField
+    var error_buf: RustBuffer.ByValue = RustBuffer.ByValue()
 
-    class ByValue: RustCallStatus(), Structure.ByValue
+    class ByValue : RustCallStatus(), Structure.ByValue
 
     fun isSuccess(): Boolean {
         return code == 0.toByte()
@@ -213,7 +222,10 @@ interface CallStatusErrorHandler<E> {
 // synchronize itself
 
 // Call a rust function that returns a Result<>.  Pass in the Error class companion that corresponds to the Err
-private inline fun <U, E: Exception> rustCallWithError(errorHandler: CallStatusErrorHandler<E>, callback: (RustCallStatus) -> U): U {
+private inline fun <U, E : Exception> rustCallWithError(
+    errorHandler: CallStatusErrorHandler<E>,
+    callback: (RustCallStatus) -> U
+): U {
     var status = RustCallStatus();
     val return_value = callback(status)
     checkCallStatus(errorHandler, status)
@@ -221,7 +233,10 @@ private inline fun <U, E: Exception> rustCallWithError(errorHandler: CallStatusE
 }
 
 // Check RustCallStatus and throw an error if the call wasn't successful
-private fun<E: Exception> checkCallStatus(errorHandler: CallStatusErrorHandler<E>, status: RustCallStatus) {
+private fun <E : Exception> checkCallStatus(
+    errorHandler: CallStatusErrorHandler<E>,
+    status: RustCallStatus
+) {
     if (status.isSuccess()) {
         return
     } else if (status.isError()) {
@@ -241,7 +256,7 @@ private fun<E: Exception> checkCallStatus(errorHandler: CallStatusErrorHandler<E
 }
 
 // CallStatusErrorHandler implementation for times when we don't expect a CALL_ERROR
-object NullCallStatusErrorHandler: CallStatusErrorHandler<InternalException> {
+object NullCallStatusErrorHandler : CallStatusErrorHandler<InternalException> {
     override fun lift(error_buf: RustBuffer.ByValue): InternalException {
         RustBuffer.free(error_buf)
         return InternalException("Unexpected CALL_ERROR")
@@ -279,7 +294,7 @@ public class USize(value: Long = 0) : IntegerType(Native.SIZE_T_SIZE, value, tru
         val size: Int
             get() = Native.SIZE_T_SIZE
 
-        fun readFromBuffer(buf: ByteBuffer) : USize {
+        fun readFromBuffer(buf: ByteBuffer): USize {
             // Make sure we always read usize integers using native byte-order, since they may be
             // casted from pointer values
             buf.order(ByteOrder.nativeOrder())
@@ -307,8 +322,9 @@ public class USize(value: Long = 0) : IntegerType(Native.SIZE_T_SIZE, value, tru
 // Rust when it needs an opaque pointer.
 //
 // TODO: refactor callbacks to use this class
-internal class UniFfiHandleMap<T: Any> {
+internal class UniFfiHandleMap<T : Any> {
     private val map = ConcurrentHashMap<USize, T>()
+
     // Use AtomicInteger for our counter, since we may be on a 32-bit system.  4 billion possible
     // values seems like enough. If somehow we generate 4 billion handles, then this will wrap
     // around back to zero and we can assume the first handle generated will have been dropped by
@@ -357,32 +373,51 @@ internal interface _UniFFILib : Library {
     companion object {
         internal val INSTANCE: _UniFFILib by lazy {
             loadIndirect<_UniFFILib>(componentName = "bindings")
-            .also { lib: _UniFFILib ->
-                uniffiCheckContractApiVersion(lib)
-                uniffiCheckApiChecksums(lib)
+                .also { lib: _UniFFILib ->
+                    uniffiCheckContractApiVersion(lib)
+                    uniffiCheckApiChecksums(lib)
                 }
         }
     }
 
-    fun uniffi_bindings_fn_func_attest_connection(`cert`: RustBuffer.ByValue,`expectedPcrsList`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
+    fun uniffi_bindings_fn_func_attest_connection(
+        `cert`: RustBuffer.ByValue,
+        `expectedPcrsList`: RustBuffer.ByValue,
+        _uniffi_out_err: RustCallStatus,
     ): Byte
-    fun uniffi_bindings_fn_func_attest_enclave(`cert`: RustBuffer.ByValue,`expectedPcrsList`: RustBuffer.ByValue,`attestationDoc`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
+
+    fun uniffi_bindings_fn_func_attest_enclave(
+        `cert`: RustBuffer.ByValue,
+        `expectedPcrsList`: RustBuffer.ByValue,
+        `attestationDoc`: RustBuffer.ByValue,
+        _uniffi_out_err: RustCallStatus,
     ): Byte
-    fun ffi_bindings_rustbuffer_alloc(`size`: Int,_uniffi_out_err: RustCallStatus, 
+
+    fun ffi_bindings_rustbuffer_alloc(
+        `size`: Int, _uniffi_out_err: RustCallStatus,
     ): RustBuffer.ByValue
-    fun ffi_bindings_rustbuffer_from_bytes(`bytes`: ForeignBytes.ByValue,_uniffi_out_err: RustCallStatus, 
+
+    fun ffi_bindings_rustbuffer_from_bytes(
+        `bytes`: ForeignBytes.ByValue, _uniffi_out_err: RustCallStatus,
     ): RustBuffer.ByValue
-    fun ffi_bindings_rustbuffer_free(`buf`: RustBuffer.ByValue,_uniffi_out_err: RustCallStatus, 
+
+    fun ffi_bindings_rustbuffer_free(
+        `buf`: RustBuffer.ByValue, _uniffi_out_err: RustCallStatus,
     ): Unit
-    fun ffi_bindings_rustbuffer_reserve(`buf`: RustBuffer.ByValue,`additional`: Int,_uniffi_out_err: RustCallStatus, 
+
+    fun ffi_bindings_rustbuffer_reserve(
+        `buf`: RustBuffer.ByValue, `additional`: Int, _uniffi_out_err: RustCallStatus,
     ): RustBuffer.ByValue
+
     fun uniffi_bindings_checksum_func_attest_connection(
     ): Short
+
     fun uniffi_bindings_checksum_func_attest_enclave(
     ): Short
+
     fun ffi_bindings_uniffi_contract_version(
     ): Int
-    
+
 }
 
 private fun uniffiCheckContractApiVersion(lib: _UniFFILib) {
@@ -408,7 +443,7 @@ private fun uniffiCheckApiChecksums(lib: _UniFFILib) {
 // Public interface members begin here.
 
 
-public object FfiConverterBoolean: FfiConverter<Boolean, Byte> {
+public object FfiConverterBoolean : FfiConverter<Boolean, Byte> {
     override fun lift(value: Byte): Boolean {
         return value.toInt() != 0
     }
@@ -428,7 +463,7 @@ public object FfiConverterBoolean: FfiConverter<Boolean, Byte> {
     }
 }
 
-public object FfiConverterString: FfiConverter<String, RustBuffer.ByValue> {
+public object FfiConverterString : FfiConverter<String, RustBuffer.ByValue> {
     // Note: we don't inherit from FfiConverterRustBuffer, because we use a
     // special encoding when lowering/lifting.  We can use `RustBuffer.len` to
     // store our length and avoid writing it out to the buffer.
@@ -474,16 +509,18 @@ public object FfiConverterString: FfiConverter<String, RustBuffer.ByValue> {
     }
 }
 
-public object FfiConverterByteArray: FfiConverterRustBuffer<ByteArray> {
+public object FfiConverterByteArray : FfiConverterRustBuffer<ByteArray> {
     override fun read(buf: ByteBuffer): ByteArray {
         val len = buf.getInt()
         val byteArr = ByteArray(len)
         buf.get(byteArr)
         return byteArr
     }
+
     override fun allocationSize(value: ByteArray): Int {
         return 4 + value.size
     }
+
     override fun write(value: ByteArray, buf: ByteBuffer) {
         buf.putInt(value.size)
         buf.put(value)
@@ -491,18 +528,16 @@ public object FfiConverterByteArray: FfiConverterRustBuffer<ByteArray> {
 }
 
 
-
-
-data class PcRs (
-    var `pcr0`: String?, 
-    var `pcr1`: String?, 
-    var `pcr2`: String?, 
+data class PcRs(
+    var `pcr0`: String?,
+    var `pcr1`: String?,
+    var `pcr2`: String?,
     var `pcr8`: String?
 ) {
-    
+
 }
 
-public object FfiConverterTypePCRs: FfiConverterRustBuffer<PcRs> {
+public object FfiConverterTypePCRs : FfiConverterRustBuffer<PcRs> {
     override fun read(buf: ByteBuffer): PcRs {
         return PcRs(
             FfiConverterOptionalString.read(buf),
@@ -514,23 +549,21 @@ public object FfiConverterTypePCRs: FfiConverterRustBuffer<PcRs> {
 
     override fun allocationSize(value: PcRs) = (
             FfiConverterOptionalString.allocationSize(value.`pcr0`) +
-            FfiConverterOptionalString.allocationSize(value.`pcr1`) +
-            FfiConverterOptionalString.allocationSize(value.`pcr2`) +
-            FfiConverterOptionalString.allocationSize(value.`pcr8`)
-    )
+                    FfiConverterOptionalString.allocationSize(value.`pcr1`) +
+                    FfiConverterOptionalString.allocationSize(value.`pcr2`) +
+                    FfiConverterOptionalString.allocationSize(value.`pcr8`)
+            )
 
     override fun write(value: PcRs, buf: ByteBuffer) {
-            FfiConverterOptionalString.write(value.`pcr0`, buf)
-            FfiConverterOptionalString.write(value.`pcr1`, buf)
-            FfiConverterOptionalString.write(value.`pcr2`, buf)
-            FfiConverterOptionalString.write(value.`pcr8`, buf)
+        FfiConverterOptionalString.write(value.`pcr0`, buf)
+        FfiConverterOptionalString.write(value.`pcr1`, buf)
+        FfiConverterOptionalString.write(value.`pcr2`, buf)
+        FfiConverterOptionalString.write(value.`pcr8`, buf)
     }
 }
 
 
-
-
-public object FfiConverterOptionalString: FfiConverterRustBuffer<String?> {
+public object FfiConverterOptionalString : FfiConverterRustBuffer<String?> {
     override fun read(buf: ByteBuffer): String? {
         if (buf.get().toInt() == 0) {
             return null
@@ -557,9 +590,7 @@ public object FfiConverterOptionalString: FfiConverterRustBuffer<String?> {
 }
 
 
-
-
-public object FfiConverterSequenceTypePCRs: FfiConverterRustBuffer<List<PcRs>> {
+public object FfiConverterSequenceTypePCRs : FfiConverterRustBuffer<List<PcRs>> {
     override fun read(buf: ByteBuffer): List<PcRs> {
         val len = buf.getInt()
         return List<PcRs>(len) {
@@ -583,17 +614,30 @@ public object FfiConverterSequenceTypePCRs: FfiConverterRustBuffer<List<PcRs>> {
 
 fun `attestConnection`(`cert`: ByteArray, `expectedPcrsList`: List<PcRs>): Boolean {
     return FfiConverterBoolean.lift(
-    rustCall() { _status ->
-    _UniFFILib.INSTANCE.uniffi_bindings_fn_func_attest_connection(FfiConverterByteArray.lower(`cert`),FfiConverterSequenceTypePCRs.lower(`expectedPcrsList`),_status)
-})
+        rustCall() { _status ->
+            _UniFFILib.INSTANCE.uniffi_bindings_fn_func_attest_connection(
+                FfiConverterByteArray.lower(
+                    `cert`
+                ), FfiConverterSequenceTypePCRs.lower(`expectedPcrsList`), _status
+            )
+        })
 }
 
 
-fun `attestEnclave`(`cert`: ByteArray, `expectedPcrsList`: List<PcRs>, `attestationDoc`: ByteArray): Boolean {
+fun `attestEnclave`(
+    `cert`: ByteArray,
+    `expectedPcrsList`: List<PcRs>,
+    `attestationDoc`: ByteArray
+): Boolean {
     return FfiConverterBoolean.lift(
-    rustCall() { _status ->
-    _UniFFILib.INSTANCE.uniffi_bindings_fn_func_attest_enclave(FfiConverterByteArray.lower(`cert`),FfiConverterSequenceTypePCRs.lower(`expectedPcrsList`),FfiConverterByteArray.lower(`attestationDoc`),_status)
-})
+        rustCall() { _status ->
+            _UniFFILib.INSTANCE.uniffi_bindings_fn_func_attest_enclave(
+                FfiConverterByteArray.lower(
+                    `cert`
+                ),
+                FfiConverterSequenceTypePCRs.lower(`expectedPcrsList`),
+                FfiConverterByteArray.lower(`attestationDoc`),
+                _status
+            )
+        })
 }
-
-
