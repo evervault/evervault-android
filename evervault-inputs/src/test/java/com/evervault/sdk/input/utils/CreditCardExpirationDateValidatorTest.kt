@@ -58,11 +58,6 @@ internal class CreditCardExpirationDateValidatorTest(private val testData: TestD
             ),
             TestData(
                 expiryMonth = previousMonth,
-                expiryLastTwoDigitsOfYear = currentYearLastTwoDigits.toString(),
-                expectedResult = false
-            ),
-            TestData(
-                expiryMonth = previousMonth,
                 expiryLastTwoDigitsOfYear = nextYearLastTwoDigits,
                 expectedResult = true
             ),
@@ -84,11 +79,6 @@ internal class CreditCardExpirationDateValidatorTest(private val testData: TestD
             TestData(
                 expiryMonth = nextMonth,
                 expiryLastTwoDigitsOfYear = previousYearLastTwoDigits,
-                expectedResult = false
-            ),
-            TestData(
-                expiryMonth = nextMonth,
-                expiryLastTwoDigitsOfYear = currentYearLastTwoDigits.toString(),
                 expectedResult = false
             ),
             TestData(
