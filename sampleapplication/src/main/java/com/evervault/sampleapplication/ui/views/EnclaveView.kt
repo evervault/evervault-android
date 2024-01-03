@@ -41,7 +41,7 @@ fun EnclaveView() {
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             cachedCallResponseText = staticPCRsEnclaveRequest(enclaveName, appUuid)
-            staticPCRCallResponseText = staticPCRsEnclaveRequest(enclaveName, appUuid)
+            staticPCRCallResponseText = cacheManagerEnclaveCall(enclaveName, appUuid)
         }
     }
 
@@ -133,10 +133,10 @@ fun staticPCRsEnclaveRequest(enclaveName: String, appUuid: String): String {
                 enclaveName = enclaveName,
                 // Replace with legitimate PCR strings when not in debug mode
                 PCRs(
-                    pcr0 = "00afa537918248861eccd4640398d866487bef4a94dfe44e79f62fd6ae56d720210be61dc1e4d10a63cfa7568efbe18e",
-                    pcr1 = "bcdf05fefccaa8e55bf2c8d6dee9e79bbff31e34bf28a99aa19e6b29c37ee80b214a414b7607236edf26fcb78654e63f",
-                    pcr2 = "de1af81e4c35a9f63dbc0d518f71197c42e8bbfef299e1a6f282d8ecd430e3b97f78bd6481d3c08d8131278403503e82",
-                    pcr8 = "1a65e2ed7be8b98f135187708038e36a019a86863f072cd27e0d57cbc244819c86047c151e403b69be6647d21a06ede0"
+                    pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                 )
             ),
             appUuid
