@@ -6,6 +6,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+    id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -70,4 +72,50 @@ dependencies {
     testImplementation("com.squareup.retrofit2:converter-gson:2.9.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.evervault.sdk"
+            artifactId = "evervault-enclaves"
+            version = version
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+    publications.withType<MavenPublication> {
+        pom {
+            name.set("Evervault")
+            description.set("Evervault Android SDK")
+            url.set("https://github.com/evervault/evervault-android")
+            developers {
+                developer {
+                    name.set("engineering")
+                    organization.set("Evervault")
+                    email.set("engineering@evervault.com")
+                }
+            }
+            scm {
+                connection.set("scm:git:ssh://git@github.com:evervault/evervault-android.git")
+                url.set("https://github.com/evervault/evervault-android")
+            }
+            licenses {
+                license {
+                    name.set("The MIT License (MIT)")
+                    url.set("https://mit-license.org")
+                }
+            }
+        }
+    }
+}
+
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
+
+    sign(publishing.publications["release"])
 }
