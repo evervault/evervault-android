@@ -11,12 +11,12 @@ The [Evervault](https://evervault.com/) Android SDK is a library that provides s
 ## Features
 * [Encrypt](https://docs.evervault.com/security/evervault-encryption) various data types for storing sensitive data.
 * Collect credit card information for PCI-DSS compliance with [Inputs](https://docs.evervault.com/products/inputs).
-* Connect and Remotely Attest [Cages](https://docs.evervault.com/products/cages)
+* Connect and Remotely Attest [Enclaves](https://docs.evervault.com/products/enclaves)
 
 ## SDK Reference
 * Browse the upto date documentation [here](https://docs.evervault.com/sdks/android)
 ## Examples
-This project includes a [sample application](https://github.com/evervault/evervault-android/tree/main/sampleapplication) that integrates [Evervault Inputs](https://docs.evervault.com/products/inputs) and [Evervault Cages](https://docs.evervault.com/products/cages)
+This project includes a [sample application](https://github.com/evervault/evervault-android/tree/main/sampleapplication) that integrates [Evervault Inputs](https://docs.evervault.com/products/inputs) and [Evervault Enclaves](https://docs.evervault.com/products/enclaves)
 
 ## Commit Formatting & Releases
 
@@ -31,9 +31,9 @@ Merge the version PR that the changeset bot created to bump the version numbers.
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/evervault/evervault-android/issues.
 
-## Cages
+## Enclaves
 
-Cage attestation is written in Rust and Kotlin bindings can be found [here](https://github.com/evervault/attestation-doc-validation/tree/main/kotlin-attestation-bindings) that are used to integrate them into this project.
+Enclave attestation is written in Rust and Kotlin bindings can be found [here](https://github.com/evervault/attestation-doc-validation/tree/main/kotlin-attestation-bindings) that are used to integrate them into this project.
 
 If you wish to update the Rust bindings, make any necessary changes in the Attesation crate and run the following [script](https://github.com/evervault/attestation-doc-validation/blob/main/kotlin-attestation-bindings/build-libs.sh) to build and copy the shared library files for each architecture into this repo.
 

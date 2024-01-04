@@ -1,4 +1,4 @@
-package com.evervault.sdk.cages
+package com.evervault.sdk.enclaves
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.Exception
 import kotlin.concurrent.read
 import kotlin.concurrent.write
+
 class PCRCallbackError(message: String): Exception(message)
 
 private data class PCRCallbackCache(
@@ -25,30 +26,31 @@ private data class PCRCallbackCache(
         lock.write { _pcrs = newPCRs }
     }
 }
-class CagePcrManager private constructor(callbackDuration: Long){
+
+class EnclavePCRManager private constructor(callbackDuration: Long){
     private var cacheManager: ConcurrentHashMap<String, PCRCallbackCache> = ConcurrentHashMap(50)
     private val scope = CoroutineScope(Dispatchers.IO)
     private var active: Boolean = false
 
     init {
-        Log.w(TAG, "Starting CagePcrManager with interval duration $callbackDuration")
+        Log.w(TAG, "Starting EnclavePcrManager with interval duration $callbackDuration")
         startPcrManager(callbackDuration)
         active = true
     }
 
     companion object {
         @Volatile
-        private var instance: CagePcrManager? = null
+        private var instance: EnclavePCRManager? = null
 
         fun getInstance(callbackDuration: Long) = instance ?: synchronized(this) {
-            instance ?: CagePcrManager(callbackDuration).also {
+            instance ?: EnclavePCRManager(callbackDuration).also {
                 instance = it
             }
         }
     }
 
-    fun invoke(cageName: String, pcrCallback: PcrCallback) {
-        this.updateCacheManager(cageName, pcrCallback)
+    fun invoke(enclaveName: String, pcrCallback: PcrCallback) {
+        this.updateCacheManager(enclaveName, pcrCallback)
     }
 
     private fun startPcrManager(duration: Long) {
@@ -56,13 +58,13 @@ class CagePcrManager private constructor(callbackDuration: Long){
             scope.launch {
                 while (true) {
                     cacheManager.forEach { (k, cache) ->
-                        Log.w(TAG, "Invoking cached PCR callback for Cage $k")
+                        Log.w(TAG, "Invoking cached PCR callback for Enclave $k")
                         try {
                             cache.callback.invoke().also {
                                 cache.setPCRs(it)
                             }
                         } catch (e: Exception) {
-                            Log.e(TAG, "Error invoking PCR callback for Cage $k ${e.message!!}")
+                            Log.e(TAG, "Error invoking PCR callback for Enclave $k ${e.message!!}")
                         }
                     }
                     delay(duration)
@@ -71,14 +73,14 @@ class CagePcrManager private constructor(callbackDuration: Long){
         }
     }
 
-    private fun updateCacheManager(cageName: String, pcrCallback: PcrCallback) {
-        if(this.cacheManager[cageName] == null) {
-            Log.w(TAG, "Updating CagePCRManager cache for Cage $cageName")
-            this.cacheManager[cageName] = PCRCallbackCache(
+    private fun updateCacheManager(enclaveName: String, pcrCallback: PcrCallback) {
+        if(this.cacheManager[enclaveName] == null) {
+            Log.w(TAG, "Updating EnclavePCRManager cache for Enclave $enclaveName")
+            this.cacheManager[enclaveName] = PCRCallbackCache(
                 callback = pcrCallback
             )
             try {
-                cacheManager[cageName]?.setPCRs(invokeCallback(pcrCallback))
+                cacheManager[enclaveName]?.setPCRs(invokeCallback(pcrCallback))
             } catch (e: Exception) {
                 e.message?.let {
                     throw PCRCallbackError(e.message!!)
@@ -95,7 +97,7 @@ class CagePcrManager private constructor(callbackDuration: Long){
         }
     }
 
-    fun getPCRs(cageName: String): List<PCRs> {
-        return cacheManager[cageName]?.pcrs ?: throw PCRCallbackError("Unable to retrieve PCRs from empty cache")
+    fun getPCRs(enclaveName: String): List<PCRs> {
+        return cacheManager[enclaveName]?.pcrs ?: throw PCRCallbackError("Unable to retrieve PCRs from empty cache")
     }
 }

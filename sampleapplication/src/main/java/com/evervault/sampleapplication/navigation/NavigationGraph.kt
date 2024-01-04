@@ -14,8 +14,8 @@ import androidx.navigation.compose.composable
 import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponents
 import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponentsWithoutLabels
 import com.evervault.sampleapplication.ui.views.BasicEncryptionView
-import com.evervault.sampleapplication.ui.views.CageView
 import com.evervault.sampleapplication.ui.views.CreditCardInputView
+import com.evervault.sampleapplication.ui.views.EnclaveView
 import com.evervault.sampleapplication.ui.views.FileEncryptionView
 import com.evervault.sampleapplication.ui.views.MainScreen
 import com.evervault.sampleapplication.ui.views.PaymentCardView
@@ -144,8 +144,8 @@ fun NavigationGraph(navController: NavHostController) {
             }
         }
 
-        composable(Route.Cage.route) {
-            CageView()
+        composable(Route.Enclave.route) {
+            EnclaveView()
         }
     }
 }

@@ -1,10 +1,9 @@
 package com.evervault.sampleapplication
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.evervault.sdk.cages.AttestationData
-import com.evervault.sdk.cages.PCRs
-import com.evervault.sdk.cages.cagesTrustManager
-import com.evervault.sdk.cages.trustManager
+import com.evervault.sdk.enclaves.AttestationData
+import com.evervault.sdk.enclaves.PCRs
+import com.evervault.sdk.enclaves.enclavesTrustManager
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -17,24 +16,24 @@ import javax.net.ssl.SSLHandshakeException
 @RunWith(AndroidJUnit4::class)
 class AttestationTest {
 
-    private val cageName = "synthetic-cage"
+    private val enclaveName = "synthetic-cage"
     private val appUuid = "app-f5f084041a7e"
-    private val url = "https://$cageName.$appUuid.cage.evervault.com/hello"
-    private val betaUrl = "https://$cageName.$appUuid.cages.evervault.com/hello"
+    private val url = "https://$enclaveName.$appUuid.cage.evervault.com/hello"
+    private val betaUrl = "https://$enclaveName.$appUuid.cages.evervault.com/hello"
     @Test
     fun testSuccessfulAttestation() {
         val client = OkHttpClient.Builder()
-            .cagesTrustManager(
+            .enclavesTrustManager(
                 AttestationData(
-                cageName = cageName,
-                // Replace with legitimate PCR strings when not in debug mode
-                PCRs(
-                    pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                )
-            ),
+                    enclaveName = enclaveName,
+                    // Replace with legitimate PCR strings when not in debug mode
+                    PCRs(
+                        pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                        pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                        pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                        pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                    )
+                ),
                 appUuid
             )
             .build()
@@ -51,9 +50,9 @@ class AttestationTest {
     @Test
     fun testSuccessfulAttestationWithSinglePCR() {
         val client = OkHttpClient.Builder()
-            .cagesTrustManager(
+            .enclavesTrustManager(
                 AttestationData(
-                    cageName = cageName,
+                    enclaveName = enclaveName,
                     // Replace with legitimate PCR strings when not in debug mode
                     PCRs(
                         pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
@@ -75,9 +74,9 @@ class AttestationTest {
     @Test
     fun testIncorrectPCRs() {
         val client = OkHttpClient.Builder()
-            .cagesTrustManager(
+            .enclavesTrustManager(
                 AttestationData(
-                    cageName = cageName,
+                    enclaveName = enclaveName,
                     // Replace with legitimate PCR strings when not in debug mode
                     PCRs(
                         pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
@@ -92,62 +91,6 @@ class AttestationTest {
 
         val request = Request.Builder()
             .url(url)
-            .build()
-
-        try {
-            client.newCall(request).execute()
-            fail("Expected an exception to be thrown")
-        } catch (e: SSLHandshakeException) {
-            assertEquals(e.message, "Attestation failed")
-        }
-    }
-
-    @Test
-    fun testSuccessfulAttestationBeta() {
-
-        val client = OkHttpClient.Builder()
-            .trustManager(
-                AttestationData(
-                    cageName = cageName,
-                    // Replace with legitimate PCR strings when not in debug mode
-                    PCRs(
-                        pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    )
-                )
-            )
-            .build()
-
-        val request = Request.Builder()
-            .url(betaUrl)
-            .build()
-
-        val response = client.newCall(request).execute()
-        // 401 means TLS handshake was successful
-        assertEquals(response.code, 401)
-    }
-
-    @Test
-    fun testIncorrectPCRsBeta() {
-        val client = OkHttpClient.Builder()
-            .trustManager(
-                AttestationData(
-                    cageName = cageName,
-                    // Replace with legitimate PCR strings when not in debug mode
-                    PCRs(
-                        pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr8 = "Incorrect"
-                    )
-                ),
-            )
-            .build()
-
-        val request = Request.Builder()
-            .url(betaUrl)
             .build()
 
         try {
