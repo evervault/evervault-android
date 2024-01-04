@@ -23,7 +23,7 @@ import org.mockito.kotlin.anyOrNull
 
 @ExperimentalCoroutinesApi
 class EnclavePcrManagerTest {
-    private val testCageName = "testCage"
+    private val testEnclaveName = "testCage"
     private lateinit var testPcrCallback: PcrCallback
     private lateinit var manager: EnclavePCRManager
 
@@ -36,9 +36,9 @@ class EnclavePcrManagerTest {
 
     @Test
     fun `when startPcrManager is invoked, it returns a list of PCRs`() = runTest {
-        manager.invoke(testCageName, testPcrCallback)
+        manager.invoke(testEnclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(testCageName)
+        val pcrsResponse = manager.getPCRs(testEnclaveName)
 
         assertNotNull(pcrsResponse)
         assertEquals(1, pcrsResponse.size)
@@ -46,19 +46,19 @@ class EnclavePcrManagerTest {
     }
 
     @Test
-    fun `setting pcrs for a second cage returns different pcrs`() = runTest {
-        val cageName = "secondCage"
+    fun `setting pcrs for a second enclave returns different pcrs`() = runTest {
+        val enclaveName = "secondEnclave"
         val testPcrCallback = { listOf(PCRs("3333", "1111", "2222", "3333")) }
-        manager.invoke(cageName, testPcrCallback)
+        manager.invoke(enclaveName = enclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(cageName)
+        val pcrsResponse = manager.getPCRs(enclaveName)
 
         assertEquals("3333", pcrsResponse[0].pcr0)
     }
 
     @Test
     fun `calling external PCR service sets PCRs`() = runTest {
-        val cageName = "thirdCages"
+        val enclaveName = "thirdEnclave"
         val testPCRs = listOf(PCRs("4444"), PCRs(pcr8 = "3333"))
         val httpClient = createMockHttpClient(testPCRs)
         val testPcrCallback = {
@@ -76,16 +76,16 @@ class EnclavePcrManagerTest {
                 throw Error("Response body is null")
             }
         }
-        manager.invoke(cageName, testPcrCallback)
+        manager.invoke(enclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(cageName)
+        val pcrsResponse = manager.getPCRs(enclaveName)
 
         assertEquals("4444", pcrsResponse[0].pcr0)
     }
 
     @Test
     fun `calling external PCREservice that returns singularPCRs calls`() = runTest {
-        val cageName = "thirdCages"
+        val enclaveName = "thirdEnclaves"
         val testPCRs = listOf(PCRs("4444", "1111", "2222", "3333"))
         val httpClient = createMockHttpClient(testPCRs)
         val testPcrCallback = {
@@ -103,26 +103,26 @@ class EnclavePcrManagerTest {
                 throw Error("Response body is null")
             }
         }
-        manager.invoke(cageName, testPcrCallback)
+        manager.invoke(enclaveName, testPcrCallback)
 
-        val pcrsResponse = manager.getPCRs(cageName)
+        val pcrsResponse = manager.getPCRs(enclaveName)
 
         assertEquals("4444", pcrsResponse[0].pcr0)
     }
 
     @Test(expected = PCRCallbackError::class)
     fun `PCR callback throws exception`() = runTest {
-        val cageName = "fourthCage"
+        val enclaveName = "fourthEnclave"
         val throwingPcrCallback = {
             throw Exception("Error from PCR callback")
         }
-        manager.invoke(cageName, throwingPcrCallback)
+        manager.invoke(enclaveName, throwingPcrCallback)
     }
 
     @Test(expected = PCRCallbackError::class)
     fun `accessing empty cache throws error`() {
-        val cageName = "fifthCage";
-        manager.getPCRs(cageName)
+        val enclaveName = "fifthEnclave";
+        manager.getPCRs(enclaveName)
     }
 
     private fun createMockHttpClient(responsePCRs: List<PCRs>): OkHttpClient {
