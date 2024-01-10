@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.9.0
+
+### Minor Changes
+
+- 89c0cb5: Deprecate evervault-cages move to evervault-enclaves
+
 ## 1.8.0
 
 ### Minor Changes
