@@ -1,6 +1,7 @@
 package com.evervault.sdk.input.ui.component
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -16,6 +17,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillNode
 import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.text.TextStyle
@@ -41,7 +45,8 @@ internal fun CustomTextField(
     textStyle: TextStyle = LocalTextStyle.current,
     textFieldColors: TextFieldColors = TextFieldDefaults.colors(),
     onNext: (() -> Unit)? = null,
-    autofillType: AutofillType
+    autofillType: AutofillType,
+    cursorBrush: Brush = setDefaultCursorBrush()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val autofill = LocalAutofill.current
@@ -50,7 +55,6 @@ internal fun CustomTextField(
         onFill = { state.value = TextFieldValue(it) }
     )
     LocalAutofillTree.current.plusAssign(autofillNode)
-
 
     BasicTextField(
         value = state.value,
@@ -69,6 +73,7 @@ internal fun CustomTextField(
         keyboardActions = KeyboardActions(
             onNext = { onNext?.invoke() },
         ),
+        cursorBrush = cursorBrush,
         decorationBox = @Composable { innerTextField ->
             TextFieldDefaults.DecorationBox(
                 value = state.value.text,
@@ -84,5 +89,12 @@ internal fun CustomTextField(
             )
         }
     )
+}
 
+@Composable
+private fun setDefaultCursorBrush(): Brush {
+    if(isSystemInDarkTheme()) {
+        return SolidColor(Color.White)
+    }
+    return SolidColor(Color.Black)
 }
