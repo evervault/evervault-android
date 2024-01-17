@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.10.0
+
+### Minor Changes
+
+- 6b9b373: This release allows for the setting of the cursor color for all input fields
+
 ## 1.9.0
 
 ### Minor Changes
