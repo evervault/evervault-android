@@ -46,7 +46,7 @@ internal fun CustomTextField(
     textFieldColors: TextFieldColors = TextFieldDefaults.colors(),
     onNext: (() -> Unit)? = null,
     autofillType: AutofillType,
-    cursorBrush: Brush = setDefaultCursorBrush()
+    cursorBrush: Brush? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val autofill = LocalAutofill.current
@@ -55,7 +55,7 @@ internal fun CustomTextField(
         onFill = { state.value = TextFieldValue(it) }
     )
     LocalAutofillTree.current.plusAssign(autofillNode)
-
+    val defaultOrPassedBrush = setDefaultCursorBrush(cursorBrush)
     BasicTextField(
         value = state.value,
         onValueChange = { state.value = it },
@@ -73,7 +73,7 @@ internal fun CustomTextField(
         keyboardActions = KeyboardActions(
             onNext = { onNext?.invoke() },
         ),
-        cursorBrush = cursorBrush,
+        cursorBrush = defaultOrPassedBrush,
         decorationBox = @Composable { innerTextField ->
             TextFieldDefaults.DecorationBox(
                 value = state.value.text,
@@ -92,9 +92,11 @@ internal fun CustomTextField(
 }
 
 @Composable
-private fun setDefaultCursorBrush(): Brush {
-    if(isSystemInDarkTheme()) {
-        return SolidColor(Color.White)
+private fun setDefaultCursorBrush(cursorBrush: Brush?): Brush {
+    cursorBrush?.let { return it }
+    return if(isSystemInDarkTheme()) {
+        SolidColor(Color.White)
+    } else {
+        SolidColor(Color.Black)
     }
-    return SolidColor(Color.Black)
 }
