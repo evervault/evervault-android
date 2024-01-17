@@ -13,7 +13,7 @@ plugins {
 android {
     group = "com.evervault.sdk"
     namespace = "com.evervault.sdk.inputs"
-    compileSdk = 34
+    compileSdk = 33
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
     }
