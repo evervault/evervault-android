@@ -32,7 +32,7 @@ import java.io.IOException
 @Composable
 fun EnclaveView() {
 
-    val enclaveName = BuildConfig.ENCLAVE_UUID
+    val enclaveName = BuildConfig.ENCLAVE_NAME
     val appUuid = BuildConfig.APP_UUID
 
     var cachedCallResponseText: String? by remember { mutableStateOf(null) }
@@ -40,8 +40,8 @@ fun EnclaveView() {
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            cachedCallResponseText = staticPCRsEnclaveRequest(enclaveName, appUuid)
-            staticPCRCallResponseText = cacheManagerEnclaveCall(enclaveName, appUuid)
+            staticPCRCallResponseText = staticPCRsEnclaveRequest(enclaveName, appUuid)
+            cachedCallResponseText = cacheManagerEnclaveCall(enclaveName, appUuid)
         }
     }
 
@@ -61,11 +61,17 @@ fun EnclaveView() {
     }
 }
 
+// Data type to mirror the Evervault API response shape from the Enclave attestation info endpoint.
+data class EnclaveAttestationData(
+    val data: List<PCRs>
+)
+
 fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
-    val url = "https://$enclaveName.$appUuid.cage.evervault.com/compute"
+    val url = "https://$enclaveName.$appUuid.enclave.evervault.com/compute"
     val pcrClient = OkHttpClient.Builder().build()
     val pcrRequest = Request.Builder()
         .url(BuildConfig.PCR_CALLBACK_URL)
+        .header("x-evervault-app-id", appUuid.replace("-","_"))
         .build()
 
     val jsonPayload = JSONObject()
@@ -86,9 +92,9 @@ fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
     try {
         val pcrCallback: PcrCallback = {
             val pcrResponse = pcrClient.newCall(pcrRequest).execute()
-            val type = object : TypeToken<List<PCRs>>() {}.type
-            val responseMap: List<PCRs> = Gson().fromJson(pcrResponse.body!!.string(), type)
-            responseMap
+            val type = object : TypeToken<EnclaveAttestationData>() {}.type
+            val responseMap: EnclaveAttestationData = Gson().fromJson(pcrResponse.body!!.string(), type)
+            responseMap.data
         }
 
         val client = OkHttpClient.Builder()
@@ -116,7 +122,7 @@ fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
 }
 
 fun staticPCRsEnclaveRequest(enclaveName: String, appUuid: String): String {
-    val url = "https://$enclaveName.$appUuid.cage.evervault.com/compute"
+    val url = "https://$enclaveName.$appUuid.enclave.evervault.com/compute"
 
     val jsonPayload = JSONObject()
     jsonPayload.put("a", 1)

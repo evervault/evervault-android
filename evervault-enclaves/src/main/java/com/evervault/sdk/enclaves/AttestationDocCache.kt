@@ -33,7 +33,7 @@ class AttestationDocCache(private val enclaveName: String, private val appUuid: 
         if(retries >= 0) {
             try {
                 val url =
-                    "https://${enclaveName}.${appUuid}.cage.evervault.com/.well-known/attestation"
+                    "https://${enclaveName}.${appUuid}.enclave.evervault.com/.well-known/attestation"
                 val response = getDocFromEnclave(url)
                 val decodedDoc = Base64.decode(response.attestationDoc, Base64.DEFAULT)
                 set(decodedDoc)
