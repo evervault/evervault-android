@@ -19,7 +19,7 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "ENCLAVE_UUID", "\"hello-enclave\"")
+        buildConfigField("String", "ENCLAVE_NAME", "\"hello-enclave\"")
         buildConfigField("String", "APP_UUID", "\"app-33b88ca7da0d\"")
         buildConfigField("String", "PCR_CALLBACK_URL", "\"https://api.evervault.com/enclaves/hello-enclave/attestation\"")
     }
