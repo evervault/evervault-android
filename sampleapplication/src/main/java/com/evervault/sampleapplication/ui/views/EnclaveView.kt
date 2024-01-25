@@ -62,7 +62,7 @@ fun EnclaveView() {
 }
 
 // Data type to mirror the Evervault API response shape from the Enclave attestation info endpoint.
-data class EnclaveAttestationData(
+data class PCRContainer(
     val data: List<PCRs>
 )
 
@@ -92,8 +92,8 @@ fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
     try {
         val pcrCallback: PcrCallback = {
             val pcrResponse = pcrClient.newCall(pcrRequest).execute()
-            val type = object : TypeToken<EnclaveAttestationData>() {}.type
-            val responseMap: EnclaveAttestationData = Gson().fromJson(pcrResponse.body!!.string(), type)
+            val type = object : TypeToken<PCRContainer>() {}.type
+            val responseMap: PCRContainer = Gson().fromJson(pcrResponse.body!!.string(), type)
             responseMap.data
         }
 
