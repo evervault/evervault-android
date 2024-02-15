@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.10.1
+
+### Patch Changes
+
+- db2198f: Add signging to evervault-enclaves
+
 ## 1.10.0
 
 ### Minor Changes
