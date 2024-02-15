@@ -52,6 +52,11 @@ android {
             minCompileSdk = 26
         }
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
