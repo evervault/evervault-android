@@ -19,6 +19,7 @@ import androidx.compose.ui.autofill.AutofillNode
 import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -36,6 +37,8 @@ import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
 import com.evervault.sdk.input.ui.component.CustomTextFieldMaterial2
 import com.evervault.sdk.input.ui.modifier.autofillBoundingBox
 import com.evervault.sdk.input.ui.modifier.autofillOnFocusChange
+import androidx.compose.material.Icon
+import androidx.compose.material.TextFieldColors
 
 internal class PaymentCardInputScopeMaterial2Impl(
     private val textStyle: TextStyle,
@@ -60,22 +63,27 @@ internal class PaymentCardInputScopeMaterial2Impl(
 
     @Composable
     override fun CardImage() {
-        TODO("Not yet implemented")
+        CardImage(modifier = Modifier)
     }
 
     @Composable
     override fun CardImage(modifier: Modifier) {
-        TODO("Not yet implemented")
+        Icon(
+            painter = painterResource(id = cardImageResource),
+            contentDescription = "",
+            modifier = modifier,
+            tint = Color.Unspecified
+        )
     }
 
     @Composable
     override fun CardNumberField() {
-        TODO("Not yet implemented")
+        CardNumberField(modifier = Modifier)
     }
 
     @Composable
     override fun CardNumberField(modifier: Modifier) {
-        TODO("Not yet implemented")
+        CardNumberField(modifier = modifier, options = PaymentCardInputScope.TextFieldOptions())
     }
 
     @Composable
@@ -83,27 +91,49 @@ internal class PaymentCardInputScopeMaterial2Impl(
         modifier: Modifier,
         options: PaymentCardInputScope.TextFieldOptions
     ) {
-        TODO("Not yet implemented")
+        CardNumberField(
+            modifier = modifier,
+            options = options,
+            placeholder = PlaceholderTextsDefaults.CreditCardText
+        )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
         options: PaymentCardInputScope.TextFieldOptions,
         placeholder: String
     ) {
-        TODO("Not yet implemented")
+        CustomTextField(
+            state = creditCardNumber,
+            placeholder = placeholder,
+            modifier = modifier.focusRequester(creditCardRequester),
+            options = options,
+            onNext = { expiryRequester.requestFocus() },
+            autofillType = AutofillType.CreditCardNumber
+        )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
         label: @Composable() (() -> Unit)?,
         placeholder: @Composable() (() -> Unit)?,
         textStyle: TextStyle,
-        textFieldColors: androidx.compose.material3.TextFieldColors
+        textFieldColors: TextFieldColors
     ) {
-        TODO("Not yet implemented")
+        CustomTextFieldMaterial2(
+            state = creditCardNumber,
+            modifier = modifier.focusRequester(creditCardRequester),
+            label = label,
+            placeholder = placeholder,
+            textStyle = textStyle,
+            textFieldColors = textFieldColors,
+            onNext = { expiryRequester.requestFocus() },
+            autofillType = AutofillType.CreditCardNumber,
+        )
     }
 
     @Composable
