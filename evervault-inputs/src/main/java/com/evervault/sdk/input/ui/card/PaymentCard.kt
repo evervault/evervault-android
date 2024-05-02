@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import com.evervault.sdk.input.mapper.PaymentCardDataMapper
+import com.evervault.sdk.input.model.CardFields
 import com.evervault.sdk.input.model.card.PaymentCardData
 import com.evervault.sdk.input.ui.PaymentCardInput
 import com.evervault.sdk.input.ui.PaymentCardInputScope
@@ -34,7 +35,8 @@ fun PaymentCard(
     textStyle: TextStyle = TextStyle.Default,
     placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
     onDataChange: (PaymentCardData) -> Unit = {},
-    content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit
+    enabledFields: List<CardFields> = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE, CardFields.CVC),
+    content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit,
 ) {
     /**
     Temporarily mapping the  to map [OldPaymentCardData] to the new [PaymentCardData]
@@ -51,6 +53,7 @@ fun PaymentCard(
         textStyle = textStyle,
         placeholderTextStyle = placeholderTextStyle,
         layout = content,
-        onDataChange = mapCardDataOldAndReturnResult
+        onDataChange = mapCardDataOldAndReturnResult,
+        enabledFields = enabledFields
     )
 }

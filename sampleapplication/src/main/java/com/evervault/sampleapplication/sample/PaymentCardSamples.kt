@@ -155,6 +155,33 @@ internal fun PaymentCardInputScope.PaymentCardCustomLayoutWithNewComponentsWitho
 }
 
 @Composable
+internal fun PaymentCardInputScope.PaymentCardCustomCardOnly(modifier: Modifier) {
+    Column(
+        modifier = modifier
+            .border(BorderStroke(1.dp, Color.LightGray), RoundedCornerShape(8.dp))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        CardImage()
+
+        CardNumberField(
+            modifier = Modifier.fillMaxWidth(),
+            label = null,
+            placeholder = {
+                Text(
+                    text = PlaceholderTextsDefaults.CreditCardText,
+                    color = Color(0x75757575),
+                    fontSize = 12.sp
+                )
+            },
+            textStyle = MaterialTheme.typography.titleLarge,
+            textFieldColors = customTextFieldColors()
+        )
+    }
+}
+
+@Composable
 private fun getDefaultColors(): TextFieldColors = TextFieldDefaults.colors(
     focusedIndicatorColor = Color.Transparent,
     unfocusedIndicatorColor = Color.Transparent,

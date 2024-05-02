@@ -96,6 +96,12 @@ fun MainScreen(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate(Route.CreditCardInputCustomComposablesWithoutLabels.route) },
                     supportingContent = { SupportingText(text = "PaymentCard") }
                 )
+
+                ListItem(
+                    headlineContent = { Text(text = "Custom Layout with Composables (no Expiry, CVC)") },
+                    modifier = Modifier.clickable { navController.navigate(Route.CreditCardInputCustomCardOnly.route) },
+                    supportingContent = { SupportingText(text = "PaymentCard") }
+                )
             }
             item {
                 ListItem(
