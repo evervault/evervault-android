@@ -1,11 +1,8 @@
 
 import com.evervault.sdk.input.model.*
+import org.junit.Assert.assertFalse
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
 import org.junit.Assert.assertTrue
-import java.time.LocalDate
 
 internal class PaymentCardDataValidationTest {
 
@@ -41,6 +38,20 @@ internal class PaymentCardDataValidationTest {
         val actualResult = testData.updateNumber("4242424242424242", enabledFields = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE))
 
         assertTrue(actualResult.isValid);
+    }
+
+    @Test
+    fun validationForCardNumberExpiryAndCVC() {
+        val actualResult = testData.updateNumber("4242424242424242", enabledFields = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE, CardFields.CVC))
+
+        assertTrue(actualResult.isValid);
+    }
+
+    @Test
+    fun validationForOnlyInvaldCardNumber() {
+        val actualResult = testData.updateNumber("42424242", enabledFields = listOf(CardFields.CARD_NUMBER))
+
+        assertFalse(actualResult.isValid);
     }
 
     data class TestData(
