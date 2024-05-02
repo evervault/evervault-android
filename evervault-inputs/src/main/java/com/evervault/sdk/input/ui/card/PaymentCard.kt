@@ -27,6 +27,7 @@ import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
  * @param textStyle the [TextStyle] to be applied to the input texts
  * @param placeholderTextStyle the [TextStyle] to be applied to the input texts placeholders
  * @param onDataChange the listener to be invoked when the underlying card data changes
+ * @param enabledFields the list of fields that should be enabled for input validation
  * @param content a lambda to provide the user's own layout
  */
 @Composable
@@ -39,7 +40,7 @@ fun PaymentCard(
     content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit,
 ) {
     /**
-    Temporarily mapping the  to map [OldPaymentCardData] to the new [PaymentCardData]
+    Temporarily mapping [OldPaymentCardData] to the new [PaymentCardData]
     It will be removed when we remove the old constructor for [PaymentCardInput], change its
     internal implementation to return already mapped data, and all the data logic has been extracted from it.
      */
