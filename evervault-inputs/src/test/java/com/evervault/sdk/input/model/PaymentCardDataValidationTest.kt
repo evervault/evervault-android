@@ -30,31 +30,27 @@ internal class PaymentCardDataValidationTest {
     fun validationForOnlyCardNumber() {
         val actualResult = testData.updateNumber("4242424242424242", enabledFields = listOf(CardFields.CARD_NUMBER))
 
-        assertTrue(actualResult.isValid);
+        assertTrue(actualResult.isValid)
     }
 
     @Test
     fun validationForCardNumberAndExpiry() {
         val actualResult = testData.updateNumber("4242424242424242", enabledFields = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE))
 
-        assertTrue(actualResult.isValid);
+        assertTrue(actualResult.isValid)
     }
 
     @Test
     fun validationForCardNumberExpiryAndCVC() {
         val actualResult = testData.updateNumber("4242424242424242", enabledFields = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE, CardFields.CVC))
 
-        assertTrue(actualResult.isValid);
+        assertTrue(actualResult.isValid)
     }
 
     @Test
-    fun validationForOnlyInvaldCardNumber() {
+    fun validationForOnlyInvalidCardNumber() {
         val actualResult = testData.updateNumber("42424242", enabledFields = listOf(CardFields.CARD_NUMBER))
 
-        assertFalse(actualResult.isValid);
+        assertFalse(actualResult.isValid)
     }
-
-    data class TestData(
-        val input: PaymentCardData
-    )
 }
