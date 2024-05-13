@@ -1,5 +1,6 @@
-package com.evervault.sdk.input.model
+package com.evervault.sdk.input.model.card
 
+import com.evervault.sdk.input.model.CreditCardType
 import com.evervault.sdk.input.utils.CreditCardExpirationDateValidator
 import com.evervault.sdk.input.utils.CreditCardFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
@@ -41,7 +42,7 @@ fun createPaymentCardData(number: String, cvc: String, expiry: String): PaymentC
 
     val error = when {
         !isPotentiallyValid -> PaymentCardError.InvalidPan
-        !isExpiryDateValid -> PaymentCardError.InvalidMonth
+        !isExpiryDateValid -> PaymentCardError.InvalidExpirationDate
         else -> null
     }
 
@@ -65,11 +66,3 @@ fun PaymentCardData.updateCvc(cvc: String): PaymentCardData {
 fun PaymentCardData.updateExpiry(expiry: String): PaymentCardData {
     return createPaymentCardData(this.card.number, this.card.cvc, expiry)
 }
-
-@Deprecated(message = "Use the other PaymentCardError.description in com.evervault.sdk.input.model.card")
-val PaymentCardError.description: String
-    get() = when (this) {
-        is PaymentCardError.InvalidPan -> "The credit card number you entered was invalid"
-        is PaymentCardError.InvalidMonth -> "The expiration date you entered was invalid" // The object will be renamed in the future as it is a breaking change
-        is PaymentCardError.EncryptionFailed -> "Encryption failed: $message"
-    }

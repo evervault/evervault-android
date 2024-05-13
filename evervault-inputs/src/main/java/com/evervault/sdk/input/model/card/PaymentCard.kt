@@ -9,10 +9,10 @@ import com.evervault.sdk.input.model.CreditCardType
 @Immutable
 data class PaymentCard(
     val type: CreditCardType? = null,
-    val number: String = "",
-    val bin: String = "",
-    val lastFour: String = "",
-    val cvc: String = "",
-    val expMonth: String = "",
-    val expYear: String = "",
+    var number: String = "",
+    var bin: String = "",
+    var lastFour: String = "",
+    var cvc: String = "",
+    var expMonth: String = "",
+    var expYear: String = "",
 )

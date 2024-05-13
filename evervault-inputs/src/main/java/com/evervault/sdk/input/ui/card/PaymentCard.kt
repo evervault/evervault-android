@@ -2,13 +2,16 @@ package com.evervault.sdk.input.ui.card
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextStyle
-import com.evervault.sdk.input.mapper.PaymentCardDataMapper
+import androidx.compose.ui.text.input.TextFieldValue
 import com.evervault.sdk.input.model.card.PaymentCardData
-import com.evervault.sdk.input.ui.PaymentCardInput
 import com.evervault.sdk.input.ui.PaymentCardInputScope
-import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
+import com.evervault.sdk.input.ui.PaymentCardInputScopeImpl
+import com.evervault.sdk.inputs.R
 
 /**
  * Represents the customizable card input form with no predefined layout.
@@ -36,21 +39,29 @@ fun PaymentCard(
     onDataChange: (PaymentCardData) -> Unit = {},
     content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit
 ) {
-    /**
-    Temporarily mapping the  to map [OldPaymentCardData] to the new [PaymentCardData]
-    It will be removed when we remove the old constructor for [PaymentCardInput], change its
-    internal implementation to return already mapped data, and all the data logic has been extracted from it.
-     */
-    val paymentCardDataMapper = PaymentCardDataMapper()
-    val mapCardDataOldAndReturnResult: (OldPaymentCardData) -> Unit = { paymentCardDataOld ->
-        onDataChange(paymentCardDataMapper.apply(paymentCardDataOld))
-    }
+    // Initialize the state and other dependencies needed for the PaymentCardInputScope
+    val cardNumber = remember { mutableStateOf(TextFieldValue()) }
+    val expiryDate = remember { mutableStateOf(TextFieldValue()) }
+    val cvc = remember { mutableStateOf(TextFieldValue()) }
+    val cardNumberRequester = remember { FocusRequester() }
+    val expiryRequester = remember { FocusRequester() }
+    val cvcRequester = remember { FocusRequester() }
 
-    PaymentCardInput(
-        modifier = modifier,
+
+    // Create an instance of PaymentCardInputScope
+    val paymentCardInputScope = PaymentCardInputScopeImpl(
         textStyle = textStyle,
         placeholderTextStyle = placeholderTextStyle,
-        layout = content,
-        onDataChange = mapCardDataOldAndReturnResult
+        cardImageResource = R.drawable.ic_credit_card, // Replace with actual resource ID
+        creditCardNumber = cardNumber,
+        creditCardRequester = cardNumberRequester,
+        expiryDate = expiryDate,
+        expiryRequester = expiryRequester,
+        cvc = cvc,
+        cvcRequester = cvcRequester
     )
+
+    // Use the content lambda to allow the caller to define the custom layout
+    paymentCardInputScope.content(modifier)
+
 }
