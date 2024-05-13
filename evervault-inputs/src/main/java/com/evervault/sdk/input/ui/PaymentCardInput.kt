@@ -17,12 +17,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import com.evervault.sdk.Evervault
 import com.evervault.sdk.input.model.CreditCardType
-import com.evervault.sdk.input.model.PaymentCardData
-import com.evervault.sdk.input.model.PaymentCardError
-import com.evervault.sdk.input.model.expiry
-import com.evervault.sdk.input.model.updateCvc
-import com.evervault.sdk.input.model.updateExpiry
-import com.evervault.sdk.input.model.updateNumber
+import com.evervault.sdk.input.model.card.PaymentCardData
+import com.evervault.sdk.input.model.card.PaymentCardError
+import com.evervault.sdk.input.model.card.updateNumber
+import com.evervault.sdk.input.model.card.updateCvc
+import com.evervault.sdk.input.model.card.updateExpiry
 import com.evervault.sdk.input.utils.CreditCardExpirationDateCursorCalculator
 import com.evervault.sdk.input.utils.CreditCardExpirationDateFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
@@ -119,7 +118,11 @@ fun PaymentCardInput(
         }
     }
 
-    LaunchedEffect(rawCardData.expiry) {
+    LaunchedEffect(rawCardData.card.expMonth) {
+        updateCardData()
+    }
+
+    LaunchedEffect(rawCardData.card.expYear) {
         updateCardData()
     }
 
