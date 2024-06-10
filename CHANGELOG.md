@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.11.0
+
+### Minor Changes
+
+- 01bbd03: Update evervault-core dependencies
+
 ## 1.10.1
 
 ### Patch Changes
