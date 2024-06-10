@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponents
 import com.evervault.sampleapplication.sample.PaymentCardCustomLayoutWithNewComponentsWithoutLabels
+import com.evervault.sampleapplication.sample.PaymentCardCustomCardOnly
 import com.evervault.sampleapplication.ui.views.BasicEncryptionView
 import com.evervault.sampleapplication.ui.views.CreditCardInputView
 import com.evervault.sampleapplication.ui.views.EnclaveView
@@ -22,6 +23,7 @@ import com.evervault.sampleapplication.ui.views.PaymentCardView
 import com.evervault.sampleapplication.ui.views.component.CustomTheme
 import com.evervault.sampleapplication.ui.views.component.customPlaceholderTexts
 import com.evervault.sampleapplication.ui.views.layout.customPaymentCardInputLayout
+import com.evervault.sdk.input.model.CardFields
 import com.evervault.sdk.input.ui.PaymentCardInput
 import com.evervault.sdk.input.ui.card.InlinePaymentCard
 import com.evervault.sdk.input.ui.card.PaymentCard
@@ -140,6 +142,14 @@ fun NavigationGraph(navController: NavHostController) {
             PaymentCardView { onDataChange ->
                 PaymentCard(onDataChange = onDataChange) { modifier ->
                     PaymentCardCustomLayoutWithNewComponentsWithoutLabels(modifier)
+                }
+            }
+        }
+
+        composable(Route.CreditCardInputCustomCardOnly.route) {
+            PaymentCardView { onDataChange ->
+                PaymentCard(onDataChange = onDataChange, enabledFields = listOf(CardFields.CARD_NUMBER)) { modifier ->
+                    PaymentCardCustomCardOnly(modifier)
                 }
             }
         }

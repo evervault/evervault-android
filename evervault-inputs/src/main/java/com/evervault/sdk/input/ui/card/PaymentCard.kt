@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import com.evervault.sdk.input.mapper.PaymentCardDataMapper
+import com.evervault.sdk.input.model.CardFields
 import com.evervault.sdk.input.model.card.PaymentCardData
 import com.evervault.sdk.input.ui.PaymentCardInput
 import com.evervault.sdk.input.ui.PaymentCardInputScope
@@ -26,6 +27,7 @@ import com.evervault.sdk.input.model.PaymentCardData as OldPaymentCardData
  * @param textStyle the [TextStyle] to be applied to the input texts
  * @param placeholderTextStyle the [TextStyle] to be applied to the input texts placeholders
  * @param onDataChange the listener to be invoked when the underlying card data changes
+ * @param enabledFields the list of fields that should be enabled for input validation
  * @param content a lambda to provide the user's own layout
  */
 @Composable
@@ -34,10 +36,11 @@ fun PaymentCard(
     textStyle: TextStyle = TextStyle.Default,
     placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
     onDataChange: (PaymentCardData) -> Unit = {},
-    content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit
+    enabledFields: List<CardFields> = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE, CardFields.CVC),
+    content: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit,
 ) {
     /**
-    Temporarily mapping the  to map [OldPaymentCardData] to the new [PaymentCardData]
+    Temporarily mapping [OldPaymentCardData] to the new [PaymentCardData]
     It will be removed when we remove the old constructor for [PaymentCardInput], change its
     internal implementation to return already mapped data, and all the data logic has been extracted from it.
      */
@@ -51,6 +54,7 @@ fun PaymentCard(
         textStyle = textStyle,
         placeholderTextStyle = placeholderTextStyle,
         layout = content,
-        onDataChange = mapCardDataOldAndReturnResult
+        onDataChange = mapCardDataOldAndReturnResult,
+        enabledFields = enabledFields
     )
 }
