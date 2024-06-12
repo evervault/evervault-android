@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.12.0
+
+### Minor Changes
+
+- c5bfdba: Allow validation of just individual fields
+
 ## 1.11.0
 
 ### Minor Changes
