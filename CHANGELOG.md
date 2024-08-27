@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.12.1
+
+### Patch Changes
+
+- 0c1a815: Remove duplicate dependency
+
 ## 1.12.0
 
 ### Minor Changes
