@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.12.2
+
+### Patch Changes
+
+- 0311fbb: Removing attestation doc request on the main thread during initialisation
+
 ## 1.12.1
 
 ### Patch Changes
