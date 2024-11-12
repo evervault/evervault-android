@@ -52,7 +52,9 @@ internal fun CustomTextField(
     val autofill = LocalAutofill.current
     val autofillNode = AutofillNode(
         autofillTypes = listOf(autofillType),
-        onFill = { state.value = TextFieldValue(it) }
+        onFill = {
+            state.value = TextFieldValue(state.value.text + it)
+        }
     )
     LocalAutofillTree.current.plusAssign(autofillNode)
     val defaultOrPassedBrush = setDefaultCursorBrush(cursorBrush)
