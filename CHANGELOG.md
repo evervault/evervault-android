@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 1.12.3
+
+### Patch Changes
+
+- afd82f7: Fix 1Password autofil
+
 ## 1.12.2
 
 ### Patch Changes
