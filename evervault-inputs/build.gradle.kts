@@ -20,7 +20,6 @@ android {
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 26
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -62,12 +61,14 @@ android {
     }
 }
 
+val composeVersion = "1.7.2"
+
 dependencies {
     implementation("com.evervault.sdk:evervault-core:1.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:${composeVersion}")
     implementation(platform("androidx.compose:compose-bom:2023.09.02"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

@@ -48,6 +48,13 @@ internal class PaymentCardDataValidationTest {
     }
 
     @Test
+    fun validationForCardWithEmpty() {
+        val actualResult = testData.updateNumber("  ", enabledFields = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE, CardFields.CVC))
+
+        assertFalse(actualResult.isValid)
+    }
+
+    @Test
     fun validationForOnlyInvalidCardNumber() {
         val actualResult = testData.updateNumber("42424242", enabledFields = listOf(CardFields.CARD_NUMBER))
 

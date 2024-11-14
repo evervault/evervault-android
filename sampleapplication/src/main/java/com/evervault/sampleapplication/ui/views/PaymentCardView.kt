@@ -1,5 +1,6 @@
 package com.evervault.sampleapplication.ui.views
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState

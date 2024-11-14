@@ -149,6 +149,30 @@ internal class PaymentCardInputScopeImpl(
         )
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
+    @Composable
+    override fun CardNumberField(
+        modifier: Modifier,
+        label: (@Composable () -> Unit)?,
+        placeholder: (@Composable () -> Unit)?,
+        textStyle: TextStyle,
+        textFieldColors: TextFieldColors,
+        cursorBrush: Brush?,
+        onNext: (() -> Unit)?
+    ) {
+        CustomTextField(
+            state = creditCardNumber,
+            modifier = modifier.focusRequester(creditCardRequester),
+            label = label,
+            placeholder = placeholder,
+            textStyle = textStyle,
+            textFieldColors = textFieldColors,
+            onNext = onNext,
+            autofillType = AutofillType.CreditCardNumber,
+            cursorBrush = cursorBrush
+        )
+    }
+
     @Composable
     override fun ExpiryField() {
         ExpiryField(modifier = Modifier)
