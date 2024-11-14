@@ -176,7 +176,9 @@ internal fun PaymentCardInputScope.PaymentCardCustomCardOnly(modifier: Modifier)
                 )
             },
             textStyle = MaterialTheme.typography.titleLarge,
-            textFieldColors = customTextFieldColors()
+            textFieldColors = customTextFieldColors(),
+            cursorBrush = null,
+            onNext = null
         )
     }
 }

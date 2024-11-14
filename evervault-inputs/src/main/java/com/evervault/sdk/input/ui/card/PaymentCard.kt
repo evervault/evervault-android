@@ -46,6 +46,16 @@ fun PaymentCard(
      */
     val paymentCardDataMapper = PaymentCardDataMapper()
     val mapCardDataOldAndReturnResult: (OldPaymentCardData) -> Unit = { paymentCardDataOld ->
+        val isValid = enabledFields.all { field ->
+            when (field) {
+                CardFields.CARD_NUMBER -> paymentCardDataOld.card.number.isNotEmpty()
+                CardFields.EXPIRY_DATE -> paymentCardDataOld.card.expMonth.isNotEmpty() && paymentCardDataOld.card.expYear.isNotEmpty()
+                CardFields.CVC -> paymentCardDataOld.card.cvc.isNotEmpty()
+            }
+        }
+
+        paymentCardDataOld.isValid = isValid
+
         onDataChange(paymentCardDataMapper.apply(paymentCardDataOld))
     }
 
