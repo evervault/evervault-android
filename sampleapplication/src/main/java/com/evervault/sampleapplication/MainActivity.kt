@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.evervault.sampleapplication.navigation.NavigationGraph
 import com.evervault.sampleapplication.ui.theme.EvervaultandroidTheme
-import com.evervault.sdk.ConfigUrls
 import com.evervault.sdk.CustomConfig
 import com.evervault.sdk.Evervault
 
