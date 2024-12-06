@@ -19,9 +19,10 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "ENCLAVE_UUID", "\"hello-enclave\"")
-        buildConfigField("String", "APP_UUID", "\"app-33b88ca7da0d\"")
-        buildConfigField("String", "PCR_CALLBACK_URL", "\"https://blackhole.posterior.io/0xljnh\"")
+        buildConfigField("String", "ENCLAVE_UUID", "\"\"")
+        buildConfigField("String", "APP_UUID", "\"\"")
+        buildConfigField("String", "PCR_CALLBACK_URL", "\"\"")
+        buildConfigField("String", "ENCLAVE_URL", "\"\"")
     }
 
     buildTypes {
@@ -78,6 +79,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-alpha03")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
