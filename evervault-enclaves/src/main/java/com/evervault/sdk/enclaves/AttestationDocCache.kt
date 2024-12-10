@@ -48,7 +48,7 @@ class AttestationDocCache(
                 }
 
                 val delayMs = initialDelayMs * (1 shl (currentAttempt - 1))
-                Log.d("AttestationDocCache", "Populating doc from cached failed retry count: $currentAttempt, delay $delayMs")
+                Log.d("AttestationDocCache", "Populating doc cache failed retry count: $currentAttempt, delay $delayMs")
                 Log.d("AttestationDocCache", "Exception getting attestation doc", e)
                 delay(delayMs)
             }
