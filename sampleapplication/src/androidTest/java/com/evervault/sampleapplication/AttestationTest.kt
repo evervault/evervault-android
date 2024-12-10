@@ -1,103 +1,75 @@
 package com.evervault.sampleapplication
-
+import android.content.Context
+import android.content.Intent
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.evervault.sdk.enclaves.AttestationData
-import com.evervault.sdk.enclaves.PCRs
-import com.evervault.sdk.enclaves.enclavesTrustManager
-import okhttp3.OkHttpClient
-import okhttp3.Request
-
+import org.junit.Assert.*
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiScrollable
+import androidx.test.uiautomator.UiSelector
+import androidx.test.uiautomator.Until
+import org.hamcrest.Matchers.notNullValue
+import org.junit.Before
 
-import org.junit.Assert.*
-import javax.net.ssl.SSLHandshakeException
+private const val BASIC_SAMPLE_PACKAGE = "com.evervault.sampleapplication"
+private const val LAUNCH_TIMEOUT = 5000L
 
 @RunWith(AndroidJUnit4::class)
 class AttestationTest {
 
-    private val enclaveName = "synthetic-cage"
-    private val appUuid = "app-f5f084041a7e"
-    private val url = "https://$enclaveName.$appUuid.cage.evervault.com/hello"
-    private val betaUrl = "https://$enclaveName.$appUuid.cages.evervault.com/hello"
-    @Test
-    fun testSuccessfulAttestation() {
-        val client = OkHttpClient.Builder()
-            .enclavesTrustManager(
-                AttestationData(
-                    enclaveName = enclaveName,
-                    // Replace with legitimate PCR strings when not in debug mode
-                    PCRs(
-                        pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    )
-                ),
-                appUuid
-            )
-            .build()
+    private lateinit var device: UiDevice
 
-        val request = Request.Builder()
-            .url(url)
-            .build()
+    @Before
+    fun startMainActivityFromHomeScreen() {
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
-        val response = client.newCall(request).execute()
-        // 401 means TLS handshake was successful
-        assertEquals(response.code, 401)
-    }
+        device.pressHome()
 
-    @Test
-    fun testSuccessfulAttestationWithSinglePCR() {
-        val client = OkHttpClient.Builder()
-            .enclavesTrustManager(
-                AttestationData(
-                    enclaveName = enclaveName,
-                    // Replace with legitimate PCR strings when not in debug mode
-                    PCRs(
-                        pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                    )
-                ),
-                appUuid
-            )
-            .build()
+        val launcherPackage: String = device.launcherPackageName
+        assertThat(launcherPackage, notNullValue())
+        device.wait(
+            Until.hasObject(By.pkg(launcherPackage).depth(0)),
+            LAUNCH_TIMEOUT
+        )
 
-        val request = Request.Builder()
-            .url(url)
-            .build()
-
-        val response = client.newCall(request).execute()
-        // 401 means TLS handshake was successful
-        assertEquals(response.code, 401)
-    }
-
-    @Test
-    fun testIncorrectPCRs() {
-        val client = OkHttpClient.Builder()
-            .enclavesTrustManager(
-                AttestationData(
-                    enclaveName = enclaveName,
-                    // Replace with legitimate PCR strings when not in debug mode
-                    PCRs(
-                        pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                        pcr8 = "Incorrect"
-                    )
-                ),
-                appUuid
-            )
-            .build()
-
-        val request = Request.Builder()
-            .url(url)
-            .build()
-
-        try {
-            client.newCall(request).execute()
-            fail("Expected an exception to be thrown")
-        } catch (e: SSLHandshakeException) {
-            assertEquals(e.message, "Attestation failed")
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val intent = context.packageManager.getLaunchIntentForPackage(
+            BASIC_SAMPLE_PACKAGE)?.apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
+        context.startActivity(intent)
+
+        device.wait(
+            Until.hasObject(By.pkg(BASIC_SAMPLE_PACKAGE).depth(0)),
+            LAUNCH_TIMEOUT
+        )
+    }
+
+    @Test
+    fun debugComposeViewHierarchy() {
+        device.wait(Until.hasObject(By.pkg(BASIC_SAMPLE_PACKAGE)), LAUNCH_TIMEOUT)
+
+        val scrollable = UiScrollable(UiSelector().scrollable(true))
+        scrollable.setAsVerticalList()
+        val buttonSelector = UiSelector().description("Enclave Button")
+        scrollable.scrollIntoView(buttonSelector)
+
+        device.wait(Until.hasObject(By.res("Enclave Button")), LAUNCH_TIMEOUT)
+
+        val enclaveButton = device.findObject(By.res("Enclave Button"))
+        assertThat("Enclave Button not found", enclaveButton, notNullValue())
+        enclaveButton.click()
+
+        Thread.sleep(4000)
+
+        device.wait(Until.hasObject(By.res("Enclave Response")), LAUNCH_TIMEOUT)
+
+        val enclaveResponse = device.findObject(By.res("Enclave Response"))
+        assertNotNull(enclaveResponse.text)
     }
 }

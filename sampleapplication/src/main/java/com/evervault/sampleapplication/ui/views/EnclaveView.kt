@@ -10,10 +10,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import com.evervault.sdk.enclaves.AttestationData
-import com.evervault.sdk.enclaves.PCRCallbackError
 import com.evervault.sdk.enclaves.PCRs
 import com.evervault.sdk.enclaves.PcrCallback
 import com.evervault.sdk.enclaves.enclavesTrustManager
@@ -22,26 +25,20 @@ import com.google.gson.reflect.TypeToken
 import com.evervault.sampleapplication.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
-import org.json.JSONObject
 import java.io.IOException
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EnclaveView() {
-
-    val enclaveName = BuildConfig.ENCLAVE_UUID
-    val appUuid = BuildConfig.APP_UUID
-
     var cachedCallResponseText: String? by remember { mutableStateOf(null) }
     var staticPCRCallResponseText: String? by remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            cachedCallResponseText = staticPCRsEnclaveRequest(enclaveName, appUuid)
-            staticPCRCallResponseText = cacheManagerEnclaveCall(enclaveName, appUuid)
+            staticPCRCallResponseText = EvervaultHttpClient.staticPCRsEnclaveRequest()
+            cachedCallResponseText = EvervaultHttpClient.cachedPCRsEnclaveRequest()
         }
     }
 
@@ -54,36 +51,66 @@ fun EnclaveView() {
         }
         Row {
             Text(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier.padding(20.dp)
+                    .semantics { testTagsAsResourceId = true }
+                    .testTag("Enclave Response"),
                 text = staticPCRCallResponseText ?: "Loading result with static PCRs"
             )
         }
     }
 }
 
-fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
-    val url = "https://$enclaveName.$appUuid.cage.evervault.com/compute"
-    val pcrClient = OkHttpClient.Builder().build()
-    val pcrRequest = Request.Builder()
-        .url(BuildConfig.PCR_CALLBACK_URL)
-        .build()
+object EvervaultHttpClient {
+    private var client: OkHttpClient? = null
+    private const val enclaveURL = BuildConfig.ENCLAVE_URL
+    private const val enclaveName = BuildConfig.ENCLAVE_UUID
+    private const val appUuid = BuildConfig.APP_UUID
+    @Synchronized
+    private fun getClient(pcrCallback: PcrCallback? = null): OkHttpClient {
+        return client ?: OkHttpClient.Builder()
+            .enclavesTrustManager(
+                if (pcrCallback != null) {
+                    AttestationData(enclaveName, pcrCallback)
+                } else {
+                    AttestationData(
+                        enclaveName,
+                        PCRs(
+                            pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                            pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                            pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                            pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                        )
+                    )
+                },
+                appUuid,
+                enclaveURL
+            )
+            .build()
+            .also { client = it }
+    }
 
-    val jsonPayload = JSONObject()
-    jsonPayload.put("a", 1)
-    jsonPayload.put("b", 2)
+    fun staticPCRsEnclaveRequest(): String {
+        val request = Request.Builder()
+            .url("https://$enclaveURL/health")
+            .get()
+            .build()
 
-    val requestBody = RequestBody.create(
-        "application/json; charset=utf-8".toMediaTypeOrNull(),
-        jsonPayload.toString()
-    )
+        return try {
+            getClient().newCall(request).execute().use { response ->
+                response.body?.string() ?: throw IOException("Response body was null")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            "Error: ${e.message}"
+        }
+    }
 
-    val request = Request.Builder()
-        .url(url)
-        .header("content-type", "application/json")
-        .post(requestBody)
-        .build()
+    fun cachedPCRsEnclaveRequest(): String {
+        val pcrClient = OkHttpClient.Builder().build()
+        val pcrRequest = Request.Builder()
+            .url(BuildConfig.PCR_CALLBACK_URL)
+            .build()
 
-    try {
         val pcrCallback: PcrCallback = {
             val pcrResponse = pcrClient.newCall(pcrRequest).execute()
             val type = object : TypeToken<List<PCRs>>() {}.type
@@ -91,69 +118,19 @@ fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
             responseMap
         }
 
-        val client = OkHttpClient.Builder()
-            .enclavesTrustManager(
-                AttestationData(
-                    enclaveName = enclaveName,
-                    pcrCallback
-                ),
-                appUuid
-            )
+        val request = Request.Builder()
+            .url("https://$enclaveURL/health")
+            .get()
             .build()
 
-        val response = client.newCall(request).execute()
-        val responseMap: Map<String, String> = Gson().fromJson(response.body!!.string(), Map::class.java) as Map<String, String>
-        return responseMap["sum"].toString()
-    } catch (e: Exception) {
-        when(e) {
-            is IOException, is PCRCallbackError -> {
-                e.printStackTrace()
-                return "Error: ${e.message}"
+        return try {
+            getClient(pcrCallback).newCall(request).execute().use { response ->
+                response.body?.string() ?: throw IOException("Response body was null")
             }
-            else -> throw e
+        } catch (e: IOException) {
+            e.printStackTrace()
+            "Error: ${e.message}"
         }
     }
 }
 
-fun staticPCRsEnclaveRequest(enclaveName: String, appUuid: String): String {
-    val url = "https://$enclaveName.$appUuid.cage.evervault.com/compute"
-
-    val jsonPayload = JSONObject()
-    jsonPayload.put("a", 1)
-    jsonPayload.put("b", 2)
-
-    val requestBody = RequestBody.create(
-        "application/json; charset=utf-8".toMediaTypeOrNull(),
-        jsonPayload.toString()
-    )
-
-    val client = OkHttpClient.Builder()
-        .enclavesTrustManager(
-            AttestationData(
-                enclaveName = enclaveName,
-                // Replace with legitimate PCR strings when not in debug mode
-                PCRs(
-                    pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                )
-            ),
-            appUuid
-        )
-        .build()
-
-    val request = Request.Builder()
-        .url(url)
-        .post(requestBody)
-        .build()
-
-    return try {
-        val response = client.newCall(request).execute()
-        val responseMap: Map<String, String> = Gson().fromJson(response.body!!.string(), Map::class.java) as Map<String, String>
-        responseMap["sum"].toString()
-    } catch (e: IOException) {
-        e.printStackTrace()
-        "Error: ${e.message}"
-    }
-}
