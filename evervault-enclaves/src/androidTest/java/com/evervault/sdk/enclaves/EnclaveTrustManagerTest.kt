@@ -29,7 +29,6 @@ class OkHttpClientBuilderExtensionTest {
 
     @Before
     fun setup() {
-        // Generate a self-signed certificate for the mock server
         val rootCertificate = HeldCertificate.Builder()
             .certificateAuthority(1)
             .build()
@@ -104,7 +103,6 @@ class OkHttpClientBuilderExtensionTest {
             callbackInterval = 0
         )
 
-        // Mock a failed attestation response
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(500)
@@ -118,18 +116,15 @@ class OkHttpClientBuilderExtensionTest {
             enclaveURL = mockWebServer.url("/.well-known/attestation").toString()
         ).build()
 
-        // Create a test request to trigger certificate validation
         val request = Request.Builder()
             .url(mockWebServer.url("/some-endpoint").toString())
             .get()
             .build()
 
-        // This should throw CertificateException due to attestation failure
         enclaveClient.newCall(request).execute().use { response ->
             response.body?.string() ?: throw IOException("Response body was null")
         }
 
-        // Verify that the attestation endpoint was called
         val recordedRequest = mockWebServer.takeRequest()
         assertEquals("/.well-known/attestation", recordedRequest.path)
         assertEquals("GET", recordedRequest.method)
