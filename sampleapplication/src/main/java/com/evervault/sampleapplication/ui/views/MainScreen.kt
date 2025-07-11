@@ -125,6 +125,21 @@ fun MainScreen(navController: NavController) {
                         .testTag("Enclave Button")
                 )
             }
+            item {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = "Google Pay",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
+                )
+
+                ListItem(
+                    headlineContent = { Text(text = "Make payments with Google Pay") },
+                    modifier = Modifier.clickable { navController.navigate(Route.GooglePay.route) }
+                )
+            }
         }
     }
 }
