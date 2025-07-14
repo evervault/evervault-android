@@ -18,7 +18,7 @@ jobs:
         run: ./gradlew clean build --info
       - name: Upload unit test report on failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: failed_unit_tests
           path: ${{ github.workspace }}/lib/build/reports/tests/test
@@ -38,7 +38,7 @@ jobs:
         run: ./gradlew clean :evervault-common-e2e:build --info
       - name: Upload unit test report on failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: failed_unit_tests
           path: ${{ github.workspace }}/lib/build/reports/tests/test
