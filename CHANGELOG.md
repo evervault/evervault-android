@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 2.0.0
+
+### Major Changes
+
+- 3540747: Add Evervault Google Pay to Inputs module
+
 ## 1.13.1
 
 ### Patch Changes
