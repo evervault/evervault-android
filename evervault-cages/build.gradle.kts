@@ -5,9 +5,10 @@ import java.util.*
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("maven-publish")
     id("signing")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -43,9 +44,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.6.11"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -65,7 +66,7 @@ android {
 dependencies {
     implementation("com.evervault.sdk:evervault-core:1.0")
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.24"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.5.1")
     implementation("net.java.dev.jna:jna:5.7.0@aar")

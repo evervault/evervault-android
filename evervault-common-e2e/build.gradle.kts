@@ -4,7 +4,7 @@ import java.io.FileInputStream
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("plugin.serialization") version "1.8.21"
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 // Load properties from local.properties

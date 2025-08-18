@@ -174,10 +174,9 @@ fun PaymentCardInput(
             expiryDate = expiryDate,
             expiryRequester = expiryDateRequester,
             cvc = cvc,
-            cvcRequester = cvcRequester,
+            cvcRequester = cvcRequester
         ),
-        modifier = modifier
-            .height(IntrinsicSize.Min)
+        modifier
     )
 }
 

@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("com.android.tools.build:gradle:8.3.2")
     }
 }
 
@@ -18,12 +18,7 @@ if (localPropertiesFile.exists()) {
 
 group "com.evervault.sdk"
 plugins {
-    kotlin("jvm") version "1.8.21" apply false
-//    id("com.android.library") version "8.0.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.20" apply false
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("com.android.application") version "7.4.2" apply false
-    id("com.android.library") version "7.4.2" apply false
 }
 
 allprojects {
