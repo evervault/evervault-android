@@ -121,8 +121,15 @@ publishing {
 }
 
 signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
+    // Load properties from local.properties
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+    
+    val signingKey: String? = localProperties.getProperty("signingKey")
+    val signingPassword: String? = localProperties.getProperty("signingPassword")
     useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
 
     sign(publishing.publications["release"])
