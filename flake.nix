@@ -1,5 +1,5 @@
 {
-  description = "JS Monorepo";
+  description = "Evervault Android SDKMonorepo";
 
   # Flake inputs
   inputs = {
@@ -29,7 +29,7 @@
         default = pkgs.mkShell {
           # The Nix packages provided in the environment
           packages = with pkgs; [
-            openjdk17
+            openjdk21
             gradle
           ];
           
