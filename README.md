@@ -8,6 +8,32 @@ The [Evervault](https://evervault.com/) Android SDK is a library that provides s
  * [Gradle](https://docs.evervault.com/sdks/android#gradle-dsl)
  * [Maven](https://docs.evervault.com/sdks/android#maven)
 
+## Configuration
+
+This project uses `local.properties` for all injectable configuration. This file is not checked into version control and contains sensitive information specific to your local setup.
+
+### Setting up local.properties
+
+1. Copy the example configuration from the existing `local.properties` file
+2. Replace the placeholder values with your actual Evervault credentials:
+
+```properties
+# Required
+EV_API_KEY=your-actual-api-key
+EV_APP_UUID=your-actual-app-uuid
+EV_TEAM_UUID=your-actual-team-uuid
+
+# Optional
+MERCHANT_ID=your-actual-merchant-id
+ENCLAVE_UUID=your-actual-enclave-uuid
+PCR_CALLBACK_URL=your-actual-pcr-callback-url
+ENCLAVE_URL=your-actual-enclave-url
+```
+
+### Configuration Properties
+
+All configuration is injected at build time via BuildConfig fields, ensuring no sensitive data is hardcoded in the source code.
+
 ## Features
 * [Encrypt](https://docs.evervault.com/security/evervault-encryption) various data types for storing sensitive data.
 * Collect credit card information for PCI-DSS compliance with [Inputs](https://docs.evervault.com/products/inputs).

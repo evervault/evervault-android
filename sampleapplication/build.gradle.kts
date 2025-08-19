@@ -1,7 +1,24 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(FileInputStream(localFile))
+    }
+}
+
+val evAppId: String = localProperties.getProperty("EV_APP_UUID") ?: ""
+val evervaultMerchantId: String = localProperties.getProperty("MERCHANT_ID") ?: ""
+val evTeamId: String = localProperties.getProperty("EV_TEAM_UUID") ?: ""
+val evervaultEnclaveId: String = localProperties.getProperty("ENCLAVE_UUID") ?: ""
+val evervaultPcrCallbackUrl: String = localProperties.getProperty("PCR_CALLBACK_URL") ?: ""
+val evervaultEnclaveUrl: String = localProperties.getProperty("ENCLAVE_URL") ?: ""
 
 android {
     namespace = "com.evervault.sampleapplication"
@@ -19,10 +36,12 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "ENCLAVE_UUID", "\"\"")
-        buildConfigField("String", "APP_UUID", "\"\"")
-        buildConfigField("String", "PCR_CALLBACK_URL", "\"\"")
-        buildConfigField("String", "ENCLAVE_URL", "\"\"")
+        buildConfigField("String", "ENCLAVE_UUID", "\"$evervaultEnclaveId\"")
+        buildConfigField("String", "EV_TEAM_UUID", "\"$evTeamId\"")
+        buildConfigField("String", "EV_APP_UUID", "\"$evAppId\"")
+        buildConfigField("String", "MERCHANT_ID", "\"$evervaultMerchantId\"")
+        buildConfigField("String", "PCR_CALLBACK_URL", "\"$evervaultPcrCallbackUrl\"")
+        buildConfigField("String", "ENCLAVE_URL", "\"$evervaultEnclaveUrl\"")
     }
 
     buildTypes {

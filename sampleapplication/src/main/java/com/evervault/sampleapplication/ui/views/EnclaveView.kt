@@ -64,7 +64,7 @@ object EvervaultHttpClient {
     private var client: OkHttpClient? = null
     private const val enclaveURL = BuildConfig.ENCLAVE_URL
     private const val enclaveName = BuildConfig.ENCLAVE_UUID
-    private const val appUuid = BuildConfig.APP_UUID
+    private const val appUuid = BuildConfig.EV_APP_UUID
     @Synchronized
     private fun getClient(pcrCallback: PcrCallback? = null): OkHttpClient {
         return client ?: OkHttpClient.Builder()
