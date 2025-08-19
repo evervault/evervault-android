@@ -26,15 +26,15 @@ import com.evervault.sdk.Evervault
 class MainActivity : ComponentActivity() {
     private val model: EvervaultPayViewModel by viewModels {
         EvervaultPayViewModelFactory(application, Config(
-            appId = "YOUR_EVERVAULT_APP_ID",
-            merchantId = "YOUR_EVERVAULT_MERCHANT_ID"
+            appId = BuildConfig.EV_APP_UUID,
+            merchantId = BuildConfig.MERCHANT_ID
         ))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Evervault.shared.configure(
-            teamId = System.getenv("VITE_EV_TEAM_UUID") ?: "",
-            appId = System.getenv("VITE_EV_APP_UUID") ?: "",
+            teamId = BuildConfig.EV_TEAM_UUID,
+            appId = BuildConfig.EV_APP_UUID,
             customConfig = CustomConfig(isDebugMode = true)
         )
         super.onCreate(savedInstanceState)

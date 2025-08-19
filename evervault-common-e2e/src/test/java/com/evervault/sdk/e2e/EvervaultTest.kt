@@ -182,16 +182,12 @@ class EvervaultTest {
     }
 
     private fun setDebugMode(): Boolean {
-        try {
-            apiKey = System.getenv("EV_API_KEY")
-            appUuid = System.getenv("EV_APP_UUID")
-            teamUuid = System.getenv("EV_TEAM_UUID")
-        } catch (e: RuntimeException) {
-            apiKey = "test-api-key"
-            appUuid = "test-app-uuid"
-            teamUuid = "test-team-uuid"
-            return true
-        }
-        return false
+        apiKey = BuildConfig.EV_API_KEY
+        appUuid = BuildConfig.EV_APP_UUID
+        teamUuid = BuildConfig.EV_TEAM_UUID
+        
+        // If any of the required values are empty or the placeholder values, run in debug mode
+        return apiKey.isEmpty() || appUuid.isEmpty() || teamUuid.isEmpty() ||
+               apiKey == "your-api-key-here" || appUuid == "your-e2e-app-uuid-here" || teamUuid == "your-e2e-team-uuid-here"
     }
 }
