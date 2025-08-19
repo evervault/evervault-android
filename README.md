@@ -18,9 +18,12 @@ This project uses `local.properties` for all injectable configuration. This file
 2. Replace the placeholder values with your actual Evervault credentials:
 
 ```properties
+# Required
 EV_API_KEY=your-actual-api-key
 EV_APP_UUID=your-actual-app-uuid
 EV_TEAM_UUID=your-actual-team-uuid
+
+# Optional
 MERCHANT_ID=your-actual-merchant-id
 ENCLAVE_UUID=your-actual-enclave-uuid
 PCR_CALLBACK_URL=your-actual-pcr-callback-url

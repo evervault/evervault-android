@@ -187,7 +187,6 @@ class EvervaultTest {
         teamUuid = BuildConfig.EV_TEAM_UUID
         
         // If any of the required values are empty or the placeholder values, run in debug mode
-        return apiKey.isEmpty() || appUuid.isEmpty() || teamUuid.isEmpty() ||
-               apiKey == "your-api-key-here" || appUuid == "your-e2e-app-uuid-here" || teamUuid == "your-e2e-team-uuid-here"
+        return apiKey.isEmpty() || appUuid.isEmpty() || teamUuid.isEmpty()
     }
 }

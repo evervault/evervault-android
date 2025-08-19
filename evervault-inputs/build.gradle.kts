@@ -64,7 +64,7 @@ android {
 val composeVersion = "1.7.2"
 
 dependencies {
-    api("com.github.evervault:evervault-pay:android-v0.0.25")
+    api("com.github.evervault:evervault-pay:android-v0.0.23")
     implementation("com.evervault.sdk:evervault-core:1.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
