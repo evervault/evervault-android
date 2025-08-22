@@ -69,7 +69,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.24"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("net.java.dev.jna:jna:5.7.0@aar")
+    implementation("net.java.dev.jna:jna:5.17.0@aar")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("junit:junit:4.12")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
