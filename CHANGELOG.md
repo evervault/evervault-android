@@ -1,5 +1,15 @@
 # com.evervault.sdk
 
+## 2.1.0
+
+### Minor Changes
+
+- 6c91091: Add support for 16KB pages and update evervault-pay dependencies
+- 723375c: \* Update evervault-pay dependency
+  - Automatically set Google Pay sandbox config based on Evervault App
+  - Update proguard rules for `evervault-pay` symbols
+  - Expose underlying Google Pay API for more customization
+
 ## 2.0.0
 
 ### Major Changes
