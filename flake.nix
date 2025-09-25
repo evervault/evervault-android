@@ -31,6 +31,7 @@
           packages = with pkgs; [
             openjdk21
             gradle
+            nodejs_22
           ];
           
           shellHook = ''
