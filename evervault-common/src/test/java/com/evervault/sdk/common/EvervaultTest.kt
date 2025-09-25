@@ -20,8 +20,8 @@ class EvervaultTest {
     @Before
     fun setup() {
         Evervault.shared.configure(
-            teamId = "test_team_uuid",
-            appId = "test_app_uuid",
+            teamId = BuildConfig.EV_TEAM_UUID,
+            appId = BuildConfig.EV_APP_UUID,
             customConfig = CustomConfig(isDebugMode = true)
         )
     }

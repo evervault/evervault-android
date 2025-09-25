@@ -5,9 +5,17 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("com.android.tools.build:gradle:8.11.1")
     }
 }
+
+// Load properties from local.properties
+val localProperties = java.util.Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(java.io.FileInputStream(localPropertiesFile))
+}
+
 group "com.evervault.sdk"
 plugins {
     kotlin("jvm") version "1.8.21" apply false
@@ -26,8 +34,8 @@ allprojects {
     }
 }
 
-val ossrhUsername: String? by project
-val ossrhPassword: String? by project
+val ossrhUsername: String? = localProperties.getProperty("ossrhUsername")
+val ossrhPassword: String? = localProperties.getProperty("ossrhPassword")
 
 nexusPublishing {
     repositories {

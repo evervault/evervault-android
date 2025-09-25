@@ -1,8 +1,23 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("plugin.serialization") version "1.8.21"
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
+
+// Load properties from local.properties
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(FileInputStream(localFile))
+    }
+}
+
+val evApiKey: String = localProperties.getProperty("EV_API_KEY") ?: ""
+val evAppUuid: String = localProperties.getProperty("EV_APP_UUID") ?: ""
+val evTeamUuid: String = localProperties.getProperty("EV_TEAM_UUID") ?: ""
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -18,6 +33,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        
+        // Build config fields for E2E test configuration
+        buildConfigField("String", "EV_API_KEY", "\"$evApiKey\"")
+        buildConfigField("String", "EV_APP_UUID", "\"$evAppUuid\"")
+        buildConfigField("String", "EV_TEAM_UUID", "\"$evTeamUuid\"")
     }
 
     buildTypes {
@@ -28,6 +48,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

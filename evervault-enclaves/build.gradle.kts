@@ -5,7 +5,8 @@ import java.util.*
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
     id("signing")
 }
@@ -40,9 +41,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.6.11"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -65,10 +66,10 @@ val kotlinCoroutineVersion = "1.7.3"
 dependencies {
     implementation("com.evervault.sdk:evervault-core:1.2")
     implementation("androidx.core:core-ktx:$kotlinVersion")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.24"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("net.java.dev.jna:jna:5.7.0@aar")
+    implementation("net.java.dev.jna:jna:5.17.0@aar")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
@@ -125,8 +126,15 @@ publishing {
 }
 
 signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
+    // Load properties from local.properties
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+    
+    val signingKey: String? = localProperties.getProperty("signingKey")
+    val signingPassword: String? = localProperties.getProperty("signingPassword")
     useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
 
     sign(publishing.publications["release"])

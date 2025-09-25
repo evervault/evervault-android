@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
-          java-version: '17'
+          java-version: '21'
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
@@ -63,7 +63,7 @@ jobs:
               }
             ' CHANGELOG.md)
             gh release create $COMMIT_TAG -t "$COMMIT_TAG" -n "$CHANGELOG"
-            ./generate_gradle_properties.bash ${{ github.workspace }}
+            ./generate_local_properties.bash ${{ github.workspace }}
             ./gradlew publishToSonatype
           else
             echo "No tag attached to HEAD. No new release needed."

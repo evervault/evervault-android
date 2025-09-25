@@ -17,14 +17,14 @@ import com.evervault.sdk.input.model.placeholder.PlaceholderTexts
 
 @Composable
 fun inlinePaymentCardInputLayout(): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
-    { inline(modifier = it) }
+    { inlineLayout(modifier = it) }
 
 @Composable
 fun inlinePaymentCardInputLayout(placeholderTexts: PlaceholderTexts): @Composable() (PaymentCardInputScope.(Modifier) -> Unit) =
-    { inline(modifier = it, placeholderTexts = placeholderTexts) }
+    { inlineLayout(modifier = it, placeholderTexts = placeholderTexts) }
 
 @Composable
-fun PaymentCardInputScope.inline(
+fun PaymentCardInputScope.inlineLayout(
     modifier: Modifier = Modifier,
     placeholderTexts: PlaceholderTexts = PlaceholderDefaults.texts(),
     padding: PaddingValues = PaddingValues(16.dp)

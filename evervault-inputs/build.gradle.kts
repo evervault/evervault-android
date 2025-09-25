@@ -5,6 +5,7 @@ import java.util.*
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("maven-publish")
     id("signing")
 }
@@ -42,9 +43,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.6.11"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -61,19 +62,20 @@ android {
     }
 }
 
-val composeVersion = "1.7.2"
+val composeActivityVersion = "1.9.0"
 
 dependencies {
-    api("com.github.evervault:evervault-pay:android-v0.0.22")
+    api("com.github.evervault:evervault-pay:android-v0.0.27")
     implementation("com.evervault.sdk:evervault-core:1.2")
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:${composeVersion}")
-    implementation(platform("androidx.compose:compose-bom:2023.09.02"))
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.activity:activity-compose:${composeActivityVersion}")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.foundation:foundation-layout")
+    implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
 
     testImplementation("junit:junit:4.13.2")
@@ -121,8 +123,15 @@ publishing {
 }
 
 signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
+    // Load properties from local.properties
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+    
+    val signingKey: String? = localProperties.getProperty("signingKey")
+    val signingPassword: String? = localProperties.getProperty("signingPassword")
     useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
 
     sign(publishing.publications["release"])

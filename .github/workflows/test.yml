@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: "corretto"
-          java-version: "17"
+          java-version: "21"
       - name: build and test project
         run: ./gradlew clean build --info
       - name: Upload unit test report on failure
@@ -29,13 +29,14 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: "corretto"
-          java-version: "17"
+          java-version: "21"
       - name: e2e tests
-        env:
-          EV_API_KEY: ${{ secrets.EV_API_KEY }}
-          EV_TEAM_UUID: ${{ secrets.EV_TEAM_UUID }}
-          EV_APP_UUID: ${{ secrets.EV_APP_UUID }}
-        run: ./gradlew clean :evervault-common-e2e:build --info
+        run: |
+          echo "# Adding secrets to local.properties" > "local.properties"
+          echo "EV_API_KEY=${{ secrets.EV_API_KEY }}" >> "local.properties"
+          echo "EV_TEAM_UUID=${{ secrets.EV_TEAM_UUID }}" >> "local.properties"
+          echo "EV_APP_UUID=${{ secrets.EV_APP_UUID }}" >> "local.properties"
+          ./gradlew clean :evervault-common-e2e:build --info
       - name: Upload unit test report on failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
