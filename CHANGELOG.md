@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 2.1.1
+
+### Patch Changes
+
+- 527f161: Fix workflow
+
 ## 2.1.0
 
 ### Minor Changes
