@@ -18,7 +18,7 @@ if (localPropertiesFile.exists()) {
 
 group "com.evervault.sdk"
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
 }
 
 allprojects {
@@ -36,8 +36,8 @@ val ossrhPassword: String? = localProperties.getProperty("ossrhPassword")
 nexusPublishing {
     repositories {
         sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/content/repositories/snapshots/"))
             stagingProfileId.set("7050c947df3733")
             username.set(ossrhUsername)
             password.set(ossrhPassword)
