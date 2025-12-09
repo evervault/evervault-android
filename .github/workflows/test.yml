@@ -15,7 +15,11 @@ jobs:
           distribution: "corretto"
           java-version: "21"
       - name: build and test project
-        run: ./gradlew clean build --info
+        run: |
+          export EV_API_KEY="${{ secrets.EV_API_KEY }}"
+          export EV_TEAM_UUID="${{ secrets.EV_TEAM_UUID }}"
+          export EV_APP_UUID="${{ secrets.EV_APP_UUID }}"
+          ./gradlew clean build --info
       - name: Upload unit test report on failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
