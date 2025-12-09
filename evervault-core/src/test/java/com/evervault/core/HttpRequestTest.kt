@@ -65,9 +65,9 @@ class HttpRequestTest {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    private val apiKey = getenv("VITE_EV_API_KEY")
-    private val appUuid = getenv("VITE_EV_APP_UUID")
-    private val teamUuid = getenv("VITE_EV_TEAM_UUID")
+    private val apiKey = getenv("EV_API_KEY")
+    private val appUuid = getenv("EV_APP_UUID")
+    private val teamUuid = getenv("EV_TEAM_UUID")
 
     private suspend fun encryptData(url: Any, data: RawData): EncryptedTestData {
         val task = coroutineScope {

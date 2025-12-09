@@ -18,8 +18,8 @@ class BasicTest {
     @Before
     fun setup() {
         Evervault.shared.configure(
-            teamId = getenv("VITE_EV_TEAM_UUID"),
-            appId = getenv("VITE_EV_APP_UUID"),
+            teamId = getenv("EV_TEAM_UUID"),
+            appId = getenv("EV_APP_UUID"),
             customConfig = CustomConfig(isDebugMode = true)
         )
     }

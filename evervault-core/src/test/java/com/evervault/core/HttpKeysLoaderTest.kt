@@ -16,8 +16,8 @@ class HttpKeysLoaderTest {
                 keysUrl = ConfigUrls().keysUrl,
                 apiUrl = ConfigUrls().apiUrl
             ),
-            teamId = getenv("VITE_EV_TEAM_UUID"),
-            appId = getenv("VITE_EV_APP_UUID"),
+            teamId = getenv("EV_TEAM_UUID"),
+            appId = getenv("EV_APP_UUID"),
             context = "default"
         )
         val cageKey = http.loadKeys()
