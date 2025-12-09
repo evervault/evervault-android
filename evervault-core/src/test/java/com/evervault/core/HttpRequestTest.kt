@@ -1,6 +1,5 @@
 package com.evervault.sdk.core
 
-// import com.evervault.sdk.core.models.FunctionResponseResult
 import com.evervault.sdk.ConfigUrls
 import com.evervault.sdk.Evervault
 import com.evervault.sdk.HttpConfig
@@ -19,12 +18,13 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import java.util.Base64
 import kotlinx.serialization.json.Json
 import com.google.gson.Gson
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import kotlin.test.assertFailsWith
 
 
 @Serializable
@@ -124,7 +124,7 @@ class HttpRequestTest {
     }
 
     @Test
-    fun testDecryptWithSDKStringEncrypt() = runBlocking {
+    fun testDecryptWithSDKStringEncrypt() = runTest {
         val http = Http(
             config = HttpConfig(
                 keysUrl = ConfigUrls().keysUrl,

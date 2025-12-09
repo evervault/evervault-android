@@ -4,13 +4,13 @@ import com.evervault.sdk.ConfigUrls
 import com.evervault.sdk.HttpConfig
 import com.evervault.sdk.core.keys.CageKey
 import com.evervault.sdk.test.getenv
-import kotlinx.coroutines.runBlocking
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class HttpKeysLoaderTest {
     @Test
-    fun testLoadKeys() = runBlocking {
+    fun testLoadKeys() = runTest {
         val http = Http(
             config = HttpConfig(
                 keysUrl = ConfigUrls().keysUrl,

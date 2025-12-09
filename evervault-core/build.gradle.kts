@@ -71,9 +71,12 @@ dependencies {
 //    implementation("androidx.compose.foundation:foundation")
 //    implementation("androidx.compose.material3:material3")
 //
-//    testImplementation("junit:junit:4.13.2")
-//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-//    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+//    implementation(kotlin("test"))
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
 //    debugImplementation("androidx.compose.ui:ui-tooling")
 
     implementation(kotlin("stdlib-common"))
@@ -88,6 +91,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     implementation("com.google.code.gson:gson:2.8.7")
+    testImplementation(kotlin("test"))
 }
 
 publishing {
