@@ -66,7 +66,7 @@ val composeActivityVersion = "1.9.0"
 
 dependencies {
     api("com.github.evervault:evervault-pay:android-v0.0.27")
-    implementation("com.evervault.sdk:evervault-core:1.2")
+    implementation(project(":evervault-core"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

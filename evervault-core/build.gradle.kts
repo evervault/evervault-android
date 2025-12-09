@@ -5,15 +5,12 @@ import java.util.*
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
     id("maven-publish")
     id("signing")
-    id("org.jetbrains.kotlin.plugin.serialization")
 }
-
 android {
     group = "com.evervault.sdk"
-    namespace = "com.evervault.sdk.cages"
+    namespace = "com.evervault.sdk"
     compileSdk = 33
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
@@ -21,7 +18,6 @@ android {
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 26
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -64,32 +60,43 @@ android {
 }
 
 dependencies {
-    implementation(project(":evervault-core"))
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.24"))
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("net.java.dev.jna:jna:5.17.0@aar")
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("junit:junit:4.12")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
-    testImplementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+//    implementation("androidx.core:core-ktx:1.12.0")
+//    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
+//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+//    implementation("androidx.activity:activity-compose:${composeActivityVersion}")
+//    implementation("androidx.compose.ui:ui")
+//    implementation("androidx.compose.ui:ui-graphics")
+//    implementation("androidx.compose.ui:ui-tooling-preview")
+//    implementation("androidx.compose.foundation:foundation-layout")
+//    implementation("androidx.compose.foundation:foundation")
+//    implementation("androidx.compose.material3:material3")
+//
+//    testImplementation("junit:junit:4.13.2")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+//    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+//    debugImplementation("androidx.compose.ui:ui-tooling")
+
+    implementation(kotlin("stdlib-common"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
+
+    // ktor
+    implementation("io.ktor:ktor-client-core:2.3.1")
+    implementation("io.ktor:ktor-client-okhttp:2.3.1")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+
+    // JSON
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    implementation("com.google.code.gson:gson:2.8.7")
 }
 
 publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "com.evervault.sdk"
-            artifactId = "evervault-cages"
+            artifactId = "evervault-core"
             version = version
-
+            
             afterEvaluate {
                 from(components["release"])
             }

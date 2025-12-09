@@ -64,7 +64,7 @@ val kotlinVersion = "1.8.0"
 val kotlinCoroutineVersion = "1.7.3"
 
 dependencies {
-    implementation("com.evervault.sdk:evervault-core:1.2")
+    implementation(project(":evervault-core"))
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.24"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
