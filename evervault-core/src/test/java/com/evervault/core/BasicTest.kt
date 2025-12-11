@@ -2,7 +2,8 @@ package com.evervault.sdk.core
 
 import com.evervault.sdk.CustomConfig
 import com.evervault.sdk.Evervault
-import com.evervault.sdk.test.getenv
+import com.evervault.sdk.test.getAppUUID
+import com.evervault.sdk.test.getTeamUUID
 import com.evervault.sdk.test.writeFile
 import io.ktor.util.decodeBase64Bytes
 import kotlinx.coroutines.test.runTest
@@ -18,8 +19,8 @@ class BasicTest {
     @Before
     fun setup() {
         Evervault.shared.configure(
-            teamId = getenv("EV_TEAM_UUID"),
-            appId = getenv("EV_APP_UUID"),
+            teamId = getTeamUUID(),
+            appId = getAppUUID(),
             customConfig = CustomConfig(isDebugMode = true)
         )
     }

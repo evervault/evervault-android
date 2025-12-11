@@ -5,9 +5,21 @@ import java.util.*
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
     id("signing")
 }
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(FileInputStream(localFile))
+    }
+}
+
+val evApiKey: String = localProperties.getProperty("EV_API_KEY") ?: ""
+val evAppId: String = localProperties.getProperty("EV_APP_UUID") ?: ""
+val evTeamId: String = localProperties.getProperty("EV_TEAM_UUID") ?: ""
+
 android {
     group = "com.evervault.sdk.core"
     namespace = "com.evervault.sdk"
@@ -21,6 +33,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "EV_API_KEY", "\"$evApiKey\"")
+        buildConfigField("String", "EV_TEAM_UUID", "\"$evTeamId\"")
+        buildConfigField("String", "EV_APP_UUID", "\"$evAppId\"")
     }
 
     buildTypes {
@@ -38,6 +54,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources {

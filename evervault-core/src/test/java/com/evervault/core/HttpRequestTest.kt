@@ -3,7 +3,9 @@ package com.evervault.sdk.core
 import com.evervault.sdk.ConfigUrls
 import com.evervault.sdk.Evervault
 import com.evervault.sdk.HttpConfig
-import com.evervault.sdk.test.getenv
+import com.evervault.sdk.test.getAPIKey
+import com.evervault.sdk.test.getAppUUID
+import com.evervault.sdk.test.getTeamUUID
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
@@ -65,9 +67,9 @@ class HttpRequestTest {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    private val apiKey = getenv("EV_API_KEY")
-    private val appUuid = getenv("EV_APP_UUID")
-    private val teamUuid = getenv("EV_TEAM_UUID")
+    private val apiKey = getAPIKey()
+    private val appUuid = getAppUUID()
+    private val teamUuid = getTeamUUID()
 
     private suspend fun encryptData(url: Any, data: RawData): EncryptedTestData {
         val task = coroutineScope {

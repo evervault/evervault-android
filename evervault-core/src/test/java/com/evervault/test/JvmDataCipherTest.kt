@@ -3,7 +3,6 @@ package com.evervault.sdk.test
 import com.evervault.sdk.EncryptionConfig
 import com.evervault.sdk.EvervaultFactory
 import com.evervault.sdk.core.DataCipher
-import com.evervault.sdk.core.DataType
 import com.evervault.sdk.core.keys.CageKey
 import com.evervault.sdk.core.keys.GeneratedSharedKey
 import org.bouncycastle.util.Arrays
