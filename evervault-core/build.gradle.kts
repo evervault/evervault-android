@@ -9,7 +9,7 @@ plugins {
     id("signing")
 }
 android {
-    group = "com.evervault.sdk"
+    group = "com.evervault.sdk.core"
     namespace = "com.evervault.sdk"
     compileSdk = 33
     val prop = Properties().apply {
@@ -39,9 +39,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.11"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -60,27 +57,13 @@ android {
 }
 
 dependencies {
-//    implementation("androidx.core:core-ktx:1.12.0")
-//    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
-//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-//    implementation("androidx.activity:activity-compose:${composeActivityVersion}")
-//    implementation("androidx.compose.ui:ui")
-//    implementation("androidx.compose.ui:ui-graphics")
-//    implementation("androidx.compose.ui:ui-tooling-preview")
-//    implementation("androidx.compose.foundation:foundation-layout")
-//    implementation("androidx.compose.foundation:foundation")
-//    implementation("androidx.compose.material3:material3")
-//
-//    implementation(kotlin("test"))
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+//    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
-//    debugImplementation("androidx.compose.ui:ui-tooling")
 
     implementation(kotlin("stdlib-common"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
 
     // ktor
     implementation("io.ktor:ktor-client-core:2.3.1")
