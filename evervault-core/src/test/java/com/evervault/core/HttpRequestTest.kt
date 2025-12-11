@@ -137,13 +137,14 @@ class HttpRequestTest {
 
         // Encrypt some data
         Evervault.shared.configure(teamUuid, appUuid)
-        var inputData = "test"
+        val inputData = "test"
         val encrypted = Evervault.shared.encrypt(inputData) as String
         // Get a run token
         val data = SimpleObject(
             data = encrypted
         )
         val token = createClientSideToken(ConfigUrls().apiUrl, data)
+        @Suppress("UNCHECKED_CAST")
         val decrypted = http.decryptWithToken(token.token, data) as Map<String, Any>
 
         assertEquals(
@@ -166,13 +167,14 @@ class HttpRequestTest {
 
         // Encrypt some data
         Evervault.shared.configure(teamUuid, appUuid)
-        var inputData = 1
+        val inputData = 1
         val encrypted = Evervault.shared.encrypt(inputData) as String
         // Get a run token
         val data = SimpleObject(
             data = encrypted
         )
         val token = createClientSideToken(ConfigUrls().apiUrl, data)
+        @Suppress("UNCHECKED_CAST")
         val decrypted = http.decryptWithToken(token.token, data) as Map<String, Any>
 
         assertEquals(
@@ -195,13 +197,14 @@ class HttpRequestTest {
 
         // Encrypt some data
         Evervault.shared.configure(teamUuid, appUuid)
-        var inputData = true
+        val inputData = true
         val encrypted = Evervault.shared.encrypt(inputData) as String
         // Get a run token
         val data = SimpleObject(
             data = encrypted
         )
         val token = createClientSideToken(ConfigUrls().apiUrl, data)
+        @Suppress("UNCHECKED_CAST")
         val decrypted = http.decryptWithToken(token.token, data) as Map<String, Any>
         assertEquals(
             true,
@@ -223,13 +226,15 @@ class HttpRequestTest {
 
         // Encrypt some data
         Evervault.shared.configure(teamUuid, appUuid)
-        var inputData = arrayListOf("hello", "test", "abc")
+        val inputData = arrayListOf("hello", "test", "abc")
+        @Suppress("UNCHECKED_CAST")
         val encrypted = Evervault.shared.encrypt(inputData) as Iterable<String>
         // Get a run token
         val data = SimpleObject(
             data = encrypted
         )
         val token = createClientSideToken(ConfigUrls().apiUrl, data)
+        @Suppress("UNCHECKED_CAST")
         val decrypted = http.decryptWithToken(token.token, data) as Map<String, Any>
         assert(
             inputData.equals(decrypted["data"]),
@@ -250,17 +255,17 @@ class HttpRequestTest {
 
         // Encrypt some data
         Evervault.shared.configure(teamUuid, appUuid)
-        var inputData = mapOf("key1" to "value1", "key2" to "value2")
-        val encrypted = Evervault.shared.encrypt(inputData) as Map<String, String>
+        val inputData = mapOf("key1" to "value1", "key2" to "value2")
+        @Suppress("UNCHECKED_CAST")
+        val encrypted = Evervault.shared.encrypt(inputData) as? Map<String, String>
         // Get a run token
         val data = SimpleObject(
             data = encrypted
         )
         val token = createClientSideToken(ConfigUrls().apiUrl, data)
+        @Suppress("UNCHECKED_CAST")
         val decrypted = http.decryptWithToken(token.token, data) as Map<String, Any>
-        assert(
-            inputData.equals(decrypted["data"]),
-        )
+        assertEquals(inputData, decrypted["data"])
     }
 
     @Test
@@ -277,13 +282,14 @@ class HttpRequestTest {
 
         // Encrypt some data
         Evervault.shared.configure(teamUuid, appUuid)
-        var inputData = listOf(listOf("value1", "value2"), 2)
+        val inputData = listOf(listOf("value1", "value2"), 2)
         val encrypted = Evervault.shared.encrypt(inputData) as List<*>
         // Get a run token
         val data = SimpleObject(
             data = encrypted
         )
         val token = createClientSideToken(ConfigUrls().apiUrl, data)
+        @Suppress("UNCHECKED_CAST")
         val decrypted = http.decryptWithToken(token.token, data) as Map<String, Any>
         assertEquals(
             listOf(listOf("value1", "value2"), 2.0),
@@ -305,7 +311,7 @@ class HttpRequestTest {
 
         // Encrypt some data
         Evervault.shared.configure(teamUuid, appUuid)
-        var inputData = "test"
+        val inputData = "test"
         val encrypted = Evervault.shared.encrypt(inputData, "test-deny-role") as String
         // Get a run token
         val data = SimpleObject(
@@ -315,6 +321,7 @@ class HttpRequestTest {
         val exception = assertFailsWith<java.lang.Error>(
             block = {
                 runBlocking {
+                    @Suppress("UNCHECKED_CAST")
                     http.decryptWithToken(token.token, data) as Map<String, Any>
                 }
             }
@@ -349,6 +356,7 @@ class HttpRequestTest {
         val encrypted = encryptData(ConfigUrls().apiUrl, data)
         // Get a run token
         val token = createClientSideToken(ConfigUrls().apiUrl, encrypted)
+        @Suppress("UNCHECKED_CAST")
         val decrypted = http.decryptWithToken(token.token, encrypted) as Map<String, Any>
         assertEquals(
             decrypted["stringData"],
