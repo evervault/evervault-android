@@ -1,9 +1,9 @@
 package com.evervault.sdk.e2e
 
-import com.evervault.sdk.common.ConfigUrls
-import com.evervault.sdk.common.CustomConfig
+import com.evervault.sdk.ConfigUrls
+import com.evervault.sdk.CustomConfig
+import com.evervault.sdk.Evervault
 import org.junit.Test
-import com.evervault.sdk.common.Evervault
 import com.evervault.sdk.core.RawData
 import com.evervault.sdk.core.TokenData
 import com.evervault.sdk.core.EncryptedTestData
