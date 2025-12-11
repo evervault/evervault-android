@@ -34,12 +34,19 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "EV_API_KEY", "\"$evApiKey\"")
-        buildConfigField("String", "EV_TEAM_UUID", "\"$evTeamId\"")
-        buildConfigField("String", "EV_APP_UUID", "\"$evAppId\"")
+        // Default empty values
+        buildConfigField("String", "EV_API_KEY", "\"\"")
+        buildConfigField("String", "EV_TEAM_UUID", "\"\"")
+        buildConfigField("String", "EV_APP_UUID", "\"\"")
     }
 
     buildTypes {
+        debug {
+            // Override with local.properties values for debug builds
+            buildConfigField("String", "EV_API_KEY", "\"$evApiKey\"")
+            buildConfigField("String", "EV_TEAM_UUID", "\"$evTeamId\"")
+            buildConfigField("String", "EV_APP_UUID", "\"$evAppId\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
