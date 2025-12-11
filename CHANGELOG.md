@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 2.2.0
+
+### Minor Changes
+
+- 90232f8: release new evervault-pay features
+
 ## 2.1.1
 
 ### Patch Changes
