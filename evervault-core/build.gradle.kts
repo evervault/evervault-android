@@ -5,15 +5,24 @@ import java.util.*
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
     id("signing")
-    id("org.jetbrains.kotlin.plugin.serialization")
+}
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(FileInputStream(localFile))
+    }
 }
 
+val evApiKey: String = localProperties.getProperty("EV_API_KEY") ?: ""
+val evAppId: String = localProperties.getProperty("EV_APP_UUID") ?: ""
+val evTeamId: String = localProperties.getProperty("EV_TEAM_UUID") ?: ""
+
 android {
-    group = "com.evervault.sdk"
-    namespace = "com.evervault.sdk.cages"
+    group = "com.evervault.sdk.core"
+    namespace = "com.evervault.sdk"
     compileSdk = 33
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
@@ -21,13 +30,23 @@ android {
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 26
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        // Default empty values
+        buildConfigField("String", "EV_API_KEY", "\"\"")
+        buildConfigField("String", "EV_TEAM_UUID", "\"\"")
+        buildConfigField("String", "EV_APP_UUID", "\"\"")
     }
 
     buildTypes {
+        debug {
+            // Override with local.properties values for debug builds
+            buildConfigField("String", "EV_API_KEY", "\"$evApiKey\"")
+            buildConfigField("String", "EV_TEAM_UUID", "\"$evTeamId\"")
+            buildConfigField("String", "EV_APP_UUID", "\"$evAppId\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -42,9 +61,7 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.11"
+        buildConfig = true
     }
     packaging {
         resources {
@@ -64,32 +81,33 @@ android {
 }
 
 dependencies {
-    implementation(project(":evervault-core"))
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.24"))
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("net.java.dev.jna:jna:5.17.0@aar")
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("junit:junit:4.12")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
-    testImplementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+
+    implementation(kotlin("stdlib-common"))
+
+    // ktor
+    implementation("io.ktor:ktor-client-core:2.3.1")
+    implementation("io.ktor:ktor-client-okhttp:2.3.1")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+
+    // JSON
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    implementation("com.google.code.gson:gson:2.8.7")
+    testImplementation(kotlin("test"))
 }
 
 publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "com.evervault.sdk"
-            artifactId = "evervault-cages"
+            artifactId = "evervault-core"
             version = version
-
+            
             afterEvaluate {
                 from(components["release"])
             }
