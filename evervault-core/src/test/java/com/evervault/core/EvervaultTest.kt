@@ -4,6 +4,12 @@ import com.evervault.sdk.common.ConfigUrls
 import com.evervault.sdk.common.CustomConfig
 import org.junit.Test
 import com.evervault.sdk.common.Evervault
+import com.evervault.sdk.core.RawData
+import com.evervault.sdk.core.TokenData
+import com.evervault.sdk.core.EncryptedTestData
+import com.evervault.sdk.test.getAPIKey
+import com.evervault.sdk.test.getAppUUID
+import com.evervault.sdk.test.getTeamUUID
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.defaultRequest
@@ -25,7 +31,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import java.util.Base64
 
-class EvervaultTest {
+class EvervaultE2ETest {
     private val encryptedStringRegex = Regex("((ev(:|%3A))(debug(:|%3A))?(([A-z0-9+/=%]+)(:|%3A))?((number|boolean|string)(:|%3A))?(([A-z0-9+/=%]+)(:|%3A)){3}(\\$|%24))|(((eyJ[A-z0-9+=.]+){2})([\\w]{8}(-[\\w]{4}){3}-[\\w]{12}))")
 
     private lateinit var apiKey: String
@@ -105,28 +111,6 @@ class EvervaultTest {
         }
     }
 
-    @Serializable
-    data class TokenData(
-        val token: String,
-    )
-
-    @Serializable
-    data class RawData(
-        var stringData: String?,
-        var numberData: Int?,
-        var floatData: Double?,
-        var booleanData: Boolean?,
-        var arrayData: ArrayList<String>?,
-    )
-    @Serializable
-    data class EncryptedTestData(
-        var stringData: String?,
-        var numberData: String?,
-        var floatData: String?,
-        var booleanData: String?,
-        var arrayData: ArrayList<String>?,
-    )
-
     private suspend fun createClientSideToken(url: Any, data: Any): TokenData {
         val task = coroutineScope {
             async {
@@ -182,10 +166,10 @@ class EvervaultTest {
     }
 
     private fun setDebugMode(): Boolean {
-        apiKey = BuildConfig.EV_API_KEY
-        appUuid = BuildConfig.EV_APP_UUID
-        teamUuid = BuildConfig.EV_TEAM_UUID
-        
+        apiKey = getAPIKey()
+        appUuid = getAppUUID()
+        teamUuid = getTeamUUID()
+
         // If any of the required values are empty or the placeholder values, run in debug mode
         return apiKey.isEmpty() || appUuid.isEmpty() || teamUuid.isEmpty()
     }
