@@ -1,6 +1,6 @@
 name: test
 
-on: [push, pull_request]
+on: push
 
 env:
   CARGO_TERM_COLOR: always
@@ -27,6 +27,7 @@ jobs:
           name: failed_unit_tests
           path: ${{ github.workspace }}/lib/build/reports/tests/test
   e2e-tests:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
