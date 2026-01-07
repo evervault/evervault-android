@@ -4,6 +4,7 @@ import java.util.*
 
 plugins {
     id("com.android.library")
+    id("org.jetbrains.kotlin.android")
     id("maven-publish")
     id("signing")
 }
@@ -57,8 +58,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
     buildFeatures {
-        compose = true
         buildConfig = true
     }
     packaging {
@@ -84,6 +87,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+    testImplementation(kotlin("test"))
 
     implementation(kotlin("stdlib-common"))
 
@@ -96,7 +100,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     implementation("com.google.code.gson:gson:2.8.7")
-    testImplementation(kotlin("test"))
 }
 
 publishing {
