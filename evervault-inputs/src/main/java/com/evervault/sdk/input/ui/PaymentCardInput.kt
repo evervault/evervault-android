@@ -16,13 +16,8 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import com.evervault.sdk.Evervault
-import com.evervault.sdk.input.model.CreditCardType
-import com.evervault.sdk.input.model.PaymentCardData
-import com.evervault.sdk.input.model.PaymentCardError
+import com.evervault.sdk.input.model.*
 import com.evervault.sdk.input.model.expiry
-import com.evervault.sdk.input.model.updateCvc
-import com.evervault.sdk.input.model.updateExpiry
-import com.evervault.sdk.input.model.updateNumber
 import com.evervault.sdk.input.utils.CreditCardExpirationDateCursorCalculator
 import com.evervault.sdk.input.utils.CreditCardExpirationDateFormatter
 import com.evervault.sdk.input.utils.CreditCardValidator
@@ -36,7 +31,8 @@ fun PaymentCardInput(
     textStyle: TextStyle = TextStyle.Default,
     placeholderTextStyle: TextStyle = textStyle.copy(color = MaterialTheme.colorScheme.secondary),
     layout: @Composable PaymentCardInputScope.(modifier: Modifier) -> Unit = inlinePaymentCardInputLayout(),
-    onDataChange: (PaymentCardData) -> Unit = {}
+    onDataChange: (PaymentCardData) -> Unit = {},
+    enabledFields: List<CardFields> = listOf(CardFields.CARD_NUMBER, CardFields.EXPIRY_DATE, CardFields.CVC)
 ) {
     val creditCardNumber = remember { mutableStateOf(TextFieldValue("")) }
     val expiryDate = remember { mutableStateOf(TextFieldValue("")) }
@@ -125,7 +121,7 @@ fun PaymentCardInput(
 
     LaunchedEffect(creditCardNumber.value) {
         val numberText = creditCardNumber.value.text
-        rawCardData = rawCardData.updateNumber(numberText)
+        rawCardData = rawCardData.updateNumber(numberText, enabledFields)
 
         val selection = creditCardNumber.value.selection
         var cursorPosition = selection.start
@@ -141,14 +137,14 @@ fun PaymentCardInput(
     }
 
     LaunchedEffect(cvc.value) {
-        rawCardData = rawCardData.updateCvc(cvc.value.text)
+        rawCardData = rawCardData.updateCvc(cvc.value.text, enabledFields)
         cvc.value = cvc.value.copy(text = rawCardData.card.cvc)
     }
 
     LaunchedEffect(expiryDate.value) {
         val enteredText = expiryDate.value.text
         val formattedExpiry = expiryDateFormatter.format(enteredText)
-        rawCardData = rawCardData.updateExpiry(formattedExpiry)
+        rawCardData = rawCardData.updateExpiry(formattedExpiry, enabledFields)
 
         val newCursorPosition = expiryDateCursorCalculator.newCursorPosition(
             enteredText = enteredText,
@@ -178,10 +174,9 @@ fun PaymentCardInput(
             expiryDate = expiryDate,
             expiryRequester = expiryDateRequester,
             cvc = cvc,
-            cvcRequester = cvcRequester,
+            cvcRequester = cvcRequester
         ),
-        modifier = modifier
-            .height(IntrinsicSize.Min)
+        modifier
     )
 }
 

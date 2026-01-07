@@ -1,5 +1,99 @@
 # com.evervault.sdk
 
+## 2.2.1
+
+### Patch Changes
+
+- 4f358bb: consolidate libraries into evervault-android
+
+## 2.2.0
+
+### Minor Changes
+
+- 90232f8: release new evervault-pay features
+
+## 2.1.1
+
+### Patch Changes
+
+- 527f161: Fix workflow
+
+## 2.1.0
+
+### Minor Changes
+
+- 6c91091: Add support for 16KB pages and update evervault-pay dependencies
+- 723375c: \* Update evervault-pay dependency
+  - Automatically set Google Pay sandbox config based on Evervault App
+  - Update proguard rules for `evervault-pay` symbols
+  - Expose underlying Google Pay API for more customization
+
+## 2.0.0
+
+### Major Changes
+
+- 3540747: Add Evervault Google Pay to Inputs module
+
+## 1.13.1
+
+### Patch Changes
+
+- 9575d9c: A deadlock can occur when `AttestationTrustManagerGA` is initialized and a request to get the
+  attestation doc from the enclave are made simultaneously. This is dues to the modification of the
+  `SSLContext` when a request is made which would lead to a read timeout in OkHTTP Client.
+
+  - [3a93fedf814c37ed698fa46432e758ac4f3bd885](https://github.com/evervault/evervault-android/commit/3a93fedf814c37ed698fa46432e758ac4f3bd885):
+    `enclavesTrustManager` will block to initialize the cache before modifying the
+    `AttestationTrustManagerGA` and subsequently the `SSLContext`
+  - The polling logic has been changed to delay before populating the cache to prevent duplicate requests
+  - `get()` calls to the cache are now always synchronous as it is not called from a coroutine.
+
+## 1.13.0
+
+### Minor Changes
+
+- cb51dea: fix: A bug exists with slower network connectivity that can cause an encryption to fail. This will result
+  in a card being marked as valid as the card number is valid. Explit empty checks are not performed before
+  the card is returned from the card component.
+  feat: implement new CardNumberField for control over onNext capability. When using a CardNumberField without
+  CVC or expiry expose the onNext function to control the focus behaviour of the compose component.
+
+## 1.12.3
+
+### Patch Changes
+
+- afd82f7: Fix 1Password autofil
+
+## 1.12.2
+
+### Patch Changes
+
+- 0311fbb: Removing attestation doc request on the main thread during initialisation
+
+## 1.12.1
+
+### Patch Changes
+
+- 0c1a815: Remove duplicate dependency
+
+## 1.12.0
+
+### Minor Changes
+
+- c5bfdba: Allow validation of just individual fields
+
+## 1.11.0
+
+### Minor Changes
+
+- 01bbd03: Update evervault-core dependencies
+
+## 1.10.1
+
+### Patch Changes
+
+- db2198f: Add signging to evervault-enclaves
+
 ## 1.10.0
 
 ### Minor Changes

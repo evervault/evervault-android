@@ -24,10 +24,10 @@ class AttestationDocCache(private val cageName: String, private val appUuid: Str
     private val lock = ReentrantReadWriteLock()
 
     init {
-        storeDoc(2)
         GlobalScope.launch(Dispatchers.IO) {
+            storeDoc(2)
             poll(300)
-        }
+        }   
     }
 
     private fun storeDoc(retries: Int) {

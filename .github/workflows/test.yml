@@ -1,6 +1,6 @@
 name: test
 
-on: [ push, pull_request ]
+on: [push, pull_request]
 
 env:
   CARGO_TERM_COLOR: always
@@ -12,33 +12,17 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v3
         with:
-          distribution: 'corretto'
-          java-version: '17'
+          distribution: "corretto"
+          java-version: "21"
       - name: build and test project
-        run: ./gradlew clean build --info
+        run: |
+          export EV_API_KEY="${{ secrets.EV_API_KEY }}"
+          export EV_TEAM_UUID="${{ secrets.EV_TEAM_UUID }}"
+          export EV_APP_UUID="${{ secrets.EV_APP_UUID }}"
+          ./gradlew build
       - name: Upload unit test report on failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: failed_unit_tests
-          path: ${{ github.workspace }}/lib/build/reports/tests/test
-  e2e-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'corretto'
-          java-version: '17'
-      - name: e2e tests
-        env:
-          EV_API_KEY: ${{ secrets.EV_API_KEY }}
-          EV_TEAM_UUID: ${{ secrets.EV_TEAM_UUID }}
-          EV_APP_UUID: ${{ secrets.EV_APP_UUID }}
-        run: ./gradlew clean :evervault-common-e2e:build --info
-      - name: Upload unit test report on failure
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: failed_unit_tests
           path: ${{ github.workspace }}/lib/build/reports/tests/test

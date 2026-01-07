@@ -8,15 +8,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavController
 import com.evervault.sampleapplication.navigation.Route
 import com.evervault.sampleapplication.ui.views.component.SupportingText
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen(navController: NavController) {
     Scaffold { paddingValues ->
-        LazyColumn(modifier = Modifier.padding(paddingValues)) {
+        LazyColumn(modifier = Modifier.padding(paddingValues).semantics { testTagsAsResourceId = true }) {
             item {
                 ListItem(
                     headlineContent = { Text(text = "Basic Encryption") },
@@ -96,6 +101,12 @@ fun MainScreen(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate(Route.CreditCardInputCustomComposablesWithoutLabels.route) },
                     supportingContent = { SupportingText(text = "PaymentCard") }
                 )
+
+                ListItem(
+                    headlineContent = { Text(text = "Custom Layout with Composables (no Expiry, CVC)") },
+                    modifier = Modifier.clickable { navController.navigate(Route.CreditCardInputCustomCardOnly.route) },
+                    supportingContent = { SupportingText(text = "PaymentCard") }
+                )
             }
             item {
                 ListItem(
@@ -108,7 +119,25 @@ fun MainScreen(navController: NavController) {
                 )
                 ListItem(
                     headlineContent = { Text(text = "Enclave HTTP Request") },
-                    modifier = Modifier.clickable { navController.navigate(Route.Enclave.route) }
+                    modifier = Modifier
+                        .semantics { testTagsAsResourceId = true }
+                        .clickable { navController.navigate(Route.Enclave.route) }
+                        .testTag("Enclave Button")
+                )
+            }
+            item {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = "Google Pay",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
+                )
+
+                ListItem(
+                    headlineContent = { Text(text = "Make payments with Google Pay") },
+                    modifier = Modifier.clickable { navController.navigate(Route.GooglePay.route) }
                 )
             }
         }

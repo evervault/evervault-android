@@ -1,16 +1,34 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
+
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(FileInputStream(localFile))
+    }
+}
+
+val evAppId: String = localProperties.getProperty("EV_APP_UUID") ?: ""
+val evervaultMerchantId: String = localProperties.getProperty("MERCHANT_ID") ?: ""
+val evTeamId: String = localProperties.getProperty("EV_TEAM_UUID") ?: ""
+val evervaultEnclaveId: String = localProperties.getProperty("ENCLAVE_UUID") ?: ""
+val evervaultPcrCallbackUrl: String = localProperties.getProperty("PCR_CALLBACK_URL") ?: ""
+val evervaultEnclaveUrl: String = localProperties.getProperty("ENCLAVE_URL") ?: ""
 
 android {
     namespace = "com.evervault.sampleapplication"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.evervault.sampleapplication"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -19,9 +37,13 @@ android {
             useSupportLibrary = true
         }
 
+        buildConfigField("String", "ENCLAVE_UUID", "\"$evervaultEnclaveId\"")
+        buildConfigField("String", "EV_TEAM_UUID", "\"$evTeamId\"")
+        buildConfigField("String", "EV_APP_UUID", "\"$evAppId\"")
+        buildConfigField("String", "MERCHANT_ID", "\"$evervaultMerchantId\"")
+        buildConfigField("String", "PCR_CALLBACK_URL", "\"$evervaultPcrCallbackUrl\"")
         buildConfigField("String", "ENCLAVE_NAME", "\"hello-enclave\"")
-        buildConfigField("String", "APP_UUID", "\"app-33b88ca7da0d\"")
-        buildConfigField("String", "PCR_CALLBACK_URL", "\"https://api.evervault.com/enclaves/hello-enclave/attestation\"")
+        buildConfigField("String", "ENCLAVE_URL", "\"$evervaultEnclaveUrl\"")
     }
 
     buildTypes {
@@ -44,9 +66,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.6.11"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -56,9 +78,9 @@ android {
 dependencies {
     implementation(project(":evervault-inputs"))
     implementation(project(":evervault-enclaves"))
-    implementation("com.evervault.sdk:evervault-core:1.1")
+    implementation(project(":evervault-core"))
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.24"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.5.1")
     implementation(platform("androidx.compose:compose-bom:2022.10.00"))
@@ -72,12 +94,14 @@ dependencies {
 
     // GSON converter
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.5.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-alpha03")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

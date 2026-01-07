@@ -1,11 +1,14 @@
 .gradle
+.env
+.direnv
+.kotlin
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 local.properties
-
-local.properties
+.kotlin
+.direnv
 
 ### IntelliJ IDEA ###
 .idea/

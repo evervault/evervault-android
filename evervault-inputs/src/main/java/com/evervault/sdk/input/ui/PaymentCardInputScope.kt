@@ -46,7 +46,18 @@ interface PaymentCardInputScope {
         placeholder: @Composable() (() -> Unit)?,
         textStyle: TextStyle,
         textFieldColors: TextFieldColors,
+        cursorBrush: Brush?
+    )
+
+    @Composable
+    fun CardNumberField(
+        modifier: Modifier,
+        label: @Composable() (() -> Unit)?,
+        placeholder: @Composable() (() -> Unit)?,
+        textStyle: TextStyle,
+        textFieldColors: TextFieldColors,
         cursorBrush: Brush?,
+        onNext: (() -> Unit)?
     )
 
     @Composable

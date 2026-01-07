@@ -1,6 +1,8 @@
 package com.evervault.sdk.enclaves
 
 import AttestationDocCache
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import uniffi.bindings.PcRs
 import uniffi.bindings.attestEnclave
@@ -18,7 +20,7 @@ class AttestationTrustManagerGA(private val enclaveAttestationData: AttestationD
     }
 
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-        if (chain == null || chain.isEmpty()) throw CertificateException("Empty or null certificate chain")
+        if (chain == null || chain.isEmpty() || cache.get().isEmpty()) throw CertificateException("Empty or null certificate chain")
         val serverCertificate = chain[0]
 
         val remoteCertificateData = serverCertificate.encoded
@@ -53,8 +55,13 @@ class AttestationTrustManagerGA(private val enclaveAttestationData: AttestationD
     }
 }
 
-fun OkHttpClient.Builder.enclavesTrustManager(enclaveAttestationData: AttestationData, appUuid: String): OkHttpClient.Builder {
-    val cache = AttestationDocCache(enclaveAttestationData.enclaveName, appUuid)
+fun OkHttpClient.Builder.enclavesTrustManager(enclaveAttestationData: AttestationData, appUuid: String, enclaveURL: String? = null): OkHttpClient.Builder {
+    val cache = AttestationDocCache(enclaveAttestationData.enclaveName, appUuid, enclaveURL)
+
+    runBlocking(Dispatchers.IO) {
+        cache.initialize()
+    }
+
     val attestEnclaveCallback: AttestEnclaveCallback = { remoteCertificateData, expectedPCRs, attestationDoc ->
         attestEnclave(remoteCertificateData, expectedPCRs, attestationDoc)
     }

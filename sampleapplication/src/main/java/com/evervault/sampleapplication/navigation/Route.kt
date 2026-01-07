@@ -31,5 +31,9 @@ sealed class Route(val route: String) {
     object CreditCardInputCustomComposablesWithoutLabels :
         Route("CreditCardInputCustomComposablesWithoutLabels")
 
+    object CreditCardInputCustomCardOnly: Route("CreditCardInputCustomCardOnly")
+
     object Enclave : Route("Enclave")
+
+    object GooglePay : Route("GooglePay")
 }
