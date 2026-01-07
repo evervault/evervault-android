@@ -1,3 +1,5 @@
+import java.util.Properties
+
 buildscript {
     repositories {
         mavenLocal()
@@ -9,15 +11,14 @@ buildscript {
     }
 }
 
-// Load properties from local.properties
-val localProperties = java.util.Properties()
-val localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(java.io.FileInputStream(localPropertiesFile))
+//// Load properties from local.properties
+val localProperties = Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }?.reader()?.use { load(it) }
 }
 
-group "com.evervault.sdk"
 plugins {
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
 }
 
