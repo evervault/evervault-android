@@ -13,7 +13,7 @@ plugins {
 
 android {
     namespace = "com.evervault.sdk.enclaves"
-    compileSdk = 33
+    compileSdk = 36
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
     }
@@ -24,6 +24,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    lint {
+        targetSdk = 36
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,7 +35,7 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_23
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {

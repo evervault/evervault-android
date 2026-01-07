@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: "corretto"
-          java-version: "21"
+          java-version: "23"
       - name: build and test project
         run: |
           export EV_API_KEY="${{ secrets.EV_API_KEY }}"

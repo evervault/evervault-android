@@ -23,14 +23,13 @@ val evTeamId: String = localProperties.getProperty("EV_TEAM_UUID") ?: ""
 android {
     group = "com.evervault.sdk.core"
     namespace = "com.evervault.sdk"
-    compileSdk = 33
+    compileSdk = 36
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
     }
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
@@ -38,6 +37,10 @@ android {
         buildConfigField("String", "EV_API_KEY", "\"\"")
         buildConfigField("String", "EV_TEAM_UUID", "\"\"")
         buildConfigField("String", "EV_APP_UUID", "\"\"")
+    }
+
+    lint {
+        targetSdk = 36
     }
 
     buildTypes {
@@ -53,7 +56,7 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_23
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
