@@ -8,23 +8,24 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("maven-publish")
     id("signing")
-    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
     group = "com.evervault.sdk"
     namespace = "com.evervault.sdk.cages"
-    compileSdk = 33
+    compileSdk = 36
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
     }
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 26
-        targetSdk = 33
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    lint {
+        targetSdk = 36
     }
 
     buildTypes {

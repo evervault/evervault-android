@@ -23,14 +23,13 @@ val evTeamId: String = localProperties.getProperty("EV_TEAM_UUID") ?: ""
 android {
     group = "com.evervault.sdk.core"
     namespace = "com.evervault.sdk"
-    compileSdk = 33
+    compileSdk = 36
     val prop = Properties().apply {
         load(FileInputStream(File(rootProject.rootDir, "version.properties")))
     }
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
@@ -38,6 +37,10 @@ android {
         buildConfigField("String", "EV_API_KEY", "\"\"")
         buildConfigField("String", "EV_TEAM_UUID", "\"\"")
         buildConfigField("String", "EV_APP_UUID", "\"\"")
+    }
+
+    lint {
+        targetSdk = 36
     }
 
     buildTypes {
@@ -60,7 +63,6 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        compose = true
         buildConfig = true
     }
     packaging {
@@ -86,6 +88,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+    testImplementation(kotlin("test"))
 
     implementation(kotlin("stdlib-common"))
 
@@ -98,7 +101,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     implementation("com.google.code.gson:gson:2.8.7")
-    testImplementation(kotlin("test"))
 }
 
 publishing {

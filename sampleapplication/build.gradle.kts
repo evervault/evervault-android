@@ -23,12 +23,11 @@ val evervaultEnclaveUrl: String = localProperties.getProperty("ENCLAVE_URL") ?: 
 
 android {
     namespace = "com.evervault.sampleapplication"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.evervault.sampleapplication"
         minSdk = 26
-        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -45,6 +44,10 @@ android {
         buildConfigField("String", "ENCLAVE_URL", "\"$evervaultEnclaveUrl\"")
     }
 
+    lint {
+        targetSdk = 36
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -55,11 +58,11 @@ android {
         buildConfig = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
