@@ -100,7 +100,7 @@ dependencies {
     // JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
-    implementation("com.google.code.gson:gson:2.8.7")
+    implementation("com.google.code.gson:gson:2.8.9")
 }
 
 publishing {
