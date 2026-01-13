@@ -95,7 +95,7 @@ dependencies {
     // ktor
     implementation("io.ktor:ktor-client-core:2.3.1")
     implementation("io.ktor:ktor-client-okhttp:2.3.1")
-    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("org.bouncycastle:bcprov-jdk15to18:1.78.1")
 
     // JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
