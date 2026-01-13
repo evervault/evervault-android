@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 2.3.0
+
+### Minor Changes
+
+- 58586d8: Upgrade bouncycastle dependency
+
 ## 2.2.1
 
 ### Patch Changes
