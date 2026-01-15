@@ -32,13 +32,17 @@ import java.io.IOException
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EnclaveView() {
+
+    val enclaveName = BuildConfig.ENCLAVE_NAME
+    val appUuid = BuildConfig.APP_UUID
+
     var cachedCallResponseText: String? by remember { mutableStateOf(null) }
     var staticPCRCallResponseText: String? by remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
-            staticPCRCallResponseText = EvervaultHttpClient.staticPCRsEnclaveRequest()
-            cachedCallResponseText = EvervaultHttpClient.cachedPCRsEnclaveRequest()
+            staticPCRCallResponseText = staticPCRsEnclaveRequest(enclaveName, appUuid)
+            cachedCallResponseText = cacheManagerEnclaveCall(enclaveName, appUuid)
         }
     }
 
@@ -60,34 +64,18 @@ fun EnclaveView() {
     }
 }
 
-object EvervaultHttpClient {
-    private var client: OkHttpClient? = null
-    private const val enclaveURL = BuildConfig.ENCLAVE_URL
-    private const val enclaveName = BuildConfig.ENCLAVE_UUID
-    private const val appUuid = BuildConfig.EV_APP_UUID
-    @Synchronized
-    private fun getClient(pcrCallback: PcrCallback? = null): OkHttpClient {
-        return client ?: OkHttpClient.Builder()
-            .enclavesTrustManager(
-                if (pcrCallback != null) {
-                    AttestationData(enclaveName, pcrCallback)
-                } else {
-                    AttestationData(
-                        enclaveName,
-                        PCRs(
-                            pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                            pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                            pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                            pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                        )
-                    )
-                },
-                appUuid,
-                enclaveURL
-            )
-            .build()
-            .also { client = it }
-    }
+// Data type to mirror the Evervault API response shape from the Enclave attestation info endpoint.
+data class PCRContainer(
+    val data: List<PCRs>
+)
+
+fun cacheManagerEnclaveCall(enclaveName: String, appUuid: String): String {
+    val url = "https://$enclaveName.$appUuid.enclave.evervault.com/compute"
+    val pcrClient = OkHttpClient.Builder().build()
+    val pcrRequest = Request.Builder()
+        .url(BuildConfig.PCR_CALLBACK_URL)
+        .header("x-evervault-app-id", appUuid.replace("-","_"))
+        .build()
 
     fun staticPCRsEnclaveRequest(): String {
         val request = Request.Builder()
@@ -113,9 +101,9 @@ object EvervaultHttpClient {
 
         val pcrCallback: PcrCallback = {
             val pcrResponse = pcrClient.newCall(pcrRequest).execute()
-            val type = object : TypeToken<List<PCRs>>() {}.type
-            val responseMap: List<PCRs> = Gson().fromJson(pcrResponse.body!!.string(), type)
-            responseMap
+            val type = object : TypeToken<PCRContainer>() {}.type
+            val responseMap: PCRContainer = Gson().fromJson(pcrResponse.body!!.string(), type)
+            responseMap.data
         }
 
         val request = Request.Builder()
@@ -134,3 +122,45 @@ object EvervaultHttpClient {
     }
 }
 
+fun staticPCRsEnclaveRequest(enclaveName: String, appUuid: String): String {
+    val url = "https://$enclaveName.$appUuid.enclave.evervault.com/compute"
+
+    val jsonPayload = JSONObject()
+    jsonPayload.put("a", 1)
+    jsonPayload.put("b", 2)
+
+    val requestBody = RequestBody.create(
+        "application/json; charset=utf-8".toMediaTypeOrNull(),
+        jsonPayload.toString()
+    )
+
+    val client = OkHttpClient.Builder()
+        .enclavesTrustManager(
+            AttestationData(
+                enclaveName = enclaveName,
+                // Replace with legitimate PCR strings when not in debug mode
+                PCRs(
+                    pcr0 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    pcr1 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    pcr2 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    pcr8 = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                )
+            ),
+            appUuid
+        )
+        .build()
+
+    val request = Request.Builder()
+        .url(url)
+        .post(requestBody)
+        .build()
+
+    return try {
+        val response = client.newCall(request).execute()
+        val responseMap: Map<String, String> = Gson().fromJson(response.body!!.string(), Map::class.java) as Map<String, String>
+        responseMap["sum"].toString()
+    } catch (e: IOException) {
+        e.printStackTrace()
+        "Error: ${e.message}"
+    }
+}
