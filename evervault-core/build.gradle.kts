@@ -59,8 +59,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        jvmToolchain(JavaVersion.VERSION_11.toString().toInt())
     }
     buildFeatures {
         buildConfig = true
@@ -80,6 +80,11 @@ android {
             withSourcesJar()
         }
     }
+}
+
+dependencyLocking {
+    // Enable lock files for dependency versions.
+    lockAllConfigurations()
 }
 
 dependencies {
