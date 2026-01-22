@@ -61,8 +61,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        jvmToolchain(JavaVersion.VERSION_11.toString().toInt())
     }
     buildFeatures {
         compose = true
@@ -75,6 +75,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+dependencyLocking {
+    // Enable lock files for dependency versions.
+    lockAllConfigurations()
 }
 
 dependencies {
@@ -95,7 +100,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
 
     // GSON converter
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.5.1")
 
     testImplementation("junit:junit:4.13.2")
@@ -104,6 +109,9 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-alpha03")
+    // Explicitly specify kotlin-stdlib-common version to ensure debugAndroidTestRuntimeClasspath is properly locked.
+    // Version must match the Kotlin plugin version in settings.gradle.kts (2.0.21).
+    androidTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-common:2.1.21")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
