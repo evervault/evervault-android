@@ -63,5 +63,13 @@ Enclave attestation is written in Rust and Kotlin bindings can be found [here](h
 
 If you wish to update the Rust bindings, make any necessary changes in the Attesation crate and run the following [script](https://github.com/evervault/attestation-doc-validation/blob/main/kotlin-attestation-bindings/build-libs.sh) to build and copy the shared library files for each architecture into this repo.
 
+## Dependencies
+Dependencies are managed with Gradle lock files.  If a dependency is updated, the build will fail until the lock files are updated.  To update the lock files, run the tool:
+```bash
+./tools/update-lockfiles.sh
+```
+
+Some transitive dependencies are also manually forced to a version in [build.gradle.kts](./build.gradle.kts), generally to resolve security vulnerabilties.  When updating dependencies please go through the transitive dependencies and see if any 'forces' can now be removed because the direct dependency has been updated.
+
 ## License
 The sample app is released under the MIT License. See the [LICENSE](https://github.com/evervault/evervault-android/tree/main/LICENSE) file for more information.
