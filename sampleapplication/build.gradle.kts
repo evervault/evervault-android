@@ -110,8 +110,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0-alpha03")
     // Explicitly specify kotlin-stdlib-common version to ensure debugAndroidTestRuntimeClasspath is properly locked.
-    // Version must match the Kotlin plugin version in settings.gradle.kts (2.2.30).
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-common:2.2.30")
+    // Version must match the Kotlin plugin version in settings.gradle.kts (2.2.21).
+    androidTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-common:2.2.21")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
