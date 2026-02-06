@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 2.3.1
+
+### Patch Changes
+
+- 27c568f: Update dependenciesa to fix security vulnerabilities and restore kotlin serialization plugin
+
 ## 2.3.0
 
 ### Minor Changes
