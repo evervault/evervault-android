@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 2.3.2
+
+### Patch Changes
+
+- 7e20108: Update junit dependency to 4.13.2
+
 ## 2.3.1
 
 ### Patch Changes
