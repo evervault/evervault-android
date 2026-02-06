@@ -23,6 +23,22 @@ plugins {
 }
 
 allprojects {
+    configurations.all {
+        resolutionStrategy {
+            // https://github.com/evervault/evervault-android/security/dependabot/4
+            force("io.netty:netty-handler:4.1.94.Final")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/22
+            force("io.netty:netty-codec:4.1.125.Final")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/26
+            force("io.netty:netty-codec-http:4.1.129.Final")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/3
+            force("com.google.android.gms:play-services-basement:18.0.2")
+        }
+    }
+
     repositories {
         mavenLocal()
         google()
