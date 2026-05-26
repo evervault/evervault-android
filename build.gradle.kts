@@ -31,8 +31,18 @@ allprojects {
             // https://github.com/evervault/evervault-android/security/dependabot/22
             force("io.netty:netty-codec:4.1.125.Final")
 
-            // https://github.com/evervault/evervault-android/security/dependabot/26
-            force("io.netty:netty-codec-http:4.1.129.Final")
+            // https://github.com/evervault/evervault-android/security/dependabot/28
+            // CVE-2026-33870 — HTTP request smuggling via chunked-extension quoted string
+            // CVE-2026-33871 — HTTP/2 CONTINUATION flood DoS (bundled in same release)
+            force("io.netty:netty-codec-http:4.1.132.Final")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/29
+            // CVE-2026-33871 — HTTP/2 CONTINUATION flood DoS
+            force("io.netty:netty-codec-http2:4.1.132.Final")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/33
+            // CVE-2026-3505 — bcpg-jdk18on pre-auth resource exhaustion
+            force("org.bouncycastle:bcpg-jdk18on:1.84")
 
             // https://github.com/evervault/evervault-android/security/dependabot/3
             force("com.google.android.gms:play-services-basement:18.0.2")
