@@ -31,11 +31,23 @@ allprojects {
             // https://github.com/evervault/evervault-android/security/dependabot/22
             force("io.netty:netty-codec:4.1.125.Final")
 
-            // https://github.com/evervault/evervault-android/security/dependabot/26
-            force("io.netty:netty-codec-http:4.1.129.Final")
+            // https://github.com/evervault/evervault-android/security/dependabot/28 (CVE-2026-33870)
+            force("io.netty:netty-codec-http:4.1.132.Final")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/29 (CVE-2026-33871)
+            force("io.netty:netty-codec-http2:4.1.132.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/3
             force("com.google.android.gms:play-services-basement:18.0.2")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/33
+            // CVE-2026-3505 — only pulled in by kotlinBouncyCastleConfiguration
+            // (Kotlin Gradle Plugin build-time signature verification).
+            // Bump the whole jdk18on family together so all four jars stay aligned.
+            force("org.bouncycastle:bcpg-jdk18on:1.84")
+            force("org.bouncycastle:bcpkix-jdk18on:1.84")
+            force("org.bouncycastle:bcprov-jdk18on:1.84")
+            force("org.bouncycastle:bcutil-jdk18on:1.84")
         }
     }
 
