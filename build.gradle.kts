@@ -32,10 +32,10 @@ allprojects {
             force("io.netty:netty-codec:4.1.125.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/28
-            force("io.netty:netty-codec-http:4.1.132.Final")
+            force("io.netty:netty-codec-http:4.1.133.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/29
-            force("io.netty:netty-codec-http2:4.1.132.Final")
+            force("io.netty:netty-codec-http2:4.1.133.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/3
             force("com.google.android.gms:play-services-basement:18.0.2")
