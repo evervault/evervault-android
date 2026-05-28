@@ -29,7 +29,7 @@ allprojects {
             force("io.netty:netty-handler:4.1.94.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/22
-            force("io.netty:netty-codec:4.1.125.Final")
+            force("io.netty:netty-codec:4.1.133.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/28
             force("io.netty:netty-codec-http:4.1.133.Final")
