@@ -103,7 +103,7 @@ dependencies {
     // ktor
     implementation("io.ktor:ktor-client-core:3.4.0")
     implementation("io.ktor:ktor-client-okhttp:3.4.0")
-    implementation("org.bouncycastle:bcprov-jdk15to18:1.78.1")
+    implementation("org.bouncycastle:bcprov-jdk15to18:1.84")
 
     // JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
