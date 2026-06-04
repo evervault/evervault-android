@@ -31,11 +31,21 @@ allprojects {
             // https://github.com/evervault/evervault-android/security/dependabot/22
             force("io.netty:netty-codec:4.1.125.Final")
 
-            // https://github.com/evervault/evervault-android/security/dependabot/26
-            force("io.netty:netty-codec-http:4.1.129.Final")
+            // https://github.com/evervault/evervault-android/security/dependabot/28
+            force("io.netty:netty-codec-http:4.1.133.Final")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/29
+            force("io.netty:netty-codec-http2:4.1.133.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/3
             force("com.google.android.gms:play-services-basement:18.0.2")
+
+            // https://github.com/evervault/evervault-android/security/dependabot/33
+            // CVE-2026-3505: unbounded PGP AEAD chunk size in bcpg < 1.84
+            force("org.bouncycastle:bcpg-jdk18on:1.84")
+            force("org.bouncycastle:bcpkix-jdk18on:1.84")
+            force("org.bouncycastle:bcprov-jdk18on:1.84")
+            force("org.bouncycastle:bcutil-jdk18on:1.84")
         }
     }
 
