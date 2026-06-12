@@ -1,5 +1,11 @@
 # com.evervault.sdk
 
+## 2.3.3
+
+### Patch Changes
+
+- f02e626: fix: bump io.netty:netty-codec to 4.1.133.Final (CVE-2026-42583)
+
 ## 2.3.2
 
 ### Patch Changes
