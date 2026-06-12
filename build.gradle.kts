@@ -26,7 +26,7 @@ allprojects {
     configurations.all {
         resolutionStrategy {
             // https://github.com/evervault/evervault-android/security/dependabot/4
-            force("io.netty:netty-handler:4.1.94.Final")
+            force("io.netty:netty-handler:4.1.135.Final")
 
             // https://github.com/evervault/evervault-android/security/dependabot/22
             force("io.netty:netty-codec:4.1.133.Final")
