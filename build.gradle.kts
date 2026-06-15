@@ -46,6 +46,12 @@ allprojects {
             force("org.bouncycastle:bcpkix-jdk18on:1.84")
             force("org.bouncycastle:bcprov-jdk18on:1.84")
             force("org.bouncycastle:bcutil-jdk18on:1.84")
+
+            // io.opentelemetry:opentelemetry-api <= 1.61.0 (CVSS 5.3)
+            // Transitively pulled in by the Kotlin swift-export-embeddable
+            // classpath; force a non-vulnerable version.
+            force("io.opentelemetry:opentelemetry-api:1.63.0")
+            force("io.opentelemetry:opentelemetry-context:1.63.0")
         }
     }
 
