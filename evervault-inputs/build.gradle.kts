@@ -74,7 +74,7 @@ dependencyLocking {
 val composeActivityVersion = "1.9.0"
 
 dependencies {
-    api("com.github.evervault:evervault-pay:android-v0.0.28")
+    api("com.github.evervault:evervault-pay:android-v0.0.30")
     implementation(project(":evervault-core"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))
