@@ -29,7 +29,7 @@ android {
     }
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
-        minSdk = 26
+        minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
@@ -72,7 +72,7 @@ android {
     }
     defaultConfig {
         aarMetadata {
-            minCompileSdk = 26
+            minCompileSdk = 24
         }
     }
     publishing {

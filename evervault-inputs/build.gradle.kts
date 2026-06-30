@@ -20,7 +20,7 @@ android {
     }
     version = prop.getProperty("VERSION_NAME")
     defaultConfig {
-        minSdk = 26
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -56,7 +56,7 @@ android {
     }
     defaultConfig {
         aarMetadata {
-            minCompileSdk = 26
+            minCompileSdk = 24
         }
     }
     publishing {
@@ -74,7 +74,7 @@ dependencyLocking {
 val composeActivityVersion = "1.9.0"
 
 dependencies {
-    api("com.github.evervault:evervault-pay:android-v0.0.28")
+    api("com.github.evervault:evervault-pay:android-v0.0.30")
     implementation(project(":evervault-core"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))
