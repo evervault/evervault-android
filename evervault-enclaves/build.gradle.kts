@@ -54,7 +54,7 @@ android {
     }
     defaultConfig {
         aarMetadata {
-            minCompileSdk = 26
+            minCompileSdk = 24
         }
     }
     publishing {
