@@ -27,7 +27,7 @@ android {
 
     defaultConfig {
         applicationId = "com.evervault.sampleapplication"
-        minSdk = 26
+        minSdk = 24
         versionCode = 1
         versionName = "1.0"
 
