@@ -1,5 +1,13 @@
 # com.evervault.sdk
 
+## 2.4.0
+
+### Minor Changes
+
+- 3a12ee5: - Lower minSdk and minCompileSdk requirement to API 24
+  - Update evervault-pay dependency to API 24-compatible version v0.0.30
+  - Replace java.time.\* usage with java.util.Calendar to maintain API 24 compatibility
+
 ## 2.3.3
 
 ### Patch Changes
