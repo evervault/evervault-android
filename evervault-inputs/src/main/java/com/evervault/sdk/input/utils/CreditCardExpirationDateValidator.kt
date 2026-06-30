@@ -1,7 +1,6 @@
 package com.evervault.sdk.input.utils
 
-import java.time.LocalDate
-import java.time.YearMonth
+import java.util.Calendar
 
 internal object CreditCardExpirationDateValidator {
 
@@ -14,11 +13,12 @@ internal object CreditCardExpirationDateValidator {
         val monthNumber = expirationMonthNumber.toIntOrNull() ?: return false
         if (monthNumber !in allowedMonths) return false
         val yearInCentury = expirationYearLastTwoDigits.toIntOrNull() ?: return false
-        return getExpirationDate(monthNumber, yearInCentury) >= LocalDate.now()
-    }
 
-    private fun getExpirationDate(monthNumber: Int, lastTwoDigitsOfYear: Int): LocalDate {
-        val currentCentury = YearMonth.now().year / 100
-        return YearMonth.of(currentCentury * 100 + lastTwoDigitsOfYear, monthNumber).atEndOfMonth()
+        val now = Calendar.getInstance()
+        val currentYear = now.get(Calendar.YEAR)
+        val currentMonth = now.get(Calendar.MONTH) + 1
+        val fullYear = (currentYear / 100) * 100 + yearInCentury
+
+        return fullYear > currentYear || (fullYear == currentYear && monthNumber >= currentMonth)
     }
 }
