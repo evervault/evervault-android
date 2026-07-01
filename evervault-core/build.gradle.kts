@@ -101,8 +101,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-common:2.2.21")
 
     // ktor
-    implementation("io.ktor:ktor-client-core:3.4.0")
-    implementation("io.ktor:ktor-client-okhttp:3.4.0")
+    implementation("io.ktor:ktor-client-core:3.2.4")
+    implementation("io.ktor:ktor-client-okhttp:3.2.4")
     implementation("org.bouncycastle:bcprov-jdk15to18:1.84")
 
     // JSON
@@ -159,7 +159,9 @@ signing {
     
     val signingKey: String? = localProperties.getProperty("signingKey")
     val signingPassword: String? = localProperties.getProperty("signingPassword")
-    useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
 
-    sign(publishing.publications["release"])
+    if (!signingKey.isNullOrBlank()) {
+        useInMemoryPgpKeys(signingKey, signingPassword ?: "")
+        sign(publishing.publications["release"])
+    }
 }
