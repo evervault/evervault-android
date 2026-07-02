@@ -159,9 +159,7 @@ signing {
     
     val signingKey: String? = localProperties.getProperty("signingKey")
     val signingPassword: String? = localProperties.getProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey ?: "", signingPassword ?: "")
 
-    if (!signingKey.isNullOrBlank()) {
-        useInMemoryPgpKeys(signingKey, signingPassword ?: "")
-        sign(publishing.publications["release"])
-    }
+    sign(publishing.publications["release"])
 }
