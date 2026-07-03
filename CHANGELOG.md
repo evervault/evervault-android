@@ -1,5 +1,14 @@
 # com.evervault.sdk
 
+## 2.5.0
+
+### Minor Changes
+
+- 5cdad6a: Add support for Kotlin 2.1
+
+  - Downgrade the ktor dependency to 3.2.4, which supports Kotlin 2.1
+  - Change Kotlin version dependencies to 2.1
+
 ## 2.4.0
 
 ### Minor Changes
