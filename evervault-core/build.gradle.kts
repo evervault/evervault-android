@@ -96,13 +96,13 @@ dependencies {
     testImplementation(kotlin("test"))
 
     // Explicitly specify kotlin-stdlib-common version to ensure all configurations (including Android test)
-    // are properly locked. Version must match the Kotlin plugin version in settings.gradle.kts (2.0.21).
+    // are properly locked. Version must match the Kotlin plugin version in settings.gradle.kts (2.1.20).
     // This resolves the issue where debugAndroidTestRuntimeClasspath isn't captured during lockfile generation.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-common:2.2.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-common:2.1.20")
 
     // ktor
-    implementation("io.ktor:ktor-client-core:3.4.0")
-    implementation("io.ktor:ktor-client-okhttp:3.4.0")
+    implementation("io.ktor:ktor-client-core:3.2.4")
+    implementation("io.ktor:ktor-client-okhttp:3.2.4")
     implementation("org.bouncycastle:bcprov-jdk15to18:1.84")
 
     // JSON
