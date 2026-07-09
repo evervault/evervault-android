@@ -77,7 +77,7 @@ dependencies {
     api("com.github.evervault:evervault-pay:android-v0.0.30")
     implementation(project(":evervault-core"))
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
+    implementation(platform("androidx.compose:compose-bom:2025.06.01"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:${composeActivityVersion}")
     implementation("androidx.compose.ui:ui")
