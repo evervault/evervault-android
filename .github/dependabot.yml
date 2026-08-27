@@ -4,14 +4,14 @@ updates:
     directory: "/"
     open-pull-requests-limit: 0
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "gradle"
     directory: "/"
     open-pull-requests-limit: 0
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "npm"
     directory: "/"
     open-pull-requests-limit: 0
     schedule:
-      interval: "daily"
+      interval: "monthly"
