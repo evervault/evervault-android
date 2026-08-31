@@ -41,6 +41,7 @@ android {
         buildConfigField("String", "EV_APP_UUID", "\"$evAppId\"")
         buildConfigField("String", "MERCHANT_ID", "\"$evervaultMerchantId\"")
         buildConfigField("String", "PCR_CALLBACK_URL", "\"$evervaultPcrCallbackUrl\"")
+        buildConfigField("String", "ENCLAVE_NAME", "\"hello-enclave\"")
         buildConfigField("String", "ENCLAVE_URL", "\"$evervaultEnclaveUrl\"")
     }
 
