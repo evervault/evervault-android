@@ -6,6 +6,6 @@
     "version": "changeset version && PACKAGE_VERSION=$(node -p \"require('./package.json').version\") && sed -i \"/VERSION_NAME=/ s/=.*/=$PACKAGE_VERSION/\" version.properties"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.2"
+    "@changesets/cli": "^3.0.0"
   }
 }
