@@ -5,9 +5,19 @@ on:
     branches:
       - main
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  changesets:
+  stage:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
     env:
       SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
       SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -16,55 +26,98 @@ jobs:
       GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Get tags
         run: git fetch --tags origin
 
       - name: Setup java environment
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v6
         with:
           distribution: 'corretto'
           java-version: '21'
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
 
       - name: Install changeset dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Configure git identity
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Create release PR if new changesets are present
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
-          title: 'New Release'
-          commit: 'Release new version'
-          version: npm run version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pr-title: 'New Release'
+          commit-message: 'Release new version'
+          version-script: npm run version
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create new release if release PR is merged
-        if: steps.changesets.outputs.hasChangesets == 'false'
+      - name: Tag and create GitHub release if release PR is merged
+        id: release
+        if: steps.changesets.outputs.has-changesets == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx changeset tag && git push origin --tags
+          npx changeset git-tag && git push origin --tags
           COMMIT_TAG=$(git tag --points-at HEAD)
-          if [ -n "$COMMIT_TAG" ]; then
-            echo "A tag is attached to HEAD. Creating a new release..."
-            echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-            CHANGELOG=$(awk '
-              BEGIN { recording=0; }
-              /^## / {
-                  if(recording) { exit; }
-                  recording=1;
-                  next;
-              }
-              recording {
-                  print;
-              }
-            ' CHANGELOG.md)
-            gh release create $COMMIT_TAG -t "$COMMIT_TAG" -n "$CHANGELOG"
-            ./generate_local_properties.bash ${{ github.workspace }}
-            ./gradlew publishToSonatype closeSonatypeStagingRepository
-          else
+          if [ -z "$COMMIT_TAG" ]; then
             echo "No tag attached to HEAD. No new release needed."
+            exit 0
           fi
+          echo "A tag is attached to HEAD. Creating a new release..."
+          CHANGELOG=$(awk '
+            BEGIN { recording=0; }
+            /^## / {
+                if(recording) { exit; }
+                recording=1;
+                next;
+            }
+            recording {
+                print;
+            }
+          ' CHANGELOG.md)
+          gh release create "$COMMIT_TAG" -t "$COMMIT_TAG" -n "$CHANGELOG"
+          echo "tag=$COMMIT_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Stage ${{ steps.release.outputs.tag }} to Sonatype
+        if: steps.release.outputs.tag != ''
+        run: |
+          ./generate_local_properties.bash ${{ github.workspace }}
+          ./gradlew publishToSonatype closeSonatypeStagingRepository
+
+  publish:
+    needs: stage
+    if: needs.stage.outputs.tag != ''
+    runs-on: ubuntu-latest
+    environment:
+      name: maven-central
+      url: https://central.sonatype.com/publishing/deployments
+    env:
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      GPG_KEY_FILE: ${{ secrets.GPG_KEY_FILE }}
+      GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
+      GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.stage.outputs.tag }}
+
+      - name: Setup java environment
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+
+      - name: Release ${{ needs.stage.outputs.tag }} to Maven Central
+        run: |
+          ./generate_local_properties.bash ${{ github.workspace }}
+          ./gradlew findSonatypeStagingRepository releaseSonatypeStagingRepository

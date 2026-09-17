@@ -1,4 +1,3 @@
-import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
@@ -24,10 +23,6 @@ android {
     group = "com.evervault.sdk.core"
     namespace = "com.evervault.sdk"
     compileSdk = 36
-    val prop = Properties().apply {
-        load(FileInputStream(File(rootProject.rootDir, "version.properties")))
-    }
-    version = prop.getProperty("VERSION_NAME")
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

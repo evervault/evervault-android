@@ -16,6 +16,10 @@ val localProperties = Properties().apply {
     rootProject.file("local.properties").takeIf { it.exists() }?.reader()?.use { load(it) }
 }
 
+val versionName: String = Properties().apply {
+    rootProject.file("version.properties").reader().use { load(it) }
+}.getProperty("VERSION_NAME")
+
 plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
@@ -23,6 +27,8 @@ plugins {
 }
 
 allprojects {
+    version = versionName
+
     configurations.all {
         resolutionStrategy {
             // https://github.com/evervault/evervault-android/security/dependabot/4
@@ -61,10 +67,12 @@ val ossrhUsername: String? = localProperties.getProperty("ossrhUsername")
 val ossrhPassword: String? = localProperties.getProperty("ossrhPassword")
 
 nexusPublishing {
+    repositoryDescription.set("com.evervault.sdk:${rootProject.name}:$versionName")
+
     repositories {
         sonatype {
             nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/content/repositories/snapshots/"))
+            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
             stagingProfileId.set("7050c947df3733")
             username.set(ossrhUsername)
             password.set(ossrhPassword)
