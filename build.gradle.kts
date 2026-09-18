@@ -48,10 +48,10 @@ allprojects {
 
             // https://github.com/evervault/evervault-android/security/dependabot/33
             // CVE-2026-3505: unbounded PGP AEAD chunk size in bcpg < 1.84
-            force("org.bouncycastle:bcpg-jdk18on:1.84")
-            force("org.bouncycastle:bcpkix-jdk18on:1.84")
-            force("org.bouncycastle:bcprov-jdk18on:1.84")
-            force("org.bouncycastle:bcutil-jdk18on:1.84")
+            force("org.bouncycastle:bcpg-jdk18on:1.85")
+            force("org.bouncycastle:bcpkix-jdk18on:1.85")
+            force("org.bouncycastle:bcprov-jdk18on:1.85")
+            force("org.bouncycastle:bcutil-jdk18on:1.85")
         }
     }
 
