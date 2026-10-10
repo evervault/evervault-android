@@ -15,18 +15,17 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.AutofillNode
-import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalAutofill
-import androidx.compose.ui.platform.LocalAutofillTree
+import androidx.compose.ui.platform.LocalAutofillManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -36,8 +35,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.evervault.sdk.input.model.placeholder.PlaceholderTextsDefaults
 import com.evervault.sdk.input.ui.component.CustomTextField
-import com.evervault.sdk.input.ui.modifier.autofillBoundingBox
-import com.evervault.sdk.input.ui.modifier.autofillOnFocusChange
 
 internal class PaymentCardInputScopeImpl(
     private val textStyle: TextStyle,
@@ -88,7 +85,6 @@ internal class PaymentCardInputScopeImpl(
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
@@ -101,11 +97,10 @@ internal class PaymentCardInputScopeImpl(
             modifier = modifier.focusRequester(creditCardRequester),
             options = options,
             onNext = { expiryRequester.requestFocus() },
-            autofillType = AutofillType.CreditCardNumber
+            contentType = ContentType.CreditCardNumber
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
@@ -122,11 +117,10 @@ internal class PaymentCardInputScopeImpl(
             textStyle = textStyle,
             textFieldColors = textFieldColors,
             onNext = { expiryRequester.requestFocus() },
-            autofillType = AutofillType.CreditCardNumber,
+            contentType = ContentType.CreditCardNumber,
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
@@ -144,12 +138,11 @@ internal class PaymentCardInputScopeImpl(
             textStyle = textStyle,
             textFieldColors = textFieldColors,
             onNext = { expiryRequester.requestFocus() },
-            autofillType = AutofillType.CreditCardNumber,
+            contentType = ContentType.CreditCardNumber,
             cursorBrush = cursorBrush
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CardNumberField(
         modifier: Modifier,
@@ -168,7 +161,7 @@ internal class PaymentCardInputScopeImpl(
             textStyle = textStyle,
             textFieldColors = textFieldColors,
             onNext = onNext,
-            autofillType = AutofillType.CreditCardNumber,
+            contentType = ContentType.CreditCardNumber,
             cursorBrush = cursorBrush
         )
     }
@@ -192,7 +185,6 @@ internal class PaymentCardInputScopeImpl(
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun ExpiryField(
         modifier: Modifier,
@@ -205,11 +197,10 @@ internal class PaymentCardInputScopeImpl(
             modifier = modifier.focusRequester(expiryRequester),
             options = options,
             onNext = { cvcRequester.requestFocus() },
-            autofillType = AutofillType.CreditCardExpirationDate
+            contentType = ContentType.CreditCardExpirationDate
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun ExpiryField(
         modifier: Modifier,
@@ -226,11 +217,10 @@ internal class PaymentCardInputScopeImpl(
             textStyle = textStyle,
             textFieldColors = textFieldColors,
             onNext = { cvcRequester.requestFocus() },
-            autofillType = AutofillType.CreditCardExpirationDate,
+            contentType = ContentType.CreditCardExpirationDate,
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun ExpiryField(
         modifier: Modifier,
@@ -248,7 +238,7 @@ internal class PaymentCardInputScopeImpl(
             textStyle = textStyle,
             textFieldColors = textFieldColors,
             onNext = { cvcRequester.requestFocus() },
-            autofillType = AutofillType.CreditCardExpirationDate,
+            contentType = ContentType.CreditCardExpirationDate,
             cursorBrush = cursorBrush,
         )
     }
@@ -274,7 +264,6 @@ internal class PaymentCardInputScopeImpl(
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CVCField(
         modifier: Modifier,
@@ -286,11 +275,10 @@ internal class PaymentCardInputScopeImpl(
             placeholder = placeholder,
             modifier = modifier.focusRequester(cvcRequester),
             options = options,
-            autofillType = AutofillType.CreditCardSecurityCode
+            contentType = ContentType.CreditCardSecurityCode
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CVCField(
         modifier: Modifier,
@@ -306,11 +294,10 @@ internal class PaymentCardInputScopeImpl(
             placeholder = placeholder,
             textStyle = textStyle,
             textFieldColors = textFieldColors,
-            autofillType = AutofillType.CreditCardSecurityCode,
+            contentType = ContentType.CreditCardSecurityCode,
         )
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun CVCField(
         modifier: Modifier,
@@ -327,12 +314,12 @@ internal class PaymentCardInputScopeImpl(
             placeholder = placeholder,
             textStyle = textStyle,
             textFieldColors = textFieldColors,
-            autofillType = AutofillType.CreditCardSecurityCode,
+            contentType = ContentType.CreditCardSecurityCode,
             cursorBrush = cursorBrush
         )
     }
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun CustomTextField(
         state: MutableState<TextFieldValue>,
@@ -340,23 +327,14 @@ internal class PaymentCardInputScopeImpl(
         modifier: Modifier = Modifier,
         options: PaymentCardInputScope.TextFieldOptions,
         onNext: (() -> Unit)? = null,
-        autofillType: AutofillType,
+        contentType: ContentType,
     ) {
-        val autofill = LocalAutofill.current
-        val autofillNode = AutofillNode(
-            autofillTypes = listOf(autofillType),
-            onFill = {
-                state.value = TextFieldValue(state.value.text + it)
-            }
-        )
-        LocalAutofillTree.current.plusAssign(autofillNode)
+        val autofillManager = LocalAutofillManager.current
 
         BasicTextField(
             value = state.value,
             onValueChange = { state.value = it },
-            modifier = modifier
-                .autofillBoundingBox(autofillNode)
-                .autofillOnFocusChange(autofill, autofillNode),
+            modifier = modifier.semantics { this.contentType = contentType },
             textStyle = options.textStyle.invoke(textStyle),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
@@ -366,6 +344,7 @@ internal class PaymentCardInputScopeImpl(
             ),
             keyboardActions = KeyboardActions(
                 onNext = { onNext?.invoke() },
+                onDone = { autofillManager?.commit() },
             ),
             cursorBrush = setDefaultCursorBrush(),
             decorationBox = @Composable { innerTextField ->
